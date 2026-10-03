@@ -16,15 +16,16 @@ This is the single authoritative current project-status tracker. Functional scop
 - **Phase 2B feature checkpoint:** `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), pushed to `origin/main`.
 - **Inventory feature checkpoint:** `edc6eeba85bfe057c92159554a8794586ef1f735` (`feat: complete Inventory`), committed and pushed to `origin/main`.
 - **Inventory documentation sync:** `14392656d333569da78333f91006e8b468653327`, committed and pushed to `origin/main`.
-- **Dashboard feature checkpoint:** `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`), committed.
+- **Dashboard feature checkpoint:** `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`), committed and pushed to `origin/main`.
+- **Dashboard documentation sync:** `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` (`docs: sync Dashboard completion status`), committed and pushed to `origin/main`.
 - **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured.
-- **Working tree:** Phase 2A, Phase 2B, Inventory, and Dashboard checkpoints are committed; use Git status for current local changes.
+- **Working tree:** Phase 2A, Phase 2B, Inventory, Dashboard, and Dashboard documentation checkpoints are committed and pushed; tracked files are clean.
 
 ## Current feature status
 
 - Phase 2A Goods Donation implementation and runtime acceptance are complete. Runtime classification was **PASS WITH NOTES**. Its feature checkpoint is committed and pushed.
 - Phase 2B Cash Donation implementation and runtime acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint is committed and pushed. Exactly one controlled Cash acceptance row remains as local evidence; no duplicate was created, and no further Cash submission is required.
-- Dashboard is a confirmed requirement. Its implementation and integrated browser acceptance are complete, classified **PASS**. Feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed.
+- Dashboard is a confirmed requirement. Its implementation and integrated browser acceptance are complete, classified **PASS**. Feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed and pushed to `origin/main`; documentation synchronization is complete.
 - Inventory implementation and integrated browser acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` is committed and pushed to `origin/main`; documentation synchronization is complete.
 - Volunteer Signup and the read-only Volunteer Submissions view are confirmed requirements but remain placeholders; the QR poster workflow and external API integration are not implemented.
 - Authentication is not implemented.
@@ -85,7 +86,7 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - Inventory regression passed. Goods and Cash forms rendered; neither was submitted.
 - Database counts remained Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 0`; Cash total remained `125.25`. Zero database writes were performed and no runtime correction was required.
 - Focused harness: 114 checks passed. TypeScript, lint, webpack production build, and `git diff --check` passed.
-- Dashboard feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`) is committed. Expected source scope was `app/(staff)/dashboard/page.tsx` only.
+- Dashboard feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`) is committed and pushed to `origin/main`. Dashboard documentation sync `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` is also committed and pushed. Documentation synchronization is complete; expected source scope was `app/(staff)/dashboard/page.tsx` only.
 
 ## Blockers and stakeholder decisions
 

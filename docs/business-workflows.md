@@ -16,7 +16,7 @@ CES Staff Inventory view is confirmed to show recorded goods, filter by category
 
 ## Dashboard
 
-The confirmed Dashboard metrics are goods record count, running cash donation total, volunteer submission count, and expiry summary (fresh, expiring soon, expired). The read-only implementation and runtime acceptance are complete (**PASS**); feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed. Cash total is displayed without a currency identifier because currency has not been explicitly defined. Expiry status uses the shared derived logic described above.
+The confirmed Dashboard metrics are goods record count, running cash donation total, volunteer submission count, and expiry summary (fresh, expiring soon, expired). The read-only implementation and runtime acceptance are complete (**PASS**); feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed and pushed to `origin/main`. Dashboard documentation sync `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` is also committed and pushed; documentation synchronization is complete. Cash total is displayed without a currency identifier because currency has not been explicitly defined. Expiry status uses the shared derived logic described above. No further Dashboard acceptance write is required.
 
 ## Volunteer Signup and submissions
 
