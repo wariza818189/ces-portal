@@ -10,11 +10,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## CES project instructions
 
+- Repository documentation is the source of truth for stable project context: `PROJECT_STATUS.md` tracks current state, `docs/requirements.md` defines confirmed functional scope, and `docs/codex-workflow.md` defines the working process.
+- Treat task prompts as delta instructions by default; read the repository sources first instead of requiring prompts to repeat stable architecture, Git/database safety, scope, or verification rules. Read additional documentation only when relevant to the task.
+- If a task materially conflicts with documented state or scope, stop and report the conflict rather than guessing.
 - Before substantial work, read `PROJECT_STATUS.md`, `docs/requirements.md`, and `docs/codex-workflow.md`.
 - Inspect branch, HEAD, and Git status before editing. Preserve existing unfinished work and the approved scope.
 - Distinguish stakeholder-confirmed requirements from academic/course requirements and pending decisions. Stop on unexpected scope expansion.
-- Never expose secrets. Protect Git, database, and Docker state; do not casually destroy or reset them.
+- Never inspect or expose real secret files or credentials for ordinary development work. Protect Git, database, and Docker state; do not casually destroy or reset them.
 - Use parameterized SQL and keep database access server-side. Do not introduce an internal API layer without architectural justification.
 - Do not select or implement an external API without approved scope. External API selection or architecture-changing integrations require a scoped plan and approval.
 - Run appropriate checks, review the diff, and report exact changes and verification results.
+- Stage explicit intended paths; never use `git add .`.
 - Never commit or push unless explicitly authorized.

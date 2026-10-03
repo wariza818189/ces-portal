@@ -18,7 +18,18 @@ These are project workflow guidelines, not a guarantee of availability. Verify t
 
 ## 3. Prompt Design
 
-Prompts should state the goal, repository context, allowed files, protected state, requirement source, verification requested, and report format. Separate CES stakeholder-confirmed requirements from academic/course requirements and pending decisions. Name constraints explicitly, especially when unfinished work must be preserved.
+**Delta-only prompts are the default.** Repository documentation is the source of truth for stable project context. Prompts should point to `AGENTS.md`, `PROJECT_STATUS.md`, and the relevant requirements, design, and testing documents instead of repeating stable architecture, Git/database safety, scope rules, or project history.
+
+A normal task prompt should mainly specify:
+
+- Goal.
+- Task-specific scope.
+- New or locked decisions.
+- Task-specific protections not already documented.
+- Acceptance criteria.
+- Requested report.
+
+Read the repository sources first and consult only additional documents relevant to the task. Long self-contained prompts remain appropriate when repository documentation is missing or stale, a critical one-off constraint is not documented, or work is being transferred to an environment that cannot read the repository documentation. Separate confirmed CES requirements from academic/course requirements and pending decisions.
 
 ## 4. Standard Compact Prompt Template
 

@@ -15,13 +15,14 @@ This is the single authoritative current project-status tracker. Functional scop
 - **Phase 2A feature checkpoint:** `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), pushed to `origin/main`.
 - **Phase 2B feature checkpoint:** `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), pushed to `origin/main`.
 - **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured.
-- **Working tree:** Application checkpoint is committed; this documentation correction is a separate follow-up.
+- **Working tree:** Phase 2A and Phase 2B checkpoints are committed. Inventory implementation is currently local and uncheckpointed.
 
 ## Current feature status
 
 - Phase 2A Goods Donation implementation and runtime acceptance are complete. Runtime classification was **PASS WITH NOTES**. Its feature checkpoint is committed and pushed.
 - Phase 2B Cash Donation implementation and runtime acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint is committed and pushed. Exactly one controlled Cash acceptance row remains as local evidence; no duplicate was created, and no further Cash submission is required.
-- Dashboard and Inventory are confirmed requirements but remain placeholders without database-backed records.
+- Dashboard is a confirmed requirement and remains a placeholder without database-backed implementation.
+- Inventory planning is complete and approved. Inventory implementation is in progress locally; browser acceptance is pending and it is not runtime accepted or checkpointed.
 - Volunteer Signup and the read-only Volunteer Submissions view are confirmed requirements but remain placeholders; the QR poster workflow and external API integration are not implemented.
 - Authentication is not implemented.
 
@@ -56,7 +57,20 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Pending checks
 
-No further Phase 2B acceptance or database submission is required.
+- No further Phase 2B acceptance or database submission is required.
+- Inventory integrated-browser acceptance remains pending. Inventory acceptance must perform zero database writes.
+
+## Inventory implementation in progress
+
+- Approved direction: read-only view of recorded Goods Donations, with a category filter, expiry-soonest-first ordering, and shared derived Expired / Expiring soon / Fresh status.
+- Free-text search is out of scope for this pass because the confirmed Goods fields do not provide a useful search target.
+- Read-only Inventory implementation exists locally in `app/(staff)/inventory/page.tsx` and `lib/expiry.ts`.
+- Category filtering and expiry classification are implemented. Expiry helper harness: 27 checks passed; mocked Inventory renderer harness: 10 checks passed.
+- TypeScript, lint, webpack production build, and `git diff --check` passed.
+- Database read acceptance passed. Goods/Cash/Volunteer counts remained `1`, `1`, and `0`; zero database writes were performed.
+- Integrated browser acceptance is pending because the browser was unavailable. Inventory is not runtime accepted or checkpointed.
+- Expected minimal implementation scope: `app/(staff)/inventory/page.tsx` and `lib/expiry.ts`.
+- Dashboard remains separate and unimplemented.
 
 ## Blockers and stakeholder decisions
 
@@ -67,4 +81,4 @@ No further Phase 2B acceptance or database submission is required.
 
 ## Next action
 
-Proceed to inspection and planning for the next confirmed MVP feature after Phase 2B.
+Complete integrated-browser Inventory acceptance, then review for checkpoint preparation.
