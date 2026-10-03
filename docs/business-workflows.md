@@ -12,7 +12,7 @@ Cash Donation is confirmed stakeholder scope and has a separate database table. 
 
 ## Inventory and expiry
 
-CES Staff Inventory view is confirmed to show recorded goods, filter by category, support useful search where appropriate, sort by expiry date soonest first, and clearly expose expiry status. Its read-only implementation and runtime acceptance are complete locally; checkpointing is pending. It uses the same reusable derived expiry logic as the Dashboard: before today is expired; today through seven days ahead is expiring soon; later is fresh. Unlike Goods units are never summed into one quantity.
+CES Staff Inventory view is confirmed to show recorded goods, filter by category, support useful search where appropriate, sort by expiry date soonest first, and clearly expose expiry status. Its read-only implementation and runtime acceptance are complete (**PASS WITH NOTES**); checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` is committed. It uses the same reusable derived expiry logic as the Dashboard: before today is expired; today through seven days ahead is expiring soon; later is fresh. Unlike Goods units are never summed into one quantity.
 
 ## Dashboard
 

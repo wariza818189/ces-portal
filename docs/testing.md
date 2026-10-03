@@ -55,13 +55,13 @@ Phase 2B remains **PASS WITH NOTES**. Its checkpoint, `e2ed677d31960f47d28afb4d6
 - Expiry helper harness: 27 checks passed. Mocked Inventory renderer harness: 10 checks passed. TypeScript, lint, webpack production build, and `git diff --check` passed.
 - The application used port `3002` because other development servers occupied lower ports. This was an environment note, not an application issue.
 
-Inventory runtime acceptance is **PASS WITH NOTES**. Implementation and acceptance are complete locally, but the Inventory checkpoint is pending. No further database write is required for Inventory acceptance.
+Inventory runtime acceptance is **PASS WITH NOTES**. Its feature checkpoint, `edc6eeba85bfe057c92159554a8794586ef1f735` (`feat: complete Inventory`), is committed. No further database write is required for Inventory acceptance.
 
 # Pending / Planned
 
 ## Other planned coverage
 
-- Browser coverage for confirmed Cash, Inventory, Dashboard, Student Volunteer Signup, and read-only Volunteer Submissions features after implementation.
+- Browser coverage for confirmed Dashboard, Student Volunteer Signup, and read-only Volunteer Submissions features after implementation.
 - Accessibility and responsive-layout review across relevant routes and viewport sizes.
 - Regression checks for existing routes and behavior after each scoped feature.
 

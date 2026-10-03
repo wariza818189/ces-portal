@@ -14,15 +14,16 @@ This is the single authoritative current project-status tracker. Functional scop
 - **Branch:** `main`
 - **Phase 2A feature checkpoint:** `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), pushed to `origin/main`.
 - **Phase 2B feature checkpoint:** `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), pushed to `origin/main`.
+- **Inventory feature checkpoint:** `edc6eeba85bfe057c92159554a8794586ef1f735` (`feat: complete Inventory`), committed.
 - **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured.
-- **Working tree:** Phase 2A and Phase 2B checkpoints are committed. Inventory implementation and runtime acceptance are complete locally; its checkpoint is pending.
+- **Working tree:** Phase 2A, Phase 2B, and Inventory checkpoints are committed. The Inventory documentation status sync is in progress.
 
 ## Current feature status
 
 - Phase 2A Goods Donation implementation and runtime acceptance are complete. Runtime classification was **PASS WITH NOTES**. Its feature checkpoint is committed and pushed.
 - Phase 2B Cash Donation implementation and runtime acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint is committed and pushed. Exactly one controlled Cash acceptance row remains as local evidence; no duplicate was created, and no further Cash submission is required.
 - Dashboard is a confirmed requirement and remains a placeholder without database-backed implementation.
-- Inventory implementation and integrated browser acceptance are complete locally, classified **PASS WITH NOTES**. Its checkpoint is pending; Inventory is not yet checkpointed.
+- Inventory implementation and integrated browser acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint is committed as `edc6eeba85bfe057c92159554a8794586ef1f735`.
 - Volunteer Signup and the read-only Volunteer Submissions view are confirmed requirements but remain placeholders; the QR poster workflow and external API integration are not implemented.
 - Authentication is not implemented.
 
@@ -60,17 +61,17 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - No further Phase 2B acceptance or database submission is required.
 - No further Inventory database acceptance write is required; its acceptance was read-only.
 
-## Inventory runtime acceptance complete — checkpoint pending
+## Inventory complete
 
 - Approved direction: read-only view of recorded Goods Donations, with a category filter, expiry-soonest-first ordering, and shared derived Expired / Expiring soon / Fresh status.
 - Free-text search is out of scope for this pass because the confirmed Goods fields do not provide a useful search target.
-- Read-only Inventory implementation is complete locally in `app/(staff)/inventory/page.tsx` and `lib/expiry.ts`. Category filtering and derived Expired / Expiring soon / Fresh status are implemented.
+- Read-only Inventory implementation is complete in `app/(staff)/inventory/page.tsx` and `lib/expiry.ts`. Category filtering and derived Expired / Expiring soon / Fresh status are implemented.
 - Integrated browser acceptance passed. At 1280px the table was usable; at 375px labelled cards were usable without horizontal overflow. The current row showed Canned, `1.25 pcs`, received `2026-10-01`, expiry `2026-12-01`, and Fresh, with application date `2026-10-03`.
 - All/Canned filters showed the row; Rice showed a clear no-match state; invalid category safely resolved to All. Practical keyboard filter operation passed with no obvious keyboard trap and no relevant browser console/runtime errors.
 - Goods and Cash forms still rendered; neither was submitted. Counts remained Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 0`; zero database writes were performed. No runtime correction was required.
 - Expiry helper harness: 27 checks passed; mocked Inventory renderer harness: 10 checks passed. TypeScript, lint, webpack production build, and `git diff --check` passed.
 - Port `3002` was used because other development servers occupied lower ports; this was an environment note.
-- Inventory runtime acceptance is **PASS WITH NOTES**. It is not checkpointed yet.
+- Inventory runtime acceptance is **PASS WITH NOTES**. Feature checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` (`feat: complete Inventory`) is committed.
 - Expected minimal implementation scope: `app/(staff)/inventory/page.tsx` and `lib/expiry.ts`.
 - Dashboard remains separate and unimplemented.
 
@@ -83,4 +84,4 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Next action
 
-Review and create the Inventory checkpoint after explicit authorization.
+Inspect and plan the next confirmed MVP feature.
