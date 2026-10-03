@@ -4,13 +4,13 @@
 
 ## Problem and purpose
 
-Donation and volunteer information can be difficult to organize when records are handled manually. CES Portal is being developed as a small, centralized application for those records. The MVP scope is based on stakeholder-confirmed requirements; some modules remain placeholders or are still being implemented.
+Donation and volunteer information can be difficult to organize when records are handled manually. CES Portal is a small, centralized application for those records. The MVP scope is based on stakeholder-confirmed requirements; implementation status and pending decisions are tracked in the project documentation.
 
 ## MVP modules and actors
 
 The stakeholder-confirmed MVP includes Dashboard, Add Donation (Goods and Cash), Inventory, Volunteer Submissions, and public Volunteer Signup. The actors are CES Staff and Student Volunteer. Current implementation status is tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md); the authoritative functional-scope record is [docs/requirements.md](docs/requirements.md).
 
-Phase 2A Goods Donation is complete, runtime accepted as PASS WITH NOTES, and checkpointed at `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7`. Phase 2B Cash Donation is implemented, runtime accepted as PASS WITH NOTES, and checkpointed at `e2ed677d31960f47d28afb4d691b8608f330ce26`, pushed to `origin/main`. Database-backed Inventory and Dashboard, Volunteer Signup, and the read-only staff submission view are confirmed requirements but are not yet implemented. The QR poster flow supports Volunteer Signup; an external QR generation API is only a candidate for the IT305 academic integration requirement, and no provider is selected or integration implemented.
+Phase 2A Goods Donation is complete, runtime accepted as PASS WITH NOTES, and checkpointed at `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7`. Phase 2B Cash Donation is implemented, runtime accepted as PASS WITH NOTES, and checkpointed at `e2ed677d31960f47d28afb4d691b8608f330ce26`, pushed to `origin/main`. Database-backed Inventory and Dashboard are implemented and runtime accepted. Volunteer Signup and the read-only staff submissions view are implemented and runtime accepted as PASS WITH NOTES for synthetic/local classroom demonstration only; their checkpoint is pending. Real-data collection and public production deployment are not approved. The `/volunteers` route has no access control and authentication remains outside the MVP. The QR poster flow supports Volunteer Signup; an external QR generation API remains a candidate for the IT305 academic integration requirement, and no provider is selected or integration implemented.
 
 ## Technology and architecture
 

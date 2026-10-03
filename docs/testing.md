@@ -67,15 +67,25 @@ Inventory runtime acceptance is **PASS WITH NOTES**. Its feature checkpoint, `ed
 
 Dashboard implementation and runtime acceptance are complete (**PASS**). Its feature checkpoint, `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`), is committed and pushed to `origin/main`. Dashboard documentation sync `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` (`docs: sync Dashboard completion status`) is committed and pushed to `origin/main`; documentation synchronization is complete. No further database write is required for Dashboard acceptance.
 
+# Current Volunteer core workflow acceptance — PASS WITH NOTES
+
+Volunteer acceptance is restricted to a classroom/local demonstration using synthetic information. It does not approve real personal-information collection or public production deployment. The built-in integrated browser was unavailable; actual working-tree application testing used temporary headless Firefox, an environment/tooling note rather than an application defect.
+
+- The public `/volunteer` form displayed the synthetic/local-only warning, approved privacy/use notice, four required fields (Full Name, Course / Year, Contact Number, Activity), and required acknowledgement. Acknowledgement gates submission only and is not stored.
+- Focused validation covered required/non-string values, blank-after-trim rejection, trimming surrounding whitespace while preserving internal whitespace, Unicode-aware character counting, and limits of 100 / 100 / 30 / 150 characters. Leading zeroes were preserved. No phone regex or normalization was added.
+- Browser invalid attempts for missing values, missing acknowledgement, blank Full Name, and Full Name above 100 characters were rejected with no rows. The browser rejected missing required values/acknowledgement natively; server validation rejected blank and over-limit values. Submitted values and acknowledgement were retained after server failure.
+- Successful submission reset the four fields and acknowledgement, showed `Volunteer submission saved successfully.`, and disabled controls while pending. Keyboard traversal reached all four fields, acknowledgement, and submit button. Practical accessibility checks passed; this was not a full WCAG audit.
+- Exactly one controlled synthetic row was created: `Synthetic Volunteer Acceptance`, `BSIT 3 - DEMO`, `00000000000`, `CES Volunteer Demo Activity`; generated ID `1`, `created_at` `2026-10-03 13:15:52`. Exactly one matching row exists, with no duplicate.
+- Counts changed Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 1`; Cash total stayed `125.25`. Dashboard showed Volunteer Submissions `1`. `/volunteers` displayed the row and timestamp at desktop 1280px and narrow 375px without horizontal overflow. Dashboard, Inventory, and Goods/Cash form rendering regressions passed; neither donation form was submitted.
+- Live Volunteer schema matched the expected `utf8mb4` `VARCHAR(100/100/30/150)` fields and generated ID/timestamp. The 141 focused checks, TypeScript, lint, webpack production build, and `git diff --check` passed. No relevant browser console/runtime errors were observed.
+- Save/refresh behavior was checked: the action inserts only the four approved fields; after successful persistence, `/volunteers` and `/dashboard` are revalidated, and refresh failure retains success with do-not-resubmit wording. Logging omits submitted data and raw errors.
+
+The Volunteer feature checkpoint is pending. No further Volunteer database acceptance write is needed. Real-data operation remains blocked pending an approved access-control/deployment design for `/volunteers`; authentication is outside MVP scope, consent evidence is not stored, retention policy is pending CES/school policy confirmation, and QR/API integration remains separate and pending.
+
 # Pending / Planned
-
-## Volunteer acceptance boundary — PLANNED
-
-Volunteer implementation and runtime acceptance are authorized only for a classroom/local demonstration with synthetic data. Do not use real personal information. The approved form notice and acknowledgement must be verified; acknowledgement gates submission but is not persisted as consent evidence. No test evidence is recorded here because Volunteer implementation and acceptance have not yet occurred. Real-data operation remains pending an approved access-control/deployment design for `/volunteers`.
 
 ## Other planned coverage
 
-- Browser coverage for confirmed Student Volunteer Signup and read-only Volunteer Submissions features after implementation.
 - Accessibility and responsive-layout review across relevant routes and viewport sizes.
 - Regression checks for existing routes and behavior after each scoped feature.
 
