@@ -67,9 +67,9 @@ Inventory runtime acceptance is **PASS WITH NOTES**. Its feature checkpoint, `ed
 
 Dashboard implementation and runtime acceptance are complete (**PASS**). Its feature checkpoint, `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`), is committed and pushed to `origin/main`. Dashboard documentation sync `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` (`docs: sync Dashboard completion status`) is committed and pushed to `origin/main`; documentation synchronization is complete. No further database write is required for Dashboard acceptance.
 
-# Current Volunteer core workflow acceptance — PASS WITH NOTES
+# Current Volunteer core workflow acceptance — PASS WITH NOTES — SYNTHETIC / LOCAL DEMO ONLY
 
-Volunteer acceptance is restricted to a classroom/local demonstration using synthetic information. It does not approve real personal-information collection or public production deployment. The built-in integrated browser was unavailable; actual working-tree application testing used temporary headless Firefox, an environment/tooling note rather than an application defect.
+Volunteer acceptance is restricted to **SYNTHETIC / LOCAL DEMO ONLY**. It does not approve real personal-data collection or public production deployment. The built-in integrated browser was unavailable; actual working-tree application testing used temporary headless Firefox, an environment/tooling note rather than an application defect.
 
 - The public `/volunteer` form displayed the synthetic/local-only warning, approved privacy/use notice, four required fields (Full Name, Course / Year, Contact Number, Activity), and required acknowledgement. Acknowledgement gates submission only and is not stored.
 - Focused validation covered required/non-string values, blank-after-trim rejection, trimming surrounding whitespace while preserving internal whitespace, Unicode-aware character counting, and limits of 100 / 100 / 30 / 150 characters. Leading zeroes were preserved. No phone regex or normalization was added.
@@ -80,7 +80,7 @@ Volunteer acceptance is restricted to a classroom/local demonstration using synt
 - Live Volunteer schema matched the expected `utf8mb4` `VARCHAR(100/100/30/150)` fields and generated ID/timestamp. The 141 focused checks, TypeScript, lint, webpack production build, and `git diff --check` passed. No relevant browser console/runtime errors were observed.
 - Save/refresh behavior was checked: the action inserts only the four approved fields; after successful persistence, `/volunteers` and `/dashboard` are revalidated, and refresh failure retains success with do-not-resubmit wording. Logging omits submitted data and raw errors.
 
-The Volunteer feature checkpoint is pending. No further Volunteer database acceptance write is needed. Real-data operation remains blocked pending an approved access-control/deployment design for `/volunteers`; authentication is outside MVP scope, consent evidence is not stored, retention policy is pending CES/school policy confirmation, and QR/API integration remains separate and pending.
+Volunteer core workflow implementation is **COMPLETE** and runtime acceptance is **PASS WITH NOTES**. Feature checkpoint `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) is committed. Exactly one controlled synthetic acceptance row remains local evidence: Volunteers changed `0 → 1`, Dashboard Volunteer Submissions correctly became `1`, and zero duplicate rows exist. No further Volunteer acceptance submission is required. Real-data operation remains blocked pending an approved access-control/deployment design for `/volunteers`; the route remains unauthenticated/unprotected and authentication is outside MVP scope. Acknowledgement is not stored as consent evidence. Retention policy is pending CES/school policy confirmation; no delete workflow exists. QR/external API provider and integration remain separate and pending.
 
 # Pending / Planned
 

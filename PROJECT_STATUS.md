@@ -27,7 +27,7 @@ This is the single authoritative current project-status tracker. Functional scop
 - Phase 2B Cash Donation implementation and runtime acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint is committed and pushed. Exactly one controlled Cash acceptance row remains as local evidence; no duplicate was created, and no further Cash submission is required.
 - Dashboard is a confirmed requirement. Its implementation and integrated browser acceptance are complete, classified **PASS**. Feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed and pushed to `origin/main`; documentation synchronization is complete.
 - Inventory implementation and integrated browser acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` is committed and pushed to `origin/main`; documentation synchronization is complete.
-- Volunteer core workflow implementation and runtime acceptance are complete: **PASS WITH NOTES — SYNTHETIC/LOCAL DEMO ONLY — CHECKPOINT PENDING**. Its five approved source files are implemented locally. The acceptance row below remains as local evidence; no further submission is required. Real personal-data collection and production operation are not approved; the access-control/deployment design for `/volunteers` remains unresolved. Retention policy is pending CES/school policy confirmation. QR/API provider remains pending.
+- Volunteer core workflow implementation and runtime acceptance are complete: **PASS WITH NOTES — SYNTHETIC / LOCAL DEMO ONLY**. Feature checkpoint `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) is committed. Documentation synchronization and push are part of this checkpoint sequence. Exactly one controlled synthetic acceptance row remains local evidence; no further submission is required. Real personal-data collection and production operation are not approved; the access-control/deployment design for `/volunteers` remains unresolved. Retention policy is pending CES/school policy confirmation. QR/API provider remains pending.
 - Authentication is not implemented.
 
 ## Phase 2A complete
@@ -88,9 +88,9 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - Focused harness: 114 checks passed. TypeScript, lint, webpack production build, and `git diff --check` passed.
 - Dashboard feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`) is committed and pushed to `origin/main`. Dashboard documentation sync `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` is also committed and pushed. Documentation synchronization is complete; expected source scope was `app/(staff)/dashboard/page.tsx` only.
 
-## Volunteer core workflow accepted for synthetic local demonstration — checkpoint pending
+## Volunteer core workflow complete — SYNTHETIC / LOCAL DEMO ONLY
 
-- Approved implementation boundary: classroom/local demonstration with synthetic Volunteer data only. This does not approve real personal-information collection or public production deployment.
+- Approved implementation boundary: **SYNTHETIC / LOCAL DEMO ONLY**. This does not approve real personal-information collection or public production deployment.
 - Approved notice purpose: “The information submitted in this form will be used by Community Extension Services to register student volunteers and contact them regarding the CES activity they selected.” The public form must show this notice before submission and require acknowledgement: “I understand that the information I provide will be used for CES volunteer registration and activity coordination.” The acknowledgement gates submission only; consent evidence is not stored. No schema change for consent storage is approved.
 - Contact numbers may be used only for communication related to the selected CES activity and necessary activity coordination. Intended viewers are CES Staff / CES Coordinator.
 - All four fields (`full_name`, `course_year`, `contact_number`, `activity`) are required and nonblank after trimming. Trim surrounding whitespace, preserve meaningful internal text, enforce schema limits without truncation (100, 100, 30, and 150 characters respectively), and preserve contact numbers as strings including leading zeros. No phone regex, minimum length, course/activity list, capitalization, or phone normalization is approved.
@@ -103,7 +103,8 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - Counts changed Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 1`; Cash total remained `125.25`. Dashboard showed Volunteer Submissions `1`. Invalid attempts created no rows.
 - Validation trims surrounding whitespace while preserving internal whitespace, uses Unicode-aware limits of 100 / 100 / 30 / 150, and preserves leading zeroes in contact numbers. Acknowledgement is required to submit but is not stored as consent evidence.
 - Dashboard, Inventory, Goods form, and Cash form regressions passed; neither donation form was submitted. The 141 focused checks, TypeScript, lint, webpack production build, and `git diff --check` passed.
-- Checkpoint is pending. Real personal-data collection, public production deployment, and authenticated access to `/volunteers` are not approved. Authentication remains outside the MVP; retention policy is pending CES/school policy confirmation; no retention/delete workflow was added. QR/external API integration remains separate and pending.
+- Core workflow implementation is **COMPLETE**. Runtime acceptance is **PASS WITH NOTES**. Feature checkpoint `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) is committed. The five approved source files are checkpointed; documentation synchronization is the follow-up commit. Exactly one controlled synthetic acceptance row remains locally; Volunteers changed `0 → 1`, and Dashboard Volunteer Submissions correctly became `1`. Zero duplicate Volunteer rows exist; no further Volunteer acceptance submission is required. The 141 focused checks, TypeScript, lint, webpack production build, and diff check passed. Browser note: the built-in connector was unavailable; working-tree acceptance completed successfully with temporary headless Firefox.
+- Real personal-data collection and public production deployment are **NOT approved**. `/volunteers` remains unauthenticated/unprotected; authentication remains outside the current MVP. The acknowledgement is not stored as consent evidence. Retention policy remains pending CES/school policy confirmation; no delete workflow was added. QR/external API provider and integration remain pending.
 
 ## Blockers and stakeholder decisions
 
@@ -114,4 +115,4 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Next action
 
-Review and create the Volunteer core workflow checkpoint after explicit authorization.
+Inspect and plan the remaining confirmed academic/API work, including the pending external QR API/provider decision, or another confirmed unresolved project requirement. Do not perform another Volunteer acceptance write.
