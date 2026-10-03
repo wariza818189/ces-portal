@@ -120,6 +120,16 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - During one mistaken repository build, Next.js loaded `.env.local` internally. The file contents were not inspected, printed, modified, copied, or included in evidence. Successful build and live acceptance subsequently used a secret-free temporary copy/process environment. This is an environment note, not a security incident.
 - Feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`; implementation is complete. Documentation synchronization is recorded in this follow-up commit.
 
+## Final integrated system testing and project closeout — PASS WITH NOTES
+
+- MVP implementation and the final integrated system test are **COMPLETE**. No blocking functional defect was found. Project readiness is for academic/classroom demonstration and handoff under **SYNTHETIC / LOCAL DEMO ONLY**, not production.
+- Final system testing baseline: `aebfd1bda9b337a63dc33b22980a05c8f56dd83d`; `HEAD` matched `origin/main` and the working tree was clean before testing.
+- TypeScript, lint, webpack production build, read-only database connectivity/count check, healthy `ces-mysql`, and Git diff checks passed. The sandbox blocked DB/Docker access and the build TypeScript subprocess; checks passed on the established elevated path.
+- Dashboard, Goods/Cash invalid-only form regressions, Inventory, public Volunteer Signup invalid-only regression, Volunteer Submissions, and QuickChart poster graceful-failure path passed across the six routes. Staff navigation and direct public signup access passed. Desktop and approximately 375px layouts had no horizontal overflow; practical keyboard checks passed (not a WCAG audit). No relevant browser console/runtime errors were observed.
+- Goods remained `1 → 1`, Cash `1 → 1`, Volunteers `1 → 1`, and Cash total `125.25 → 125.25`. Zero database writes and no valid form submissions occurred. No new live QuickChart request was made.
+- Notes: no phone-reachable second-device scan or physical print; one Goods row means multi-row expiry ordering could not be compared; rapid route navigation canceled speculative RSC/prefetch requests without other application request failures. The public Volunteer warning clearly states the synthetic/local and no-real-data boundary, using wording different from the poster's uppercase label.
+- The QuickChart static QR academic integration is complete and runtime accepted **PASS WITH NOTES**. Exact local QR decoding passed in its earlier technical acceptance. `docs/business-workflows.md` now records the implemented poster flow.
+
 ## Blockers and stakeholder decisions
 
 - IT305 teacher guidance calls for meaningful external API integration. This academic/course requirement is separate from CES stakeholder functional requirements and should support existing CES functionality rather than add unrelated scope. The QuickChart Volunteer Signup poster integration is implemented and runtime accepted as recorded above.
@@ -127,4 +137,4 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Next action
 
-Continue with the next planned CES project task; the QuickChart feature and documentation checkpoints are complete.
+Prepare the system for classroom demonstration and academic submission. For a mobile QR demonstration, configure `VOLUNTEER_SIGNUP_URL` to a phone-reachable host and perform the optional second-device scan.

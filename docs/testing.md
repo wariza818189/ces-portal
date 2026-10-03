@@ -82,6 +82,21 @@ Volunteer acceptance is restricted to **SYNTHETIC / LOCAL DEMO ONLY**. It does n
 
 Volunteer core workflow implementation is **COMPLETE** and runtime acceptance is **PASS WITH NOTES**. Feature checkpoint `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) is committed. Exactly one controlled synthetic acceptance row remains local evidence: Volunteers changed `0 → 1`, Dashboard Volunteer Submissions correctly became `1`, and zero duplicate rows exist. No further Volunteer acceptance submission is required. Real-data operation remains blocked pending an approved access-control/deployment design for `/volunteers`; the route remains unauthenticated/unprotected and authentication is outside MVP scope. Acknowledgement is not stored as consent evidence. Retention policy is pending CES/school policy confirmation; no delete workflow exists.
 
+## Final integrated system test — PASS WITH NOTES — SYNTHETIC / LOCAL DEMO ONLY
+
+This system-level regression followed the individual module and QuickChart feature acceptance above. Baseline was `aebfd1bda9b337a63dc33b22980a05c8f56dd83d`; `HEAD` equaled `origin/main` and Git was clean before testing.
+
+- TypeScript and lint passed. The webpack production build passed through the established elevated path after the sandbox TypeScript subprocess restriction. The read-only `node --env-file=.env.local scripts/test-db.mjs` check passed, `ces-mysql` was healthy, and `git diff --check` passed.
+- Integrated browser regression passed for `/dashboard`, `/donations/new`, `/inventory`, `/volunteer`, `/volunteers`, and `/volunteers/poster`. Goods and Cash forms were tested with invalid inputs only; Volunteer Signup used a whitespace-only invalid attempt. Values were retained after validation errors. No valid submission was made.
+- Dashboard metrics matched the database; Inventory data/status and category filters passed; the existing synthetic Volunteer row and poster link rendered. The poster's provider-unavailable fallback passed with a local mock and displayed the configured direct URL. No new live QuickChart request was made; exact decoded QR correctness is recorded in the earlier QuickChart acceptance above.
+- Staff navigation and direct public signup access passed. Desktop and approximately 375px layouts had no horizontal overflow across the six routes. Keyboard traversal and donation tab arrow behavior passed; this was not a WCAG audit.
+- No relevant console/runtime errors were observed. Rapid test navigation canceled speculative RSC/prefetch requests and one route request; no other internal application request failed.
+- Database before/after was unchanged: Goods `1 → 1`, Cash `1 → 1`, Volunteers `1 → 1`, Cash total `125.25 → 125.25`. Zero database writes.
+- Notes: the sandbox blocked DB/Docker access and a TypeScript subprocess; elevated checks succeeded. Physical phone scan and printing were not tested. One Goods row prevented runtime comparison of expiry ordering across multiple rows. The public Volunteer warning clearly communicates synthetic/local use and that real collection/deployment is not approved, though it does not use the poster's exact uppercase label.
+- Git remained clean after testing; no application, dependency, schema, or database files changed.
+
+Overall final integrated system-test classification: **PASS WITH NOTES**. No blocking functional defect was found. MVP implementation and system testing are complete for classroom/academic handoff under **SYNTHETIC / LOCAL DEMO ONLY**. Production readiness and real personal-data use are not approved.
+
 # Pending / Planned
 
 ## Other planned coverage

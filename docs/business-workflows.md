@@ -30,15 +30,15 @@ Although intended viewers are CES Staff / CES Coordinator, `/volunteers` has no 
 
 Runtime acceptance created exactly one synthetic row, verified its ID and `created_at`, and confirmed that the Dashboard Volunteer submission count reflected it. No further acceptance submission is required.
 
-## Planned QR poster flow
+## QuickChart Volunteer Signup QR poster flow — PASS WITH NOTES — SYNTHETIC / LOCAL DEMO ONLY
 
-The confirmed intended poster flow is:
+The implemented poster workflow is:
 
 ```text
-Physical poster → QR code → /volunteer → form → submission → staff view
+Physical poster → QuickChart-generated static QR → /volunteer → form → submission → staff view
 ```
 
-The QR poster/signup workflow is confirmed; integration with an external QR-code generation API is not implemented. QR generation remains a candidate for the IT305 academic/course requirement, not a selected provider. Exact API/provider selection is pending and remains separate from the core Volunteer workflow.
+The QuickChart static QR Code API is the selected provider. Its integration is implemented and runtime accepted as **PASS WITH NOTES**; it supports the IT305 academic external API requirement and the existing Volunteer Signup workflow, rather than adding a CES stakeholder business requirement. `/volunteers/poster` provides the printable poster, and server-only `VOLUNTEER_SIGNUP_URL` supplies the signup destination. Technical acceptance locally decoded the QR payload exactly. A second-device scan remains a nonblocking note because no phone-reachable destination and second device were available. This workflow remains **SYNTHETIC / LOCAL DEMO ONLY**; real personal-information collection and public production deployment are not approved.
 
 ## Staff/public boundary and physical work
 
