@@ -30,7 +30,7 @@ This is the single authoritative current project-status tracker. Functional scop
 - Dashboard is a confirmed requirement. Its implementation and integrated browser acceptance are complete, classified **PASS**. Feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed and pushed to `origin/main`; documentation synchronization is complete.
 - Inventory implementation and integrated browser acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` is committed and pushed to `origin/main`; documentation synchronization is complete.
 - Volunteer core workflow implementation is **COMPLETE** and runtime acceptance is **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**. Feature checkpoint `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) and documentation sync `9eccd9ea887d04b80388dcfbc394861d389662a9` (`docs: sync Volunteer completion status`) are committed and pushed to `origin/main`; documentation synchronization is **COMPLETE**. Exactly one controlled synthetic acceptance row remains local evidence; no further Volunteer acceptance submission is required. Real personal-data collection and public production deployment are not approved; `/volunteers` remains unauthenticated/unprotected and its access-control/deployment design remains unresolved. Retention policy is pending CES/school policy confirmation.
-- QuickChart static QR Code API for the Volunteer Signup poster is implemented and runtime accepted **PASS WITH NOTES** for **SYNTHETIC / LOCAL DEMO ONLY**. The exact QR payload decoded locally; phone scan remains a nonblocking note because no second device or confirmed phone-reachable URL was available. Zero database writes occurred. The feature checkpoint is **PENDING**; approved files are staged for review and remain uncommitted.
+- QuickChart static QR Code API for the Volunteer Signup poster is implemented and runtime accepted **PASS WITH NOTES** for **SYNTHETIC / LOCAL DEMO ONLY**. The exact QR payload decoded locally; phone scan remains a nonblocking note because no second device or confirmed phone-reachable URL was available. Zero database writes occurred. Feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`; implementation is **COMPLETE**. Documentation synchronization is **COMPLETE** in this follow-up commit.
 - Authentication is not implemented.
 
 ## Phase 2A complete
@@ -118,7 +118,7 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - `/volunteer`, existing synthetic `/volunteers` row, Dashboard count `1`, Inventory, Goods form, and Cash form rendered successfully without submissions. Database values stayed Goods `1`, Cash `1`, Volunteers `1`, Cash total `125.25`; zero writes occurred.
 - A physical phone scan was not performed because no second device or confirmed phone-reachable URL was available. Future demonstration should configure a phone-reachable `VOLUNTEER_SIGNUP_URL`.
 - During one mistaken repository build, Next.js loaded `.env.local` internally. The file contents were not inspected, printed, modified, copied, or included in evidence. Successful build and live acceptance subsequently used a secret-free temporary copy/process environment. This is an environment note, not a security incident.
-- Feature checkpoint remains **PENDING** until commit is authorized. Proposed message: `feat: integrate QuickChart Volunteer QR poster`.
+- Feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`; implementation is complete. Documentation synchronization is recorded in this follow-up commit.
 
 ## Blockers and stakeholder decisions
 
@@ -127,4 +127,4 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Next action
 
-Review the unstaged and staged QuickChart implementation/documentation checkpoint; commit only after explicit authorization.
+Continue with the next planned CES project task; the QuickChart feature and documentation checkpoints are complete.

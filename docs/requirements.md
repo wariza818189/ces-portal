@@ -63,7 +63,7 @@ Goods with unlike units must not be combined into one summed quantity. Use recor
 
 Teacher guidance for the IT305 — Integrative Programming and Technologies system project calls for meaningful API integration. This is an academic/course requirement, not a CES stakeholder business requirement. Integration should support existing CES functionality and should not add unrelated complexity.
 
-The **QuickChart static QR Code API** at `https://quickchart.io/qr` is implemented for the Volunteer Signup poster workflow. This provider choice is an academic implementation decision that supports an existing CES workflow; it does not add a stakeholder business requirement. Runtime acceptance is **PASS WITH NOTES** under the existing **SYNTHETIC / LOCAL DEMO ONLY** boundary. A phone scan remains unverified because no phone-reachable demo URL and second device were available. The feature checkpoint remains pending review/commit authorization.
+The **QuickChart static QR Code API** at `https://quickchart.io/qr` is implemented for the Volunteer Signup poster workflow. This provider choice is an academic implementation decision that supports an existing CES workflow; it does not add a stakeholder business requirement. Runtime acceptance is **PASS WITH NOTES** under the existing **SYNTHETIC / LOCAL DEMO ONLY** boundary. A phone scan remains unverified because no phone-reachable demo URL and second device were available. Feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`; implementation and documentation synchronization are complete.
 
 # Pending / Future Decisions
 
