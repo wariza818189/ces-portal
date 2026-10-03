@@ -1,0 +1,29 @@
+.page { max-width: 720px; margin: 0 auto; color: #0f172a; }
+.controls { margin-bottom: 24px; font-size: 14px; }
+.controls a { text-decoration: underline; }
+.controls p { margin-top: 8px; }
+.poster { padding: 36px; border: 1px solid #cbd5e1; border-radius: 16px; background: white; text-align: center; }
+.eyebrow { font-size: 20px; font-weight: 700; }
+.poster h1 { margin: 12px 0; font-size: 36px; font-weight: 800; line-height: 1.2; }
+.poster h2 { margin: 20px 0 12px; font-size: 20px; font-weight: 700; }
+.poster p { line-height: 1.6; }
+.qr { display: block; width: 280px; max-width: 100%; height: auto; margin: 24px auto; break-inside: avoid; }
+.url { display: block; overflow-wrap: anywhere; text-decoration: underline; }
+.status { margin: 24px 0; padding: 20px; border: 1px solid #64748b; }
+.warning { margin-top: 28px; padding: 16px; border: 2px solid #92400e; color: #78350f; }
+.warning p { margin-top: 8px; }
+@media (max-width: 480px) {
+  .poster { padding: 20px 12px; }
+  .poster h1 { font-size: 30px; }
+}
+@media print {
+  :global(body):has(.page) { background: white; color: black; }
+  :global(body > div):has(.page) > :global(aside) { display: none !important; }
+  :global(main > div):has(.page) { max-width: none; padding: 0; }
+  .controls { display: none; }
+  .page { max-width: none; }
+  .poster { border: 0; border-radius: 0; padding: 12mm; break-inside: avoid; }
+  .warning { color: black; border-color: black; }
+  .qr { width: 74mm; }
+  .url { color: black; }
+}

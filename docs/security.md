@@ -26,11 +26,12 @@ Staff pages are organized under a route group, but route grouping is not access 
 
 Retention policy pending CES/school policy confirmation. The MVP has no defined retention duration and no approved delete feature. If durable consent evidence or a retention/deletion workflow is later required, it needs a separate requirements and schema/scope decision.
 
-## Future external API integration
+## QuickChart Volunteer QR integration
 
-- API keys and provider credentials must stay server-side.
-- Never expose credentials in Client Components, client bundles, commits, documentation, screenshots, or prompts.
-- Validate external API responses where applicable.
-- When an external API is implemented, use bounded timeouts and handle errors without leaking credentials or sensitive data.
+QuickChart's static QR endpoint is called server-side with JSON POST. It requires no provider account or API key. The only application-derived value sent is the validated exact `VOLUNTEER_SIGNUP_URL`, alongside fixed QR rendering options. No Volunteer names, course/year, contact numbers, activity, acknowledgement, database rows, cookies, authorization headers, or application credentials are sent. Volunteer submission actions do not call the provider.
 
-No external provider or credential has been selected or configured.
+The URL must be nonempty, untrimmed, control-character-free, at most 1024 UTF-8 bytes, absolute `http:` or `https:` with hostname, no credentials, query, or fragment, and exactly `/volunteer` or `/volunteer/`. HTTP and classroom/private/local hostnames and addresses are allowed. Invalid/missing values do not trigger a provider request.
+
+The endpoint is fixed; redirects are rejected. The operation has a five-second timeout and the streamed body is limited to 512 KiB. The server requires a successful PNG response, validates its signature and exact 600×600 single-image dimensions, and decodes pixels using `sharp`. Safe reason codes are logged without the destination or provider error. Only successfully validated images are cached for 24 hours. No image is stored in MySQL or the application filesystem.
+
+The integration remains **SYNTHETIC / LOCAL DEMO ONLY**. Real personal-information collection and public production deployment are not approved. `/volunteers` remains unauthenticated/unprotected; authentication remains outside the MVP. The Volunteer acknowledgement is not durable consent evidence. Retention policy remains pending and no delete workflow is approved.

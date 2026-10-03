@@ -63,7 +63,7 @@ Goods with unlike units must not be combined into one summed quantity. Use recor
 
 Teacher guidance for the IT305 — Integrative Programming and Technologies system project calls for meaningful API integration. This is an academic/course requirement, not a CES stakeholder business requirement. Integration should support existing CES functionality and should not add unrelated complexity.
 
-Candidate: an external QR-code generation service supporting a future Volunteer Signup poster workflow. This candidate is **PENDING**, not a confirmed provider or implementation. Exact provider and implementation approach remain undecided.
+The **QuickChart static QR Code API** at `https://quickchart.io/qr` is implemented for the Volunteer Signup poster workflow. This provider choice is an academic implementation decision that supports an existing CES workflow; it does not add a stakeholder business requirement. Runtime acceptance is **PASS WITH NOTES** under the existing **SYNTHETIC / LOCAL DEMO ONLY** boundary. A phone scan remains unverified because no phone-reachable demo URL and second device were available. The feature checkpoint remains pending review/commit authorization.
 
 # Pending / Future Decisions
 
@@ -71,5 +71,4 @@ Candidate: an external QR-code generation service supporting a future Volunteer 
 - Real-data operation pending an approved access-control/deployment design for the staff submissions route. Staff route grouping does not provide protection; authentication remains outside MVP scope.
 - OSA scope requires a separate stakeholder interview.
 - Define only implementation details not specified by confirmed workflows; do not add unapproved validation or features.
-- Evaluate and select an external QR API/provider only after a scoped plan and approval.
 - Any stakeholder scope change must be formally approved and recorded before implementation.

@@ -1,4 +1,5 @@
 import type { RowDataPacket } from "mysql2";
+import Link from "next/link";
 import { connection } from "next/server";
 import { PageHeader } from "@/components/layout/page-header";
 
@@ -47,6 +48,7 @@ export default async function VolunteersPage() {
   return (
     <div className="space-y-8">
       <PageHeader title="Volunteer Submissions" description="Read-only view of recorded synthetic Volunteer submissions." />
+      <Link href="/volunteers/poster" prefetch={false} className="inline-block font-medium text-sky-800 underline">Volunteer Signup poster</Link>
       <aside className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
         <p className="font-semibold">Classroom/local demonstration using synthetic test information only.</p>
         <p className="mt-2">Intended viewers: CES Staff / CES Coordinator. This route has no authentication or access enforcement. Real personal-information collection and public production deployment are not approved.</p>

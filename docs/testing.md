@@ -89,13 +89,19 @@ Volunteer core workflow implementation is **COMPLETE** and runtime acceptance is
 - Accessibility and responsive-layout review across relevant routes and viewport sizes.
 - Regression checks for existing routes and behavior after each scoped feature.
 
-## Future external API testing — FUTURE / PLANNED
+## QuickChart Volunteer QR API acceptance — PASS WITH NOTES — SYNTHETIC / LOCAL DEMO ONLY
 
-Only after an external API/provider is selected and implementation is approved, test:
+The static QuickChart integration supports the existing Volunteer Signup poster workflow as the IT305 academic requirement. It does not add a CES stakeholder requirement. No Volunteer form was submitted and no database write occurred.
 
-- Successful provider response.
-- Provider error/failure behavior.
-- Malformed or unexpected response validation.
-- Timeout and network failure behavior.
-- Secret non-exposure in browser output, logs, screenshots, and errors.
-- Graceful user-facing fallback.
+- Live provider acceptance made a controlled server-side JSON POST to `https://quickchart.io/qr`. QuickChart returned a PNG that passed content-type, signature, size, dimensions, and strict pixel decoding checks. The poster rendered the QR and the direct fallback URL exactly matched the configured target.
+- Offline local `jsQR` decoding of the returned image produced exactly `http://localhost:3012/volunteer`. No online decoder was used.
+- 126 temporary focused assertions passed for URL configuration validation, mocked provider success/failures, timeout and body cancellation, response bounds/validation, safe reason-code logging, outbound payload, and cache identity/reuse/failure behavior.
+- Browser acceptance passed at desktop and approximately 375px: no horizontal overflow, QR visible, direct URL readable and wrapping, and demo warning legible. Print-media checks retained QR, URL, and warning while hiding poster controls and staff navigation. Physical printing was not performed.
+- Graceful missing-configuration and mocked provider-unavailable pages passed in a browser. Missing/invalid configuration did not call the provider. Volunteer submission actions were not involved.
+- Regression rendering passed for `/volunteer`, `/volunteers` with its existing synthetic row, Dashboard Volunteer Submissions `1`, Inventory, and Goods/Cash donation forms. No form was submitted.
+- Database counts and total before/after were unchanged: Goods `1 → 1`, Cash `1 → 1`, Volunteers `1 → 1`, Cash total `125.25 → 125.25`. Zero database writes.
+- TypeScript (`npx tsc --noEmit --incremental false`), lint, webpack production build, and `git diff --check` passed. A sandbox build attempt failed in the TypeScript subprocess; the successful webpack production build used the established outside-sandbox path.
+- One mistaken build from the repository allowed Next.js to load `.env.local` internally. The file contents were not inspected, printed, modified, copied, or included in evidence. Successful build and live acceptance then used a secret-free temporary copy/process environment. This is an environment note, not a security incident.
+- Physical phone scan remains unverified because no second device or confirmed phone-reachable URL was available. The exact decoded payload establishes technical QR correctness; a future demonstration should set `VOLUNTEER_SIGNUP_URL` to a phone-reachable host.
+
+Acceptance classification: **PASS WITH NOTES**. Scope remains **SYNTHETIC / LOCAL DEMO ONLY**. Real personal-information collection and public production deployment are not approved; `/volunteers` remains unauthenticated/unprotected, acknowledgement is not stored as durable consent evidence, and retention remains pending. Feature checkpoint status is **PENDING** until commit authorization.

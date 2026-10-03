@@ -40,4 +40,14 @@ Next.js server-side code
 → existing application workflow
 ```
 
-QR-code generation for the Volunteer Signup poster workflow is a candidate only. The provider and design are **PENDING**; no external API is currently selected or implemented. Keep provider credentials server-side and validate returned data as appropriate.
+The Volunteer Signup poster uses the QuickChart static QR Code API. The request flow is:
+
+```text
+Server Component
+→ server-only QR helper
+→ QuickChart JSON POST
+→ validated PNG
+→ poster
+```
+
+The helper reads server-only `VOLUNTEER_SIGNUP_URL`, validates it, and sends only that exact destination plus fixed rendering options. It rejects redirects, bounds the operation and response, validates and decodes the PNG with `sharp`, and caches only successful images for 24 hours using `unstable_cache` and a destination/settings digest. The poster has safe missing-configuration and provider-failure states. This flow does not access MySQL or add an internal REST/API layer.
