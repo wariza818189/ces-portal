@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { ApplicationTimeZoneError } from "@/lib/date";
-import { goodsDonationSchema } from "@/lib/validation/donations";
+import { cashDonationSchema, goodsDonationSchema } from "@/lib/validation/donations";
 
 export type GoodsDonationActionState = {
   status: "idle" | "success" | "error";
@@ -130,6 +130,79 @@ export async function createGoodsDonation(
     message: refreshFailed
       ? `${message} Some views could not refresh. The donation is saved; do not resubmit it.`
       : message,
+    fieldErrors: {},
+  };
+}
+
+
+export type CashDonationActionState = {
+  status: "idle" | "success" | "error";
+  message: string;
+  fieldErrors: {
+    amount?: string[];
+    dateReceived?: string[];
+    notes?: string[];
+  };
+};
+
+export async function createCashDonation(
+  _previousState: CashDonationActionState,
+  formData: FormData,
+): Promise<CashDonationActionState> {
+  let parsed: ReturnType<typeof cashDonationSchema.safeParse>;
+  try {
+    parsed = cashDonationSchema.safeParse({
+      amount: formData.get("amount"),
+      dateReceived: formData.get("dateReceived"),
+      notes: formData.get("notes") ?? "",
+    });
+  } catch (error) {
+    logFailure("Cash donation validation unavailable.", error);
+    return {
+      status: "error",
+      message: "We couldn't validate the donation. Please contact CES support.",
+      fieldErrors: {},
+    };
+  }
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: "Please check the highlighted fields.",
+      fieldErrors: z.flattenError(parsed.error).fieldErrors,
+    };
+  }
+
+  const { amount, dateReceived, notes } = parsed.data;
+  try {
+    const [result] = await db.execute<ResultSetHeader>(
+      "INSERT INTO cash_donations (amount, date_received, notes) VALUES (?, ?, ?)",
+      [amount, dateReceived, notes],
+    );
+    if (result.affectedRows !== 1) {
+      throw new Error("Cash donation insert did not affect exactly one row.");
+    }
+  } catch (error) {
+    logFailure("Failed to create cash donation.", error);
+    return {
+      status: "error",
+      message: "We couldn't save the cash donation. Please contact CES support before resubmitting if the save result is uncertain.",
+      fieldErrors: {},
+    };
+  }
+
+  // Persistence is already confirmed. A refresh failure must not invite a duplicate.
+  let refreshFailed = false;
+  try {
+    revalidatePath("/dashboard");
+  } catch (error) {
+    refreshFailed = true;
+    logFailure("Cash donation saved; dashboard refresh failed.", error);
+  }
+  return {
+    status: "success",
+    message: refreshFailed
+      ? "Cash donation saved successfully. The dashboard could not refresh. The donation is saved; do not resubmit it."
+      : "Cash donation saved successfully.",
     fieldErrors: {},
   };
 }

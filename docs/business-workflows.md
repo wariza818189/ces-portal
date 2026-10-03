@@ -8,7 +8,7 @@ Staff receive, segregate, and count donated goods physically, then record catego
 
 ## Cash Donation
 
-Cash Donation is confirmed stakeholder scope and has a separate database table. Physical/event cash is manually counted outside the system; CES Staff records the final counted amount, date received, and notes, and the system stores the record. The confirmed Dashboard includes the running cash donation total. The current page displays a disabled Cash option, so implementation remains incomplete. No additional validation rules are inferred.
+Cash Donation is confirmed stakeholder scope and has a separate database table. Physical/event cash is manually counted outside the system; CES Staff records the final counted amount, date received, and notes, and the system stores the record. The confirmed Dashboard includes the running cash donation total. The Phase 2B form and save action are implemented and runtime accepted as PASS WITH NOTES; its checkpoint is pending. No additional validation rules are inferred.
 
 ## Inventory and expiry
 
