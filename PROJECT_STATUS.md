@@ -7,19 +7,20 @@ This is the single authoritative current project-status tracker. Functional scop
 - **Phase 0 — Planning:** COMPLETE
 - **Phase 1 — Foundation:** COMPLETE
 - **Phase 2A — Goods Donation:** COMPLETE
-- **Phase 2B — Cash Donation:** IMPLEMENTATION AND RUNTIME ACCEPTANCE COMPLETE — CHECKPOINT PENDING
+- **Phase 2B — Cash Donation:** COMPLETE
 
 ## Git state
 
 - **Branch:** `main`
 - **Phase 2A feature checkpoint:** `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), pushed to `origin/main`.
+- **Phase 2B feature checkpoint:** `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), pushed to `origin/main`.
 - **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured.
-- **Working tree:** Phase 2B application changes and acceptance documentation are staged for checkpoint review; the Phase 2B commit has not been created.
+- **Working tree:** Application checkpoint is committed; this documentation correction is a separate follow-up.
 
 ## Current feature status
 
 - Phase 2A Goods Donation implementation and runtime acceptance are complete. Runtime classification was **PASS WITH NOTES**. Its feature checkpoint is committed and pushed.
-- Phase 2B Cash Donation implementation and runtime acceptance are complete, classified **PASS WITH NOTES**. One controlled Cash acceptance row is retained locally; no duplicate was created. Its checkpoint commit remains pending.
+- Phase 2B Cash Donation implementation and runtime acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint is committed and pushed. Exactly one controlled Cash acceptance row remains as local evidence; no duplicate was created, and no further Cash submission is required.
 - Dashboard and Inventory are confirmed requirements but remain placeholders without database-backed records.
 - Volunteer Signup and the read-only Volunteer Submissions view are confirmed requirements but remain placeholders; the QR poster workflow and external API integration are not implemented.
 - Authentication is not implemented.
@@ -37,7 +38,7 @@ This is the single authoritative current project-status tracker. Functional scop
 - Expiry earlier than received remains allowed and is not hard rejected. The optional warning was not observed after a persisted browser submission; non-hard-rejection behavior was supported by browser behavior and focused code inspection. A second persisted submission was not performed for the optional warning.
 - Exactly one controlled Goods Donation acceptance row remains as local acceptance evidence. No further Phase 2A submission is required.
 
-## Phase 2B runtime acceptance complete — checkpoint pending
+## Phase 2B complete
 
 - Runtime acceptance classification: **PASS WITH NOTES**.
 - Goods and Cash tabs passed browser acceptance. Goods remained selected initially and usable; its unsaved draft survived tab switching. No additional Goods record was submitted.
@@ -47,7 +48,7 @@ This is the single authoritative current project-status tracker. Functional scop
 - Counts changed Goods `1 → 1`, Cash `0 → 1`, Volunteers `0 → 0`.
 - Live Cash schema matched the expected columns and enforced positive amount constraint. TypeScript, lint, webpack production build, diff check, and 48 validation harness checks passed.
 - Integrated browser testing used `http://localhost:3001/donations/new` because port `3000` was occupied by an older local server. This is an environment note, not an application defect.
-- Phase 2B implementation is in the five expected source paths and awaits checkpoint review; do not mark it checkpointed until its commit exists.
+- Phase 2B feature checkpoint: `e2ed677d31960f47d28afb4d691b8608f330ce26`, pushed to `origin/main`.
 
 ## Verified checks
 
@@ -55,7 +56,7 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Pending checks
 
-Phase 2B checkpoint review and commit authorization remain pending. No further Cash acceptance submission is required.
+No further Phase 2B acceptance or database submission is required.
 
 ## Blockers and stakeholder decisions
 
@@ -66,4 +67,4 @@ Phase 2B checkpoint review and commit authorization remain pending. No further C
 
 ## Next action
 
-Review and create the Phase 2B checkpoint commit after explicit authorization.
+Proceed to inspection and planning for the next confirmed MVP feature after Phase 2B.

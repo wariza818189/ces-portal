@@ -42,7 +42,7 @@ Phase 2A remains **PASS WITH NOTES**. Its checkpoint, `7a06f983cc9abe302c1ca3226
 - TypeScript, lint, webpack production build, and `git diff --check` passed. No additional database write was performed during this documentation sync.
 - Duplicate safety: code separates INSERT from `/dashboard` revalidation; a refresh failure after persistence still returns saved success and says not to resubmit. Runtime evidence showed one submission, a `+1` Cash count delta, and exactly one matching row.
 
-Phase 2B checkpoint is pending review. No further Cash acceptance write is needed.
+Phase 2B remains **PASS WITH NOTES**. Its checkpoint, `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), has been committed and pushed to `origin/main`. No further Phase 2B database write is required.
 
 # Pending / Planned
 
