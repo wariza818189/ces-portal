@@ -44,6 +44,19 @@ Phase 2A remains **PASS WITH NOTES**. Its checkpoint, `7a06f983cc9abe302c1ca3226
 
 Phase 2B remains **PASS WITH NOTES**. Its checkpoint, `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), has been committed and pushed to `origin/main`. No further Phase 2B database write is required.
 
+## Current Inventory runtime acceptance — PASS WITH NOTES
+
+- Integrated browser acceptance passed. At a 1280px desktop viewport, the Inventory table was usable. At a 375px narrow viewport, the labelled-card layout was usable without horizontal overflow.
+- The current Goods record displayed category Canned, quantity/unit `1.25 pcs`, date received `2026-10-01`, expiry `2026-12-01`, and status Fresh. Application date during acceptance was `2026-10-03`.
+- All and Canned filters showed the row. Rice showed a clear no-match state. Invalid category input safely resolved to All.
+- Practical keyboard operation of the filter passed, with no obvious keyboard trap. No relevant browser console or runtime errors were observed. This was practical accessibility testing, not a full WCAG audit.
+- Goods and Cash forms still rendered during regression checks; neither form was submitted. No runtime correction was required.
+- Database read acceptance passed. Counts remained Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 0`; zero database writes were performed.
+- Expiry helper harness: 27 checks passed. Mocked Inventory renderer harness: 10 checks passed. TypeScript, lint, webpack production build, and `git diff --check` passed.
+- The application used port `3002` because other development servers occupied lower ports. This was an environment note, not an application issue.
+
+Inventory runtime acceptance is **PASS WITH NOTES**. Implementation and acceptance are complete locally, but the Inventory checkpoint is pending. No further database write is required for Inventory acceptance.
+
 # Pending / Planned
 
 ## Other planned coverage
