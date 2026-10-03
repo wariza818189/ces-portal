@@ -6,43 +6,43 @@ This is the single authoritative current project-status tracker. Functional scop
 
 - **Phase 0 — Planning:** COMPLETE
 - **Phase 1 — Foundation:** COMPLETE
-- **Phase 2A — Goods Donation:** IMPLEMENTATION CORRECTIONS COMPLETE; RUNTIME ACCEPTANCE PENDING
+- **Phase 2A — Goods Donation:** RUNTIME ACCEPTANCE COMPLETE — CHECKPOINT PENDING
 
 ## Git state
 
 - **Branch:** `main`
-- **Committed baseline before documentation checkpoint:** `bf4973b` — `chore: establish MySQL database foundation` (`origin/main` at this baseline before the documentation push).
-- **Documentation checkpoint:** Established as its own local commit, `docs: establish CES project documentation foundation`.
-- **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured. The documentation checkpoint has not been pushed.
-- **Working tree:** Separate intentional, uncommitted Phase 2A Goods Donation work remains in `.env.example`, `app/(staff)/donations/new/page.tsx`, `components/donations/goods-form.tsx`, `lib/actions/donations.ts`, `lib/constants.ts`, `lib/date.ts`, and `lib/validation/donations.ts`.
+- **Committed baseline:** `30fe83d239e62fbc20c0fa00ef1bcd02c803c180` on `main`, tracking `origin/main`.
+- **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured. No Phase 2A feature checkpoint has been committed or pushed.
+- **Working tree:** Phase 2A implementation and acceptance documentation are staged for review; the feature checkpoint commit has not been created.
 
 ## Current feature status
 
-- Phase 2A Goods Donation form, server-side validation, parameterized save action, and date handling are implemented as uncommitted work. Do not mark the phase complete before runtime acceptance and its checkpoint.
+- Phase 2A Goods Donation implementation and runtime acceptance are complete. The checkpoint remains pending until its feature commit exists.
 - Cash Donation is a confirmed requirement but is not implemented.
 - Dashboard and Inventory are confirmed requirements but remain placeholders without database-backed records.
 - Volunteer Signup and the read-only Volunteer Submissions view are confirmed requirements but remain placeholders; the QR poster workflow and external API integration are not implemented.
 - Authentication is not implemented.
 
-## Phase 2A runtime acceptance pending
+## Phase 2A runtime acceptance complete — checkpoint pending
 
-- Browser runtime verification.
-- Invalid-input UI testing.
-- Form input-retention verification.
-- Keyboard and accessibility verification.
-- One controlled valid Goods Donation insert.
-- Direct MySQL persistence verification and expected row-count check.
-- Duplicate-safety confirmation.
-- Final diff review.
-- Phase 2A checkpoint commit (requires explicit authorization).
+- Runtime acceptance classification: **PASS WITH NOTES**.
+- Actual integrated browser rendering confirmed the Goods UI is usable and Cash is disabled. No relevant runtime or console errors were observed.
+- Missing required values, quantity `0`, `1.234`, and `100000000`, and a future received date were rejected. Invalid attempts created no rows.
+- A narrow correction retained category and unit after server validation failure. Browser verification after the correction confirmed retention of category, quantity, unit, received date, and expiry date.
+- Practical keyboard and accessibility checks passed; this was not a full WCAG audit.
+- Exactly one controlled valid Goods Donation submission was persisted. The browser showed success, Goods count changed `0 → 1`, Cash remained `0`, Volunteer remained `0`, and exactly one matching row was present with category, quantity `1.25`, unit, received date, expiry date, and `created_at` persisted correctly.
+- Duplicate-safety semantics were confirmed. Success reset was observed in the controlled submission before the retention correction; after that correction, the success path was checked by code inspection rather than another database submission.
+- TypeScript, lint, webpack production build, and `git diff --check` passed. Plain Turbopack `npm run build` encountered an environment-specific local-port `Operation not permitted` restriction; the webpack build passed and this is not classified as an application defect.
+- Expiry earlier than received remains allowed and is not hard rejected. The optional warning was not observed after a persisted browser submission; non-hard-rejection behavior was supported by browser behavior and focused code inspection. A second persisted submission was not performed for the optional warning.
+- The Phase 2A feature checkpoint commit requires explicit authorization.
 
 ## Verified checks
 
-Repository inspection confirmed the branch, HEAD, dirty Phase 2A paths, schema, routes, and implementation structure. This status entry does not claim that lint, build, browser, or database checks passed.
+See [testing](docs/testing.md) for the current runtime acceptance evidence and retained historical pre-migration evidence.
 
 ## Pending checks
 
-All Phase 2A runtime acceptance items above remain pending unless separately recorded with evidence. No browser acceptance is complete.
+The Phase 2A checkpoint commit remains pending. No further Goods Donation submission is needed for the accepted scope.
 
 ## Blockers and stakeholder decisions
 
@@ -53,4 +53,4 @@ All Phase 2A runtime acceptance items above remain pending unless separately rec
 
 ## Next action
 
-After the amended documentation checkpoint is pushed to the configured private `origin/main` with explicit authorization, finish Phase 2A runtime acceptance. Do not jump to Cash Donation before that acceptance is complete.
+Review the staged Phase 2A checkpoint and create its commit only when explicitly authorized. Do not push without explicit authorization. Do not begin Cash Donation before the Phase 2A checkpoint is committed.

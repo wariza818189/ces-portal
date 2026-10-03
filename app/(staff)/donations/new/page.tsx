@@ -1,3 +1,4 @@
+import { GoodsForm } from "@/components/donations/goods-form";
 import { PageHeader } from "@/components/layout/page-header";
 
 export default function AddDonationPage() {
@@ -8,15 +9,32 @@ export default function AddDonationPage() {
         description="Record goods or cash received by CES."
       />
 
-      <section className="rounded-xl border border-sky-100 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">
-          Donation Form
-        </h2>
+      <div className="inline-flex rounded-lg border border-sky-100 bg-white p-1">
+        <span className="rounded-md bg-sky-700 px-4 py-2 text-sm font-semibold text-white">
+          Goods
+        </span>
 
-        <p className="mt-2 text-sm text-slate-600">
-          The goods and cash forms will be added after the database foundation
-          is ready.
-        </p>
+        <span
+          aria-disabled="true"
+          className="px-4 py-2 text-sm font-medium text-slate-400"
+        >
+          Cash
+        </span>
+      </div>
+
+      <section className="max-w-2xl rounded-xl border border-sky-100 bg-white p-5 shadow-sm sm:p-6">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-slate-900">
+            Goods Donation
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-600">
+            Enter the information after the donated goods have been
+            segregated and counted.
+          </p>
+        </div>
+
+        <GoodsForm />
       </section>
     </div>
   );

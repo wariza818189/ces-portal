@@ -12,33 +12,26 @@ The project handoff records successful pre-migration evidence for:
 
 These are historical results from before account migration; they were not rerun during the current documentation pass.
 
-# Verified During Current Documentation / Repository Inspection
+## Current Phase 2A runtime acceptance — PASS WITH NOTES
 
-- Read-only inspection confirmed the branch, HEAD, remote baseline, documentation, App Router paths, schema/database helper, package scripts, and preserved Phase 2A dirty paths.
-- No lint, build, TypeScript check, browser test, validation harness, or database operation was run during this documentation correction pass.
+Runtime acceptance used the integrated browser and the intended local database. One controlled valid Goods Donation row was persisted; no further database write was performed for this documentation sync.
+
+- The actual integrated page rendered, Goods UI was usable, Cash was disabled, and no relevant runtime or console errors were observed.
+- Missing required values, quantity `0`, `1.234`, `100000000`, and a future received date were rejected. Invalid attempts created no rows.
+- A narrow correction fixed category and unit resetting after server validation failure. Browser testing after the correction confirmed retention of category, quantity, unit, received date, and expiry date.
+- Practical keyboard and accessibility checks passed. This was not a full WCAG audit.
+- The single controlled valid submission showed browser success. Goods count changed `0 → 1`; Cash and Volunteer counts remained `0`. Exactly one matching row persisted with the expected category, quantity `1.25` without silent rounding, unit, received date, expiry date, and `created_at`.
+- Duplicate-safety semantics were confirmed. Successful reset was observed during the one valid submission before the retention correction; after that correction, the success path was reviewed by code inspection rather than creating another acceptance row.
+- `npx tsc --noEmit --incremental false`, `npm run lint`, `npm run build -- --webpack`, and `git diff --check` passed.
+- Plain Turbopack `npm run build` encountered an environment-specific local-port `Operation not permitted` restriction. The webpack production build passed; no Phase 2A application defect is inferred from that environment restriction.
+- Expiry earlier than received is allowed and is not hard rejected solely for that relationship. The optional warning was not observed after a persisted browser submission. The non-hard-rejection behavior was supported by browser behavior plus focused code inspection; the warning is optional and does not block acceptance.
+
+The Phase 2A checkpoint commit remains pending and requires explicit authorization. `npm run lint` and `npm run build` are available. `scripts/test-db.mjs` is a database connectivity/row-count check and requires configured local credentials; it is not a UI or migration test. No dedicated unit-test script is currently defined.
 
 # Pending / Planned
 
-## Phase 2A runtime acceptance
-
-Before the Phase 2A checkpoint, complete and record evidence for:
-
-- Localhost browser verification of the Goods donation page and submit flow.
-- Invalid-input UI behavior and server-side rejection.
-- Form input retention after validation/save errors and clearing after success.
-- Keyboard navigation, labels, focus, error announcements, and accessibility behavior.
-- One controlled valid Goods Donation insert against the intended local database.
-- Direct MySQL inspection confirming the persisted row and expected table row-count change.
-- Duplicate-safety confirmation: an uncertain save must not be resubmitted blindly; verify the existing result first.
-- Final diff review before the Phase 2A checkpoint commit (which requires authorization).
-- Phase 2A feature checkpoint commit after acceptance (requires authorization).
-
-`npm run lint` and `npm run build` are available. `scripts/test-db.mjs` is a database connectivity/row-count check and requires configured local credentials; it is not a UI or migration test. No dedicated unit-test script is currently defined.
-
 ## Other planned coverage
 
-- Validation cases for valid and invalid category, quantity greater than zero and at most `99999999.99`, two-decimal precision with no silent rounding, units, dates from `1000-01-01` through `9999-12-31`, future received-date rejection in `Asia/Manila` application time, allowed past expiry dates, and expiry-before-received warning behavior.
-- Database persistence and error-path checks.
 - Browser coverage for confirmed Cash, Inventory, Dashboard, Student Volunteer Signup, and read-only Volunteer Submissions features after implementation.
 - Accessibility and responsive-layout review across relevant routes and viewport sizes.
 - Regression checks for existing routes and behavior after each scoped feature.
