@@ -65,7 +65,7 @@ Inventory runtime acceptance is **PASS WITH NOTES**. Its feature checkpoint, `ed
 - Database counts remained Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 0`; Cash total stayed `125.25`. Zero database writes were performed; no runtime correction was required.
 - The focused formatting, aggregation, empty-result, and malformed-result harness passed 114 checks. TypeScript, lint, webpack production build, and `git diff --check` passed.
 
-Dashboard implementation and runtime acceptance are complete (**PASS**). Its checkpoint remains pending; no further database write is required for Dashboard acceptance.
+Dashboard implementation and runtime acceptance are complete (**PASS**). Its feature checkpoint, `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`), is committed. No further database write is required for Dashboard acceptance.
 
 # Pending / Planned
 

@@ -16,14 +16,15 @@ This is the single authoritative current project-status tracker. Functional scop
 - **Phase 2B feature checkpoint:** `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), pushed to `origin/main`.
 - **Inventory feature checkpoint:** `edc6eeba85bfe057c92159554a8794586ef1f735` (`feat: complete Inventory`), committed and pushed to `origin/main`.
 - **Inventory documentation sync:** `14392656d333569da78333f91006e8b468653327`, committed and pushed to `origin/main`.
+- **Dashboard feature checkpoint:** `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`), committed.
 - **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured.
-- **Working tree:** Phase 2A, Phase 2B, Inventory, and its documentation sync are committed and pushed. Dashboard implementation and runtime acceptance are complete locally; its checkpoint is pending.
+- **Working tree:** Phase 2A, Phase 2B, Inventory, and Dashboard checkpoints are committed; use Git status for current local changes.
 
 ## Current feature status
 
 - Phase 2A Goods Donation implementation and runtime acceptance are complete. Runtime classification was **PASS WITH NOTES**. Its feature checkpoint is committed and pushed.
 - Phase 2B Cash Donation implementation and runtime acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint is committed and pushed. Exactly one controlled Cash acceptance row remains as local evidence; no duplicate was created, and no further Cash submission is required.
-- Dashboard is a confirmed requirement. Its implementation and integrated browser acceptance are complete locally, classified **PASS**, and its checkpoint is pending.
+- Dashboard is a confirmed requirement. Its implementation and integrated browser acceptance are complete, classified **PASS**. Feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed.
 - Inventory implementation and integrated browser acceptance are complete, classified **PASS WITH NOTES**. Its feature checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` is committed and pushed to `origin/main`; documentation synchronization is complete.
 - Volunteer Signup and the read-only Volunteer Submissions view are confirmed requirements but remain placeholders; the QR poster workflow and external API integration are not implemented.
 - Authentication is not implemented.
@@ -76,15 +77,15 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - Inventory runtime acceptance is **PASS WITH NOTES**. Feature checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` (`feat: complete Inventory`) is committed and pushed to `origin/main`. Documentation synchronization is complete.
 - Expected minimal implementation scope: `app/(staff)/inventory/page.tsx` and `lib/expiry.ts`.
 
-## Dashboard runtime acceptance complete — checkpoint pending
+## Dashboard complete
 
-- Read-only Dashboard implementation is complete locally in `app/(staff)/dashboard/page.tsx`. It shows Goods record count, Cash Donation Total, Volunteer submission count, and the Fresh / Expiring soon / Expired Goods summary.
+- Read-only Dashboard implementation is complete in `app/(staff)/dashboard/page.tsx`. It shows Goods record count, Cash Donation Total, Volunteer submission count, and the Fresh / Expiring soon / Expired Goods summary.
 - Runtime acceptance classification: **PASS**. Goods Records `1`, Cash Donation Total `125.25`, Volunteer Submissions `0`, Fresh `1`, Expiring soon `0`, Expired `0`; application date `2026-10-03`. No currency identifier is displayed.
 - Desktop at 1280px and narrow layout at 375px passed with no horizontal overflow. Practical keyboard checks passed, and no relevant browser console/runtime errors were observed.
 - Inventory regression passed. Goods and Cash forms rendered; neither was submitted.
 - Database counts remained Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 0`; Cash total remained `125.25`. Zero database writes were performed and no runtime correction was required.
 - Focused harness: 114 checks passed. TypeScript, lint, webpack production build, and `git diff --check` passed.
-- Dashboard is not checkpointed yet. Expected source scope is `app/(staff)/dashboard/page.tsx` only.
+- Dashboard feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` (`feat: complete Dashboard`) is committed. Expected source scope was `app/(staff)/dashboard/page.tsx` only.
 
 ## Blockers and stakeholder decisions
 
@@ -95,4 +96,4 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Next action
 
-Review and create the Dashboard checkpoint commit after explicit authorization.
+Inspect and plan the next confirmed MVP feature.
