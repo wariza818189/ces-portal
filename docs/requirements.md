@@ -15,7 +15,7 @@ CES needs an organized way to record donation and volunteer information. The por
 
 ## Confirmed MVP modules and workflows
 
-- **Goods Donation:** staff record goods after they have been segregated and counted. The current Phase 2A form captures category, quantity, unit, date received, and expiry date. Its runtime acceptance remains pending.
+- **Goods Donation:** staff record goods after they have been segregated and counted. The completed Phase 2A form captures category, quantity, unit, date received, and expiry date; runtime acceptance is complete and classified PASS WITH NOTES.
 - **Cash Donation:** confirmed workflow is physical/event cash collection, manual cash/coin counting outside the system, staff entry of final counted amount, date received, and notes, then system storage. The Dashboard includes a running cash donation total. The current Cash option is disabled; implementation is incomplete. No additional Cash validation rules are asserted here.
 - **Inventory:** CES Staff view recorded goods, filter by category, search usefully where appropriate, sort by expiry date soonest first, and clearly see expiry status. The current page is a placeholder; implementation is incomplete.
 - **Dashboard:** show goods record count, running cash donation total, volunteer submission count, and expiry summary of fresh, expiring soon, and expired. The current page is a placeholder; implementation is incomplete.
@@ -35,7 +35,7 @@ The Phase 2A implementation currently captures:
 - Date received cannot be in the future according to the application time zone (`Asia/Manila` by default, configurable with `APP_TIME_ZONE`).
 - Past expiry dates are allowed. An expiry date earlier than the received date is accepted with a warning; the record is not rejected for that condition.
 
-These Goods fields and rules are part of the implementation currently under Phase 2A runtime acceptance. Confirmed requirements elsewhere in this document remain in scope even where implementation is incomplete; only items explicitly labeled pending are unresolved.
+These Goods fields and rules are implemented and runtime accepted in Phase 2A. Confirmed requirements elsewhere in this document remain in scope even where implementation is incomplete; only items explicitly labeled pending are unresolved.
 
 ## Date and expiry rules
 

@@ -4,7 +4,7 @@ These descriptions separate intended stakeholder workflows from current implemen
 
 ## Goods Donation
 
-Staff receive, segregate, and count donated goods physically, then record category, quantity, unit, date received, and expiry date in the Goods form. The Phase 2A form and save action are implemented as uncommitted work; Phase 2A runtime acceptance is pending. Expiry earlier than date received currently produces a warning while allowing the record.
+Staff receive, segregate, and count donated goods physically, then record category, quantity, unit, date received, and expiry date in the Goods form. The Phase 2A form and save action are implemented, runtime accepted as PASS WITH NOTES, and checkpointed. Expiry earlier than date received remains allowed; the optional warning is not required for acceptance.
 
 ## Cash Donation
 

@@ -6,24 +6,24 @@ This is the single authoritative current project-status tracker. Functional scop
 
 - **Phase 0 — Planning:** COMPLETE
 - **Phase 1 — Foundation:** COMPLETE
-- **Phase 2A — Goods Donation:** RUNTIME ACCEPTANCE COMPLETE — CHECKPOINT PENDING
+- **Phase 2A — Goods Donation:** COMPLETE
 
 ## Git state
 
 - **Branch:** `main`
-- **Committed baseline:** `30fe83d239e62fbc20c0fa00ef1bcd02c803c180` on `main`, tracking `origin/main`.
-- **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured. No Phase 2A feature checkpoint has been committed or pushed.
-- **Working tree:** Phase 2A implementation and acceptance documentation are staged for review; the feature checkpoint commit has not been created.
+- **Phase 2A feature checkpoint:** `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), pushed to `origin/main`.
+- **GitHub:** Private repository `wariza818189/ces-portal`; remote `origin` is configured.
+- **Working tree:** Clean at the start of the documentation sync; no application changes were made for this sync.
 
 ## Current feature status
 
-- Phase 2A Goods Donation implementation and runtime acceptance are complete. The checkpoint remains pending until its feature commit exists.
+- Phase 2A Goods Donation implementation and runtime acceptance are complete. Runtime classification was **PASS WITH NOTES**. Its feature checkpoint is committed and pushed.
 - Cash Donation is a confirmed requirement but is not implemented.
 - Dashboard and Inventory are confirmed requirements but remain placeholders without database-backed records.
 - Volunteer Signup and the read-only Volunteer Submissions view are confirmed requirements but remain placeholders; the QR poster workflow and external API integration are not implemented.
 - Authentication is not implemented.
 
-## Phase 2A runtime acceptance complete — checkpoint pending
+## Phase 2A complete
 
 - Runtime acceptance classification: **PASS WITH NOTES**.
 - Actual integrated browser rendering confirmed the Goods UI is usable and Cash is disabled. No relevant runtime or console errors were observed.
@@ -34,7 +34,7 @@ This is the single authoritative current project-status tracker. Functional scop
 - Duplicate-safety semantics were confirmed. Success reset was observed in the controlled submission before the retention correction; after that correction, the success path was checked by code inspection rather than another database submission.
 - TypeScript, lint, webpack production build, and `git diff --check` passed. Plain Turbopack `npm run build` encountered an environment-specific local-port `Operation not permitted` restriction; the webpack build passed and this is not classified as an application defect.
 - Expiry earlier than received remains allowed and is not hard rejected. The optional warning was not observed after a persisted browser submission; non-hard-rejection behavior was supported by browser behavior and focused code inspection. A second persisted submission was not performed for the optional warning.
-- The Phase 2A feature checkpoint commit requires explicit authorization.
+- Exactly one controlled Goods Donation acceptance row remains as local acceptance evidence. No further Phase 2A submission is required.
 
 ## Verified checks
 
@@ -42,7 +42,7 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 
 ## Pending checks
 
-The Phase 2A checkpoint commit remains pending. No further Goods Donation submission is needed for the accepted scope.
+No further Phase 2A runtime acceptance or database submission is required.
 
 ## Blockers and stakeholder decisions
 
@@ -53,4 +53,4 @@ The Phase 2A checkpoint commit remains pending. No further Goods Donation submis
 
 ## Next action
 
-Review the staged Phase 2A checkpoint and create its commit only when explicitly authorized. Do not push without explicit authorization. Do not begin Cash Donation before the Phase 2A checkpoint is committed.
+Proceed to Phase 2B — Cash Donation implementation after review of the approved Phase 2B plan.
