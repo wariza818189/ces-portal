@@ -57,11 +57,21 @@ Phase 2B remains **PASS WITH NOTES**. Its checkpoint, `e2ed677d31960f47d28afb4d6
 
 Inventory runtime acceptance is **PASS WITH NOTES**. Its feature checkpoint, `edc6eeba85bfe057c92159554a8794586ef1f735` (`feat: complete Inventory`), is committed and pushed to `origin/main`. Documentation synchronization is complete. No further database write is required for Inventory acceptance.
 
+## Current Dashboard runtime acceptance — PASS
+
+- Dashboard displayed Goods Records `1`, Cash Donation Total `125.25`, Volunteer Submissions `0`, Fresh `1`, Expiring soon `0`, and Expired `0`. Application date was `2026-10-03`; no currency identifier was shown.
+- Desktop at 1280px and narrow at 375px passed without horizontal overflow. Practical keyboard checks passed; no relevant browser console/runtime errors were observed.
+- Inventory regression passed. Goods and Cash forms rendered, and neither was submitted.
+- Database counts remained Goods `1 → 1`, Cash `1 → 1`, Volunteers `0 → 0`; Cash total stayed `125.25`. Zero database writes were performed; no runtime correction was required.
+- The focused formatting, aggregation, empty-result, and malformed-result harness passed 114 checks. TypeScript, lint, webpack production build, and `git diff --check` passed.
+
+Dashboard implementation and runtime acceptance are complete (**PASS**). Its checkpoint remains pending; no further database write is required for Dashboard acceptance.
+
 # Pending / Planned
 
 ## Other planned coverage
 
-- Browser coverage for confirmed Dashboard, Student Volunteer Signup, and read-only Volunteer Submissions features after implementation.
+- Browser coverage for confirmed Student Volunteer Signup and read-only Volunteer Submissions features after implementation.
 - Accessibility and responsive-layout review across relevant routes and viewport sizes.
 - Regression checks for existing routes and behavior after each scoped feature.
 
