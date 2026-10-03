@@ -19,8 +19,8 @@ CES needs an organized way to record donation and volunteer information. The por
 - **Cash Donation:** confirmed workflow is physical/event cash collection, manual cash/coin counting outside the system, staff entry of final counted amount, date received, and notes, then system storage. The Dashboard includes a running cash donation total. The Phase 2B form and save action are implemented and runtime accepted as PASS WITH NOTES; its checkpoint is committed and pushed. No additional Cash validation rules are asserted here.
 - **Inventory:** CES Staff view recorded goods, filter by category, search usefully where appropriate, sort by expiry date soonest first, and clearly see expiry status. Read-only implementation and runtime acceptance are complete (**PASS WITH NOTES**); checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` is committed and pushed to `origin/main`. No free-text search was appropriate for the confirmed Goods fields in this implementation.
 - **Dashboard:** show goods record count, running cash donation total, volunteer submission count, and expiry summary of fresh, expiring soon, and expired. Read-only implementation and runtime acceptance are complete (**PASS**); feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed and pushed to `origin/main`. Dashboard documentation sync `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` is committed and pushed; documentation synchronization is complete. The Cash total is displayed without a currency identifier because currency has not been explicitly defined. No further Dashboard acceptance write is required.
-- **Volunteer Signup:** Student Volunteer uses public `/volunteer` to submit `full_name`, `course_year`, `contact_number`, and `activity`; the submission has `created_at`. The current route is informational placeholder content; implementation is incomplete. The form is intended to be mobile-friendly for poster QR scans. No login is required by the stakeholder-approved MVP.
-- **Volunteer Submissions:** CES Staff use `/volunteers` to view submissions in a read-only view. The current staff page is a placeholder; implementation is incomplete.
+- **Volunteer Signup:** Student Volunteer uses public `/volunteer` to submit `full_name`, `course_year`, `contact_number`, and `activity`; the submission has `created_at`. The form is intended to be mobile-friendly for poster QR scans. Core workflow implementation is authorized for a classroom/local demonstration with synthetic Volunteer data only. This is not approval for real personal-information collection or public production deployment. No login is required by the stakeholder-approved MVP.
+- **Volunteer Submissions:** CES Staff / CES Coordinator use `/volunteers` to view submissions in a read-only view. The staff route has no authentication/access enforcement and is suitable only within the approved local/synthetic demonstration boundary. Real-data operation requires an approved access-control/deployment design.
 
 These are confirmed stakeholder requirements; their confirmation does not imply their implementation is complete.
 
@@ -65,7 +65,8 @@ Candidate: an external QR-code generation service supporting a future Volunteer 
 
 # Pending / Future Decisions
 
-- Resolve consent/privacy details with stakeholders before collecting volunteer information.
+- Retention policy pending CES/school policy confirmation. No retention duration or software deletion workflow is defined in this MVP.
+- Real-data operation pending an approved access-control/deployment design for the staff submissions route. Staff route grouping does not provide protection; authentication remains outside MVP scope.
 - OSA scope requires a separate stakeholder interview.
 - Define only implementation details not specified by confirmed workflows; do not add unapproved validation or features.
 - Evaluate and select an external QR API/provider only after a scoped plan and approval.

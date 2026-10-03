@@ -14,9 +14,17 @@ Database access stays server-side in `mysql2/promise`; browser components must n
 
 The Compose MySQL port is bound to `127.0.0.1:3307`, limiting host exposure to loopback for local development. Do not broaden the binding or alter Docker/database state without explicit scope and review.
 
-## Public and staff routes
+## Volunteer collection and access boundary
 
-The `/volunteer` route is intended to be public, but it currently shows placeholder content and has no implemented submission flow. Staff pages are organized under a staff route group, but route grouping is not access control. Authentication is currently absent; staff routes must not be treated as protected. Authentication and access-control review are required before real production deployment.
+Volunteer core workflow may be implemented and runtime-tested for a classroom/local demonstration using synthetic data only. This does not approve collection of real personal information or public production deployment.
+
+The public `/volunteer` form must show this approved notice before submission: “The information submitted in this form will be used by Community Extension Services to register student volunteers and contact them regarding the CES activity they selected.” Require acknowledgement with: “I understand that the information I provide will be used for CES volunteer registration and activity coordination.” The acknowledgement gates submission only. The current schema has no consent-evidence field; no schema change to store consent evidence is approved.
+
+Contact numbers may be used for communication related to the selected CES activity and necessary activity coordination. Do not define unrelated promotional use or sharing outside authorized CES personnel. Volunteer Submissions are intended for CES Staff / CES Coordinator.
+
+Staff pages are organized under a route group, but route grouping is not access control. Authentication is currently absent; `/volunteers` must not be described or treated as protected. It may be used only within the approved local/synthetic demonstration boundary. Real-data operation and production deployment require an approved access-control/deployment design. Authentication remains outside the current MVP and must not be added without a scope decision.
+
+Retention policy pending CES/school policy confirmation. The MVP has no defined retention duration and no approved delete feature. If durable consent evidence or a retention/deletion workflow is later required, it needs a separate requirements and schema/scope decision.
 
 ## Future external API integration
 

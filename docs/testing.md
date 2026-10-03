@@ -69,6 +69,10 @@ Dashboard implementation and runtime acceptance are complete (**PASS**). Its fea
 
 # Pending / Planned
 
+## Volunteer acceptance boundary — PLANNED
+
+Volunteer implementation and runtime acceptance are authorized only for a classroom/local demonstration with synthetic data. Do not use real personal information. The approved form notice and acknowledgement must be verified; acknowledgement gates submission but is not persisted as consent evidence. No test evidence is recorded here because Volunteer implementation and acceptance have not yet occurred. Real-data operation remains pending an approved access-control/deployment design for `/volunteers`.
+
 ## Other planned coverage
 
 - Browser coverage for confirmed Student Volunteer Signup and read-only Volunteer Submissions features after implementation.

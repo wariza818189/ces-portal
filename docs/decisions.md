@@ -18,6 +18,11 @@ Concise record of current technical and scope decisions. Pending items are label
 | Shared expiry classification | Inventory and Dashboard derive expired/expiring soon/fresh from `expiry_date` using one reusable helper; do not duplicate logic. |
 | No mixed-unit Goods total | Goods units are not additive without approved conversion rules; use record counts for combined summaries. |
 | Goods quantity `DECIMAL(10,2)` | Matches schema precision and validation limit; reject excess precision rather than silently rounding. |
+| Volunteer demo deployment boundary | Core Volunteer workflow may be implemented and runtime-tested using synthetic data in a classroom/local demonstration only. Real personal-data collection and production deployment require an approved access-control/deployment design for `/volunteers`; staff route grouping is not protection. Authentication remains outside MVP scope. |
+| Volunteer notice and acknowledgement | Show the approved privacy/use notice before public form submission and require the approved acknowledgement. It gates submission only; consent evidence is not stored and no schema change for storage is approved. |
+| Volunteer field validation | Require all four fields nonblank after trimming; trim only surrounding whitespace, preserve internal text, enforce schema maxima (100/100/30/150) without truncation, and keep contact number a string. No phone regex, minimum, options list, capitalization, or normalization rules. |
+| Volunteer contact use and viewers | Contact number is for communication about the selected CES activity and necessary coordination. Intended viewers: CES Staff / CES Coordinator. No unrelated promotion or sharing beyond authorized CES personnel is defined. |
+| Volunteer retention | Retention policy pending CES/school policy confirmation. No duration or delete feature is approved for the MVP. |
 
 ## External API integration for IT305
 

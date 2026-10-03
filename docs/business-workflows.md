@@ -20,7 +20,13 @@ The confirmed Dashboard metrics are goods record count, running cash donation to
 
 ## Volunteer Signup and submissions
 
-The confirmed public flow uses `/volunteer`: Student Volunteer enters `full_name`, `course_year`, `contact_number`, and `activity`; the system stores the submission with `created_at`; CES Staff later views it at `/volunteers` in a read-only view. The form is intended to be mobile-friendly for a poster QR scan. The public route and staff view are currently placeholders; form submission and database-backed viewing are incomplete. The MVP does not require login for the public flow.
+The confirmed public flow uses `/volunteer`: Student Volunteer enters `full_name`, `course_year`, `contact_number`, and `activity`; the system stores the submission with `created_at`; CES Staff / CES Coordinator later views it at `/volunteers` in a read-only view. The form is intended to be mobile-friendly for a poster QR scan. Core workflow implementation and runtime testing are approved for a classroom/local demonstration using synthetic data only. Real personal-information collection and public production deployment are not approved.
+
+Before submission, the public form must display: “The information submitted in this form will be used by Community Extension Services to register student volunteers and contact them regarding the CES activity they selected.” Submission requires acknowledgement: “I understand that the information I provide will be used for CES volunteer registration and activity coordination.” This acknowledgement gates submission only; the current schema does not store consent evidence, and no such schema change is approved.
+
+Contact numbers are used for communication related to the selected CES activity and necessary activity coordination. No unrelated promotional use or sharing beyond authorized CES personnel is defined. All four fields are required and nonblank after trimming; surrounding whitespace is trimmed and meaningful internal text preserved. Enforce the existing schema limits (100, 100, 30, and 150 characters) without truncation. Keep contact numbers as strings, preserving leading zeros. No phone format, minimum length, course/activity list, capitalization, or phone normalization rule is defined.
+
+Although intended viewers are CES Staff / CES Coordinator, `/volunteers` has no authentication/access enforcement and is not protected by its staff route group. It is suitable only for the approved local/synthetic demonstration boundary. Real-data operation requires an approved access-control/deployment design. Authentication remains outside the MVP. Retention policy pending CES/school policy confirmation; no deletion feature is approved.
 
 ## Planned QR poster flow
 
@@ -30,7 +36,7 @@ The confirmed intended poster flow is:
 Physical poster → QR code → /volunteer → form → submission → staff view
 ```
 
-The QR poster/signup workflow is confirmed; integration with an external QR-code generation API is not implemented. QR generation remains a candidate for the IT305 academic/course requirement, not a selected provider. Exact API/provider selection is pending.
+The QR poster/signup workflow is confirmed; integration with an external QR-code generation API is not implemented. QR generation remains a candidate for the IT305 academic/course requirement, not a selected provider. Exact API/provider selection is pending and remains separate from the core Volunteer workflow.
 
 ## Staff/public boundary and physical work
 
