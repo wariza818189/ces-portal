@@ -135,6 +135,15 @@ See [testing](docs/testing.md) for the current runtime acceptance evidence and r
 - IT305 teacher guidance calls for meaningful external API integration. This academic/course requirement is separate from CES stakeholder functional requirements and should support existing CES functionality rather than add unrelated scope. The QuickChart Volunteer Signup poster integration is implemented and runtime accepted as recorded above.
 - Any additional unresolved stakeholder questions should be recorded in [requirements](docs/requirements.md), not inferred from schema or placeholder pages.
 
+## POST-MVP ACADEMIC / DEMO ENHANCEMENT — OpenStreetMap venue
+
+- The closed MVP history above remains unchanged. The optional `/volunteer` venue map is a separate academic/demo enhancement, accepted **PASS WITH NOTES**. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` (`feat: add OpenStreetMap volunteer venue map`) is pushed to `origin/main`; documentation is synchronized in the follow-up commit.
+- OpenStreetMap was selected for one configured public CES/demo venue. The accepted venue is **Assumption College of Davao**, marker `7.08819, 125.62420`. A Google Maps implementation was abandoned before commit because its Cloud/billing setup was unsuitable for this classroom enhancement; no Google Maps source entered Git history. The current iframe needs no API key or billing account.
+- The map is driven only by venue name and coordinates. It is independent of Volunteer Activity and sends no Volunteer PII to map URLs. No database, schema, Volunteer persistence, package, or QuickChart change was made. The browser loads OpenStreetMap as a third-party service and shows attribution.
+- Operator-confirmed live Firefox evidence: the configured venue heading and text, tiles, campus-area marker, larger-map link, attribution, and Volunteer form appeared together. Prior responsive evidence passed at 1280px and 375px without horizontal overflow; map height is 320px. Codex verified source and local rendered HTML, not a new browser visual inspection.
+- Implementation acceptance recorded 367 focused helper/component assertions and 140 technical OSM browser assertions. This finalization passed TypeScript, lint, isolated elevated webpack build, and diff checks. All six routes returned HTTP 200; the poster was checked with QR generation disabled. Database read-only before/after remained Goods `1 → 1`, Cash `1 → 1`, Volunteers `1 → 1`, Cash total `125.25 → 125.25`; **zero writes**.
+- The enhancement does not make the application production-ready. `/volunteers` remains unprotected; real personal-data deployment is unapproved, authentication is outside MVP, retention is unresolved, acknowledgement is not durable consent evidence, and no delete workflow exists.
+
 ## Next action
 
-Prepare the system for classroom demonstration and academic submission. For a mobile QR demonstration, configure `VOLUNTEER_SIGNUP_URL` to a phone-reachable host and perform the optional second-device scan.
+Proceed with the UI/UX redesign while preserving the **SYNTHETIC / LOCAL DEMO ONLY** boundary. For a mobile QR demonstration, configure `VOLUNTEER_SIGNUP_URL` to a phone-reachable host and perform the optional second-device scan.

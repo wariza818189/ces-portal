@@ -65,6 +65,10 @@ Teacher guidance for the IT305 — Integrative Programming and Technologies syst
 
 The **QuickChart static QR Code API** at `https://quickchart.io/qr` is implemented for the Volunteer Signup poster workflow. This provider choice is an academic implementation decision that supports an existing CES workflow; it does not add a stakeholder business requirement. Runtime acceptance is **PASS WITH NOTES** under the existing **SYNTHETIC / LOCAL DEMO ONLY** boundary. A phone scan remains unverified because no phone-reachable demo URL and second device were available. Feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`; implementation and documentation synchronization are complete.
 
+## POST-MVP ACADEMIC / DEMO ENHANCEMENT — configured venue map
+
+The accepted classroom enhancement shows one configured public CES/demo venue on `/volunteer`, currently **Assumption College of Davao**, using OpenStreetMap. It is independent of the Volunteer Activity field and adds no Volunteer data collection or database/schema change. This is separate from stakeholder-confirmed MVP scope and from the QuickChart external API integration. The map is a third-party browser iframe integration and requires no API key or billing account. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed and acceptance is **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**.
+
 # Pending / Future Decisions
 
 - Retention policy pending CES/school policy confirmation. No retention duration or software deletion workflow is defined in this MVP.

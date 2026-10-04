@@ -43,3 +43,7 @@ The QuickChart static QR Code API is the selected provider. Its integration is i
 ## Staff/public boundary and physical work
 
 Staff route group pages are for CES Staff record entry and read-only volunteer submission viewing; the public route group is for Student Volunteer signup. Login/authentication, roles, approvals, and other unapproved workflows are outside the current MVP. Physical sorting, counting, storing, and distributing donations happen outside the portal; the system supports record-keeping only.
+
+## POST-MVP ACADEMIC / DEMO ENHANCEMENT — venue display
+
+The public Volunteer Signup page shows one configured CES/demo venue, currently **Assumption College of Davao**, above the existing form. Visitors can view the OpenStreetMap iframe or open the larger map. The venue does not change when a visitor enters Activity, and no form value is passed to OpenStreetMap. This is a classroom/demo aid, not a new signup or assignment workflow. The existing **SYNTHETIC / LOCAL DEMO ONLY** boundary remains in force.

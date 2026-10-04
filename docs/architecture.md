@@ -51,3 +51,9 @@ Server Component
 ```
 
 The helper reads server-only `VOLUNTEER_SIGNUP_URL`, validates it, and sends only that exact destination plus fixed rendering options. It rejects redirects, bounds the operation and response, validates and decodes the PNG with `sharp`, and caches only successful images for 24 hours using `unstable_cache` and a destination/settings digest. The poster has safe missing-configuration and provider-failure states. This flow does not access MySQL or add an internal REST/API layer.
+
+## POST-MVP ACADEMIC / DEMO ENHANCEMENT — OpenStreetMap
+
+The `/volunteer` Server Component reads one public venue name and decimal coordinates from `CES_MAP_*` runtime configuration. A server-only helper validates them and builds an HTTPS `www.openstreetmap.org/export/embed.html` URL with `bbox`, `layer=mapnik`, and marker, plus a larger-map link using the same marker. The browser loads the OpenStreetMap iframe and displays attribution. No Volunteer form field or database value enters either URL; there is no schema or persistence change. No API key or billing account is needed.
+
+These are two distinct external-service patterns: **QuickChart external API integration** is `server → QuickChart API → PNG`; **OpenStreetMap third-party map integration** is `browser → OpenStreetMap iframe → interactive map`. Google Maps was abandoned before commit because its Cloud/billing setup was unsuitable; no Google Maps source entered Git history. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed.

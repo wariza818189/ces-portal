@@ -33,3 +33,9 @@ Teacher guidance calls for meaningful API integration in the IT305 system projec
 QuickChart static QR Code API supports the existing Volunteer Signup poster workflow. This is an academic integration decision, not a new CES stakeholder business requirement. The implementation and runtime acceptance are complete under **SYNTHETIC / LOCAL DEMO ONLY**; feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`.
 
 | QuickChart static Volunteer QR | Use `https://quickchart.io/qr` with a server-side JSON POST; static PNG rather than dynamic QR or SVG; no provider account or API key; fixed renderer settings; reject redirects; no retry; bounded five-second operation and 512 KiB response; strictly validate/decode via direct `sharp` dependency; cache successful QR results for 24 hours with `unstable_cache` under the current non-Cache-Components architecture; read the exact validated destination from server-only `VOLUNTEER_SIGNUP_URL`; show the direct link when provider generation is unavailable. This flow sends no Volunteer personal data and does not use the database. |
+
+## POST-MVP ACADEMIC / DEMO ENHANCEMENT — venue-map decision
+
+| Decision | Rationale and boundary |
+|---|---|
+| OpenStreetMap third-party map integration | Show one configured public CES/demo venue on `/volunteer` through an HTTPS OpenStreetMap browser iframe with attribution and larger-map link. Accepted venue: Assumption College of Davao. The venue is independent of Volunteer Activity and sends no Volunteer PII. No API key, billing, database/schema, or persistence change. Google Maps was abandoned before commit because its Cloud/billing setup was unsuitable for this classroom enhancement; no Google Maps source entered Git history. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed; acceptance **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**. |

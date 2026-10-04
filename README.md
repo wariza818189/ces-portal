@@ -62,3 +62,7 @@ Git checkpoints preserve completed work; inspect branch, HEAD, and working-tree 
 - [Agent instructions](AGENTS.md)
 
 This is a school mini-project for IT305, not a claim of a production-ready CES service. Authentication and real-production readiness are not established.
+
+## POST-MVP ACADEMIC / DEMO ENHANCEMENT — venue map
+
+The public `/volunteer` page displays one configured CES/demo venue in an OpenStreetMap iframe. The accepted local venue is **Assumption College of Davao**. Set `CES_MAP_VENUE_NAME`, `CES_MAP_LATITUDE`, and `CES_MAP_LONGITUDE` in local runtime configuration and restart the app; `.env.example` documents the values and limits. The map is independent of the Volunteer Activity field. OpenStreetMap loads in the visitor's browser and attribution appears beside it. This design requires no API key or billing account. The feature checkpoint is `104f187dd653d76b9175f4673b0208c23eb05a83`, pushed to `origin/main`, and acceptance is **PASS WITH NOTES**. It remains **SYNTHETIC / LOCAL DEMO ONLY**.
