@@ -1,29 +1,76 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7fbff;
-  --foreground: #172033;
+  --ces-background: var(--color-slate-50);
+  --ces-surface: #fff;
+  --ces-foreground: var(--color-slate-900);
+  --ces-muted: var(--color-slate-600);
+  --ces-border: var(--color-slate-200);
+  --ces-input-border: var(--color-slate-400);
+  --ces-primary: var(--color-blue-900);
+  --ces-primary-hover: var(--color-blue-950);
+  --ces-focus: var(--color-blue-700);
+  --ces-active-surface: var(--color-blue-50);
+  --ces-hover-surface: var(--color-slate-100);
+  --ces-success: var(--color-green-800);
+  --ces-success-surface: var(--color-green-50);
+  --ces-success-border: var(--color-green-200);
+  --ces-warning: var(--color-amber-900);
+  --ces-warning-surface: var(--color-amber-50);
+  --ces-warning-border: var(--color-amber-200);
+  --ces-error: var(--color-red-800);
+  --ces-error-surface: var(--color-red-50);
+  --ces-error-border: var(--color-red-200);
+  --ces-info: var(--color-blue-900);
+  --ces-info-surface: var(--color-blue-50);
+  --ces-info-border: var(--color-blue-200);
 }
 
-* {
-  box-sizing: border-box;
+@theme inline {
+  --color-app-background: var(--ces-background);
+  --color-surface: var(--ces-surface);
+  --color-foreground: var(--ces-foreground);
+  --color-muted-foreground: var(--ces-muted);
+  --color-border: var(--ces-border);
+  --color-input-border: var(--ces-input-border);
+  --color-primary: var(--ces-primary);
+  --color-primary-hover: var(--ces-primary-hover);
+  --color-focus: var(--ces-focus);
+  --color-active-surface: var(--ces-active-surface);
+  --color-hover-surface: var(--ces-hover-surface);
+  --color-success: var(--ces-success);
+  --color-success-surface: var(--ces-success-surface);
+  --color-success-border: var(--ces-success-border);
+  --color-warning: var(--ces-warning);
+  --color-warning-surface: var(--ces-warning-surface);
+  --color-warning-border: var(--ces-warning-border);
+  --color-error: var(--ces-error);
+  --color-error-surface: var(--ces-error-surface);
+  --color-error-border: var(--ces-error-border);
+  --color-info: var(--ces-info);
+  --color-info-surface: var(--ces-info-surface);
+  --color-info-border: var(--ces-info-border);
 }
 
-html {
-  background: var(--background);
-}
+@layer base {
+  html {
+    background: var(--ces-background);
+  }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--ces-background);
+    color: var(--ces-foreground);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
+  /* Tailwind Preflight already inherits control fonts in the base layer. */
+  :focus-visible {
+    outline: 2px solid var(--ces-focus);
+    outline-offset: 2px;
+  }
 }

@@ -18,8 +18,9 @@
 }
 @media print {
   :global(body):has(.page) { background: white; color: black; }
-  :global(body > div):has(.page) > :global(aside) { display: none !important; }
-  :global(main > div):has(.page) { max-width: none; padding: 0; }
+  :global([data-staff-shell]):has(.page) { display: block; min-height: 0; }
+  :global(body):has(.page) :global([data-staff-chrome]) { display: none !important; }
+  :global([data-page-container]):has(.page) { max-width: none; padding: 0; }
   .controls { display: none; }
   .page { max-width: none; }
   .poster { border: 0; border-radius: 0; padding: 12mm; break-inside: avoid; }

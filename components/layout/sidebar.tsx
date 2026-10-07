@@ -1,53 +1,22 @@
 import Link from "next/link";
-
-const navigation = [
-  {
-    href: "/dashboard",
-    label: "Dashboard",
-  },
-  {
-    href: "/donations/new",
-    label: "Add Donation",
-  },
-  {
-    href: "/inventory",
-    label: "Inventory",
-  },
-  {
-    href: "/volunteers",
-    label: "Volunteers",
-  },
-];
+import { StaffNavigation } from "@/components/layout/staff-navigation";
 
 export function Sidebar() {
   return (
-    <aside className="border-b border-sky-100 bg-white lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r">
-      <div className="p-5 lg:p-6">
+    <aside data-staff-chrome className="border-b border-border bg-surface lg:sticky lg:top-0 lg:h-dvh lg:w-60 lg:shrink-0 lg:self-start lg:overflow-y-auto lg:border-b-0 lg:border-r">
+      <div className="p-4 sm:p-6">
         <Link
           href="/dashboard"
-          className="inline-block text-xl font-bold text-sky-700"
+          className="inline-flex min-h-11 items-center rounded text-xl font-bold text-primary"
         >
           CES Portal
         </Link>
 
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="text-sm leading-5 text-muted-foreground">
           Community Extension Services
         </p>
 
-        <nav
-          aria-label="Staff navigation"
-          className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-1"
-        >
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition hover:bg-sky-50 hover:text-sky-800"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <StaffNavigation />
       </div>
     </aside>
   );
