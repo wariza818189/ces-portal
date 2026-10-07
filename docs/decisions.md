@@ -39,3 +39,9 @@ QuickChart static QR Code API supports the existing Volunteer Signup poster work
 | Decision | Rationale and boundary |
 |---|---|
 | OpenStreetMap third-party map integration | Show one configured public CES/demo venue on `/volunteer` through an HTTPS OpenStreetMap browser iframe with attribution and larger-map link. Accepted venue: Assumption College of Davao. The venue is independent of Volunteer Activity and sends no Volunteer PII. No API key, billing, database/schema, or persistence change. Google Maps was abandoned before commit because its Cloud/billing setup was unsuitable for this classroom enhancement; no Google Maps source entered Git history. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed; acceptance **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**. |
+
+## Post-MVP UI/UX redesign — lightweight UI system
+
+| Decision | Rationale and boundary |
+|---|---|
+| Custom lightweight UI system instead of adopting shadcn/component-library dependency | The existing Tailwind 4 stack was sufficient for semantic tokens and a small set of PageContainer/PageHeader, Card, StatusBadge, button/link, and Donation form helpers. This preserves Server Component architecture and avoids unnecessary dependencies and abstractions. Responsive behavior, keyboard interaction, and focus styles are handled directly, with practical accessibility smoke testing. Separate staff/public presentation layouts and poster-scoped print CSS preserve the existing functional and deployment boundaries. |
