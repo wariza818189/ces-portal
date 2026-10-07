@@ -1,35 +1,40 @@
 import { connection } from "next/server";
 import { CesLocationMap } from "@/components/maps/ces-location-map";
 import { VolunteerForm } from "@/components/volunteers/volunteer-form";
+import { Card } from "@/components/ui/card";
 
 export default async function VolunteerPage() {
   await connection();
   return (
-    <div className="rounded-2xl border border-sky-100 bg-white p-6 shadow-sm sm:p-8">
-      <header className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-wide text-sky-700">
+    <div className="space-y-6">
+      <header>
+        <p className="text-sm font-semibold text-primary">
           Community Extension Services
         </p>
 
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
-          Become a Volunteer
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          Volunteer Registration
         </h1>
 
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          CES volunteer registration demonstration.
+        <p className="mt-3 text-base leading-6 text-muted-foreground">
+          Register as a student volunteer for a CES activity in this local demonstration.
         </p>
       </header>
 
-      <aside className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
-        <p className="font-semibold">Classroom/local demonstration using synthetic test information only.</p>
+      <aside className="rounded-xl border border-warning-border bg-warning-surface p-5 text-sm leading-6 text-warning">
+        <h2 className="font-semibold">SYNTHETIC / LOCAL DEMO ONLY</h2>
+        <p className="mt-2">Classroom/local demonstration using synthetic test information only.</p>
         <p className="mt-2">Do not enter real personal information. Real-data collection and public production deployment are not approved.</p>
       </aside>
-      <CesLocationMap />
-      <section aria-labelledby="volunteer-use-heading" className="my-6 rounded-xl bg-sky-50 p-4 text-sm leading-6 text-slate-700">
-        <h2 id="volunteer-use-heading" className="font-semibold">How the information is used</h2>
-        <p className="mt-2">The information submitted in this form will be used by Community Extension Services to register student volunteers and contact them regarding the CES activity they selected.</p>
-      </section>
-      <VolunteerForm />
+      <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[3fr_2fr]">
+        <section aria-labelledby="volunteer-form-heading" className="min-w-0">
+          <Card>
+            <h2 id="volunteer-form-heading" className="mb-2 text-lg font-semibold text-foreground">Volunteer Registration</h2>
+            <VolunteerForm />
+          </Card>
+        </section>
+        <CesLocationMap />
+      </div>
     </div>
   );
 }
