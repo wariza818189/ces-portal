@@ -1,5 +1,7 @@
 import type { RowDataPacket } from "mysql2";
 import Link from "next/link";
+import { buttonStyles } from "@/components/ui/button-styles";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { PageHeader } from "@/components/layout/page-header";
 import { GOODS_CATEGORIES } from "@/lib/constants";
 import { getTodayIsoDate, isValidIsoDate } from "@/lib/date";
@@ -20,19 +22,11 @@ const statusLabels: Record<ExpiryStatus, string> = {
   "expiring-soon": "Expiring soon",
   fresh: "Fresh",
 };
-const statusClasses: Record<ExpiryStatus, string> = {
-  expired: "bg-red-50 text-red-800 border-red-200",
-  "expiring-soon": "bg-amber-50 text-amber-800 border-amber-200",
-  fresh: "bg-green-50 text-green-800 border-green-200",
-};
-
-function StatusBadge({ status }: { status: ExpiryStatus }) {
-  return (
-    <span className={`inline-block rounded-full border px-3 py-1 text-sm font-medium ${statusClasses[status]}`}>
-      {statusLabels[status]}
-    </span>
-  );
-}
+const statusVariants = {
+  expired: "error",
+  "expiring-soon": "warning",
+  fresh: "success",
+} as const;
 
 function formatQuantity(value: string) {
   if (!/^\d+(?:\.\d{1,2})?$/.test(value)) {
@@ -91,52 +85,51 @@ export default async function InventoryPage({
     });
   }
 
-  const focusClass = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700";
   return (
     <div className="space-y-8">
       <PageHeader title="Inventory" description="View recorded donated goods and their expiry status." />
-      <form action="/inventory" method="get" className="flex flex-wrap items-end gap-3">
-        <div>
-          <label htmlFor="inventory-category" className="block text-sm font-medium text-slate-800">Category</label>
+      <form action="/inventory" method="get" className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4 sm:flex-row sm:flex-wrap sm:items-end">
+        <div className="min-w-0 sm:min-w-48">
+          <label htmlFor="inventory-category" className="block text-sm font-medium text-foreground">Category</label>
           <select key={category} id="inventory-category" name="category" defaultValue={category}
-            className={`mt-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 ${focusClass}`}>
+            className="mt-2 min-h-11 w-full rounded-lg border border-input-border bg-surface px-3 py-2 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
             <option value="">All</option>
             {GOODS_CATEGORIES.map((value) => <option key={value} value={value}>{value}</option>)}
           </select>
         </div>
-        <button type="submit" className={`rounded-lg bg-sky-700 px-4 py-2 font-semibold text-white hover:bg-sky-800 ${focusClass}`}>Apply filter</button>
-        <Link href="/inventory" className={`rounded px-2 py-2 text-sm font-medium text-sky-700 underline ${focusClass}`}>All categories</Link>
+        <button type="submit" className={buttonStyles.primary}>Apply filter</button>
+        <Link href="/inventory" className={buttonStyles.secondary}>All categories</Link>
       </form>
       {loadFailed ? (
-        <section role="alert" className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-800">
+        <section role="alert" className="rounded-xl border border-error-border bg-error-surface p-6 text-error">
           <h2 className="font-semibold">Unable to load recorded goods</h2>
           <p className="mt-2">Please try loading Inventory again. If the problem continues, contact CES support.</p>
         </section>
       ) : !records.length ? (
-        <section className="rounded-xl border border-sky-100 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">{noMatch ? "No matching category" : "No Goods recorded"}</h2>
-          <p className="mt-2 text-sm text-slate-600">
+        <section className="rounded-xl border border-border bg-surface p-6">
+          <h2 className="text-lg font-semibold text-foreground">{noMatch ? "No matching category" : "No Goods recorded"}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             {noMatch ? `No recorded donated goods match ${category}. Choose another category or All.` : "Recorded donated goods will appear here after staff save a Goods Donation."}
           </p>
         </section>
       ) : (
         <>
-          <div className="hidden overflow-hidden rounded-xl border border-sky-100 bg-white shadow-sm md:block">
+          <div className="hidden overflow-hidden rounded-xl border border-border bg-surface md:block">
             <table className="w-full text-left text-sm">
-              <caption className="px-5 py-4 text-left font-semibold text-slate-900">Recorded donated goods — expiry soonest first</caption>
-              <thead className="border-y border-sky-100 bg-sky-50 text-slate-700">
+              <caption className="px-5 py-4 text-left font-semibold text-foreground">Recorded donated goods — expiry soonest first</caption>
+              <thead className="border-y border-border bg-hover-surface text-muted-foreground">
                 <tr>
                   {["Category", "Quantity / Unit", "Date Received", "Expiry Date", "Expiry Status"].map((label) => <th key={label} scope="col" className="px-4 py-3">{label}</th>)}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-sky-100 text-slate-800">
+              <tbody className="divide-y divide-border text-foreground">
                 {records.map((record) => (
                   <tr key={record.id}>
                     <th scope="row" className="px-4 py-4 font-medium">{record.category}</th>
-                    <td className="px-4 py-4">{record.quantity} {record.unit}</td>
-                    <td className="px-4 py-4">{record.dateReceived}</td>
-                    <td className="px-4 py-4">{record.expiryDate}</td>
-                    <td className="px-4 py-4"><StatusBadge status={record.status} /></td>
+                    <td className="px-4 py-4 tabular-nums">{record.quantity} {record.unit}</td>
+                    <td className="px-4 py-4 tabular-nums">{record.dateReceived}</td>
+                    <td className="px-4 py-4 tabular-nums">{record.expiryDate}</td>
+                    <td className="px-4 py-4 tabular-nums"><StatusBadge variant={statusVariants[record.status]}>{statusLabels[record.status]}</StatusBadge></td>
                   </tr>
                 ))}
               </tbody>
@@ -144,17 +137,19 @@ export default async function InventoryPage({
           </div>
           <section aria-label="Recorded donated goods — expiry soonest first" className="space-y-4 md:hidden">
             {records.map((record) => (
-              <article key={record.id} className="rounded-xl border border-sky-100 bg-white p-5 shadow-sm">
-                <h2 className="text-lg font-semibold text-slate-900">{record.category}</h2>
-                <dl className="mt-4 space-y-3 text-sm text-slate-800">
+              <article key={record.id} className="rounded-xl border border-border bg-surface p-5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h2 className="text-lg font-semibold text-foreground">{record.category}</h2>
+                  <StatusBadge variant={statusVariants[record.status]}>{statusLabels[record.status]}</StatusBadge>
+                </div>
+                <dl className="mt-4 space-y-3 text-sm text-foreground">
                   {[
                     ["Quantity / Unit", `${record.quantity} ${record.unit}`],
                     ["Date Received", record.dateReceived],
                     ["Expiry Date", record.expiryDate],
                   ].map(([label, value]) => (
-                    <div key={label}><dt className="font-medium text-slate-600">{label}</dt><dd className="mt-1">{value}</dd></div>
+                    <div key={label}><dt className="font-medium text-muted-foreground">{label}</dt><dd className="mt-1 wrap-anywhere tabular-nums">{value}</dd></div>
                   ))}
-                  <div><dt className="font-medium text-slate-600">Expiry Status</dt><dd className="mt-1"><StatusBadge status={record.status} /></dd></div>
                 </dl>
               </article>
             ))}

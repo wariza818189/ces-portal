@@ -1,5 +1,7 @@
 import type { RowDataPacket } from "mysql2";
 import { connection } from "next/server";
+import { Card } from "@/components/ui/card";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { PageHeader } from "@/components/layout/page-header";
 import { getTodayIsoDate, isValidIsoDate } from "@/lib/date";
 import { getExpiryStatus, type ExpiryStatus } from "@/lib/expiry";
@@ -106,9 +108,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <PageHeader title="Dashboard" description="Overview of CES donation and volunteer records." />
+      <PageHeader title="Dashboard" description="Overview of CES donation and volunteer activity." />
       {data === null ? (
-        <section role="alert" className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-800">
+        <section role="alert" className="rounded-xl border border-error-border bg-error-surface p-6 text-error">
           <h2 className="font-semibold">Unable to load Dashboard</h2>
           <p className="mt-2">Please try loading Dashboard again. If the problem continues, contact CES support.</p>
         </section>
@@ -120,30 +122,33 @@ export default async function DashboardPage() {
               { label: "Cash Donation Total", value: data.cashTotal },
               { label: "Volunteer Submissions", value: data.volunteerCount },
             ].map((card) => (
-              <article key={card.label} className="min-w-0 rounded-xl border border-sky-100 bg-white p-5 shadow-sm">
-                <h2 className="text-sm font-medium text-slate-600">{card.label}</h2>
-                <p className="mt-3 break-all text-3xl font-semibold text-slate-900">{card.value}</p>
-              </article>
+              <Card key={card.label}>
+                <h2 className="text-sm font-medium text-muted-foreground">{card.label}</h2>
+                <p className="mt-3 wrap-anywhere text-3xl font-semibold tracking-tight text-foreground tabular-nums">{card.value}</p>
+              </Card>
             ))}
           </section>
-          <section aria-labelledby="expiry-summary-heading" className="rounded-xl border border-sky-100 bg-white p-5 shadow-sm">
-            <h2 id="expiry-summary-heading" className="text-lg font-semibold text-slate-900">Goods Expiry Summary</h2>
-            <p className="mt-2 text-sm text-slate-600">
-              Recorded Goods by expiry status as of <time dateTime={data.today}>{data.today}</time> (application date).
-            </p>
-            {data.goodsCount === "0" && <p className="mt-2 text-sm text-slate-600">No recorded donated goods.</p>}
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              {[
-                { label: "Fresh", value: data.expiryCounts.fresh },
-                { label: "Expiring soon", value: data.expiryCounts["expiring-soon"] },
-                { label: "Expired", value: data.expiryCounts.expired },
-              ].map((card) => (
-                <article key={card.label} className="min-w-0 rounded-lg border border-sky-100 p-4">
-                  <h3 className="text-sm font-medium text-slate-600">{card.label}</h3>
-                  <p className="mt-2 break-all text-2xl font-semibold text-slate-900">{card.value}</p>
-                </article>
-              ))}
-            </div>
+          <section aria-labelledby="expiry-summary-heading" className="min-w-0">
+            <Card>
+              <h2 id="expiry-summary-heading" className="text-lg font-semibold text-foreground">Inventory status</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Current expiry condition of recorded goods.</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Recorded Goods by expiry status as of <time dateTime={data.today}>{data.today}</time> (application date).
+              </p>
+              {data.goodsCount === "0" && <p className="mt-2 text-sm text-muted-foreground">No recorded donated goods.</p>}
+              <div className="mt-5 grid gap-4 border-t border-border pt-5 sm:grid-cols-3">
+                {[
+                  { label: "Fresh", value: data.expiryCounts.fresh, variant: "success" as const },
+                  { label: "Expiring soon", value: data.expiryCounts["expiring-soon"], variant: "warning" as const },
+                  { label: "Expired", value: data.expiryCounts.expired, variant: "error" as const },
+                ].map((card) => (
+                  <article key={card.label} className="min-w-0">
+                    <h3><StatusBadge variant={card.variant}>{card.label}</StatusBadge></h3>
+                    <p className="mt-2 wrap-anywhere text-2xl font-semibold text-foreground tabular-nums">{card.value}</p>
+                  </article>
+                ))}
+              </div>
+            </Card>
           </section>
         </>
       )}
