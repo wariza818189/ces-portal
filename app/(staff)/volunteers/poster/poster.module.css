@@ -1,30 +1,87 @@
-.page { max-width: 720px; margin: 0 auto; color: #0f172a; }
-.controls { margin-bottom: 24px; font-size: 14px; }
-.controls a { text-decoration: underline; }
-.controls p { margin-top: 8px; }
-.poster { padding: 36px; border: 1px solid #cbd5e1; border-radius: 16px; background: white; text-align: center; }
-.eyebrow { font-size: 20px; font-weight: 700; }
-.poster h1 { margin: 12px 0; font-size: 36px; font-weight: 800; line-height: 1.2; }
-.poster h2 { margin: 20px 0 12px; font-size: 20px; font-weight: 700; }
-.poster p { line-height: 1.6; }
-.qr { display: block; width: 280px; max-width: 100%; height: auto; margin: 24px auto; break-inside: avoid; }
-.url { display: block; overflow-wrap: anywhere; text-decoration: underline; }
-.status { margin: 24px 0; padding: 20px; border: 1px solid #64748b; }
-.warning { margin-top: 28px; padding: 16px; border: 2px solid #92400e; color: #78350f; }
-.warning p { margin-top: 8px; }
-@media (max-width: 480px) {
-  .poster { padding: 20px 12px; }
-  .poster h1 { font-size: 30px; }
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  color: var(--ces-foreground);
 }
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-bottom: 24px;
+  padding: 16px;
+  border: 1px solid var(--ces-border);
+  border-radius: 12px;
+  background: var(--ces-surface);
+  font-size: 14px;
+}
+
+.controls a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--ces-input-border);
+  border-radius: 8px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.controls a:hover { background: var(--ces-hover-surface); }
+.controls p { flex: 1 1 200px; color: var(--ces-muted); line-height: 1.5; }
+
+.poster {
+  padding: 40px 36px 32px;
+  border: 1px solid var(--ces-border);
+  border-radius: 16px;
+  background: var(--ces-surface);
+  box-shadow: 0 4px 16px rgb(15 23 42 / 4%);
+  text-align: center;
+}
+
+.poster p { line-height: 1.6; }
+.eyebrow {
+  color: var(--ces-primary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.poster h1 { margin: 12px 0 16px; font-size: 36px; font-weight: 800; line-height: 1.2; }
+.intro { max-width: 460px; margin: 0 auto; color: var(--ces-muted); }
+.poster h2 { margin: 0 0 12px; font-size: 18px; font-weight: 700; line-height: 1.4; }
+.qr { display: block; width: 280px; max-width: 100%; height: auto; margin: 28px auto 24px; break-inside: avoid; }
+.url { display: block; overflow-wrap: anywhere; color: var(--ces-primary); font-size: 14px; line-height: 1.6; text-decoration: underline; text-underline-offset: 3px; }
+.status { margin: 28px auto 24px; padding: 24px; border: 1px solid var(--ces-border); border-radius: 12px; background: var(--ces-background); color: var(--ces-muted); }
+.warning { margin-top: 28px; padding: 16px 20px; border: 1px solid var(--ces-warning-border); border-radius: 10px; background: var(--ces-warning-surface); color: var(--ces-warning); font-size: 14px; break-inside: avoid; }
+.warning strong { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+.warning p { margin-top: 8px; }
+
+@media (max-width: 480px) {
+  .controls { padding: 12px; }
+  .controls a { width: 100%; }
+  .poster { padding: 28px 16px 24px; }
+  .poster h1 { font-size: 32px; }
+  .eyebrow { letter-spacing: 0.05em; }
+  .status { padding: 20px 16px; }
+  .warning { padding: 16px; }
+}
+
 @media print {
   :global(body):has(.page) { background: white; color: black; }
   :global([data-staff-shell]):has(.page) { display: block; min-height: 0; }
   :global(body):has(.page) :global([data-staff-chrome]) { display: none !important; }
   :global([data-page-container]):has(.page) { max-width: none; padding: 0; }
   .controls { display: none; }
-  .page { max-width: none; }
-  .poster { border: 0; border-radius: 0; padding: 12mm; break-inside: avoid; }
-  .warning { color: black; border-color: black; }
+  .page { max-width: none; color: black; }
+  .poster { border: 0; border-radius: 0; padding: 12mm; background: white; box-shadow: none; break-inside: avoid; }
+  .eyebrow, .intro, .status, .url, .warning { color: black; }
+  .poster h1 { font-size: 36px; }
+  .eyebrow { letter-spacing: 0.08em; }
+  .status { background: white; border-color: black; }
+  .warning { background: white; border-color: black; }
   .qr { width: 74mm; }
-  .url { color: black; }
 }

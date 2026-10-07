@@ -16,7 +16,7 @@ export default async function VolunteerPosterPage() {
       <article className={styles.poster}>
         <p className={styles.eyebrow}>Community Extension Services</p>
         <h1>Volunteer Signup</h1>
-        <p>Join the CES volunteer demonstration. Open the signup form to explore how students can take part.</p>
+        <p className={styles.intro}>Join the CES volunteer demonstration. Open the signup form to explore how students can take part.</p>
         {qr.state === "available" ? (
           <Image className={styles.qr} src={qr.image} width={600} height={600} unoptimized alt="QR code opening the configured Volunteer Signup page" />
         ) : (
