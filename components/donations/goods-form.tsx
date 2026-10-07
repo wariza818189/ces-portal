@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import { buttonStyles } from "@/components/ui/button-styles";
+import { donationFieldStyles, donationFeedbackStyles } from "@/components/donations/form-styles";
 import {
   createGoodsDonation,
   type GoodsDonationActionState,
@@ -42,7 +44,7 @@ function FieldError({
   }
 
   return (
-    <p id={id} className="mt-1 text-sm text-red-700">
+    <p id={id} className={donationFieldStyles.error}>
       {messages[0]}
     </p>
   );
@@ -88,11 +90,7 @@ export function GoodsForm() {
         <div
           role={state.status === "error" ? "alert" : "status"}
           aria-atomic="true"
-          className={
-            state.status === "success"
-              ? "rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800"
-              : "rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800"
-          }
+          className={donationFeedbackStyles(state.status, state.message)}
         >
           {state.message}
         </div>
@@ -106,7 +104,7 @@ export function GoodsForm() {
         <div>
           <label
             htmlFor="category"
-            className="block text-sm font-medium text-slate-800"
+            className={donationFieldStyles.label}
           >
             Category <span aria-hidden="true">*</span>
           </label>
@@ -116,7 +114,7 @@ export function GoodsForm() {
             name="category"
             required
             {...fieldProps("category")}
-            className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-slate-900"
+            className={donationFieldStyles.control}
           >
             <option value="" disabled>
               Select a category
@@ -136,7 +134,7 @@ export function GoodsForm() {
           <div>
             <label
               htmlFor="quantity"
-              className="block text-sm font-medium text-slate-800"
+              className={donationFieldStyles.label}
             >
               Quantity <span aria-hidden="true">*</span>
             </label>
@@ -150,7 +148,7 @@ export function GoodsForm() {
               required
               inputMode="decimal"
               {...fieldProps("quantity")}
-              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-slate-900"
+              className={donationFieldStyles.control}
             />
 
             <FieldError id="quantity-error" messages={state.fieldErrors.quantity} />
@@ -159,7 +157,7 @@ export function GoodsForm() {
           <div>
             <label
               htmlFor="unit"
-              className="block text-sm font-medium text-slate-800"
+              className={donationFieldStyles.label}
             >
               Unit <span aria-hidden="true">*</span>
             </label>
@@ -169,7 +167,7 @@ export function GoodsForm() {
               name="unit"
               required
               {...fieldProps("unit")}
-              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-slate-900"
+              className={donationFieldStyles.control}
             >
               {GOODS_UNITS.map((unit) => (
                 <option key={unit} value={unit}>
@@ -186,7 +184,7 @@ export function GoodsForm() {
           <div>
             <label
               htmlFor="dateReceived"
-              className="block text-sm font-medium text-slate-800"
+              className={donationFieldStyles.label}
             >
               Date Received <span aria-hidden="true">*</span>
             </label>
@@ -197,7 +195,7 @@ export function GoodsForm() {
               type="date"
               required
               {...fieldProps("dateReceived")}
-              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-slate-900"
+              className={donationFieldStyles.control}
             />
 
             <FieldError
@@ -209,7 +207,7 @@ export function GoodsForm() {
           <div>
             <label
               htmlFor="expiryDate"
-              className="block text-sm font-medium text-slate-800"
+              className={donationFieldStyles.label}
             >
               Expiry Date <span aria-hidden="true">*</span>
             </label>
@@ -220,7 +218,7 @@ export function GoodsForm() {
               type="date"
               required
               {...fieldProps("expiryDate")}
-              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-slate-900"
+              className={donationFieldStyles.control}
             />
 
             <FieldError
@@ -234,7 +232,7 @@ export function GoodsForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="w-full rounded-lg bg-sky-700 px-5 py-3 font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className={`${buttonStyles.primary} w-full disabled:cursor-not-allowed disabled:opacity-60 sm:ml-auto sm:flex sm:w-fit`}
       >
         {isPending
           ? "Saving..."
