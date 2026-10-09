@@ -1,12 +1,15 @@
 import type { ReactNode } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { PageContainer } from "@/components/layout/page-container";
+import { requireUser } from "@/lib/auth/session";
+import { LogoutForm } from "@/components/auth/logout-form";
 
-export default function StaffLayout({
+export default async function StaffLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const user = await requireUser();
   return (
     <div data-staff-shell className="min-h-screen bg-app-background lg:flex">
       <a
@@ -19,8 +22,9 @@ export default function StaffLayout({
       <Sidebar />
 
       <div className="min-w-0 flex-1">
-        <header data-staff-chrome className="hidden min-h-14 items-center border-b border-border bg-surface px-8 lg:flex">
-          <p className="text-sm font-medium text-muted-foreground">Staff workspace</p>
+        <header data-staff-chrome className="flex min-h-14 flex-wrap items-center justify-between gap-3 border-b border-border bg-surface px-4 py-3 sm:px-6 lg:px-8">
+          <p className="min-w-0 wrap-anywhere text-sm font-medium text-muted-foreground">Staff workspace · {user.name}</p>
+          <LogoutForm />
         </header>
         <main id="main-content" tabIndex={-1} className="min-w-0">
           <PageContainer>{children}</PageContainer>

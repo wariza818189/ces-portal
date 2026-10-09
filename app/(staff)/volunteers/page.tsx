@@ -3,6 +3,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { buttonStyles } from "@/components/ui/button-styles";
 import { PageHeader } from "@/components/layout/page-header";
+import { requireUser } from "@/lib/auth/session";
 
 type VolunteerRow = RowDataPacket & {
   id: string;
@@ -21,6 +22,7 @@ const columns = [
 ] as const;
 
 export default async function VolunteersPage() {
+  await requireUser("/volunteers");
   await connection();
   let records: VolunteerRow[] | null = null;
   try {

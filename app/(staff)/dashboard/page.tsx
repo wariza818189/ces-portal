@@ -5,6 +5,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { PageHeader } from "@/components/layout/page-header";
 import { getTodayIsoDate, isValidIsoDate } from "@/lib/date";
 import { getExpiryStatus, type ExpiryStatus } from "@/lib/expiry";
+import { requireUser } from "@/lib/auth/session";
 
 type SummaryRow = RowDataPacket & {
   cashTotal: unknown;
@@ -42,6 +43,7 @@ function formatCashTotal(value: unknown): string {
 }
 
 export default async function DashboardPage() {
+  await requireUser("/dashboard");
   await connection();
   let data: DashboardData | null = null;
   try {

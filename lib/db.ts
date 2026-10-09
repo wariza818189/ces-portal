@@ -1,3 +1,4 @@
+import "server-only";
 import { createPool, type Pool } from "mysql2/promise";
 
 const requiredEnvironmentVariables = [
@@ -22,6 +23,7 @@ export const db =
   globalForDb.mysqlPool ??
   createPool({
     host: process.env.DB_HOST,
+    socketPath: process.env.DB_SOCKET || undefined,
     port: Number(process.env.DB_PORT),
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { connection } from "next/server";
 import { getVolunteerQr } from "@/lib/volunteer-qr";
+import { requireUser } from "@/lib/auth/session";
 import styles from "./poster.module.css";
 
 export default async function VolunteerPosterPage() {
+  await requireUser("/volunteers/poster");
   await connection();
   const qr = await getVolunteerQr();
   return (

@@ -1,11 +1,13 @@
 "use server";
 
-import type { ResultSetHeader } from "mysql2";
+import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { ApplicationTimeZoneError } from "@/lib/date";
 import { cashDonationSchema, goodsDonationSchema } from "@/lib/validation/donations";
+import { requireStaff } from "@/lib/auth/session";
+import { writeAudit } from "@/lib/auth/audit.mjs";
 
 export type GoodsDonationActionState = {
   status: "idle" | "success" | "error";
@@ -37,6 +39,11 @@ export async function createGoodsDonation(
   _previousState: GoodsDonationActionState,
   formData: FormData,
 ): Promise<GoodsDonationActionState> {
+  try {
+    await requireStaff();
+  } catch {
+    return { status: "error", message: "Staff sign in is required to save donations.", fieldErrors: {} };
+  }
   let parsed: ReturnType<typeof goodsDonationSchema.safeParse>;
   try {
     parsed = goodsDonationSchema.safeParse({
@@ -74,30 +81,47 @@ export async function createGoodsDonation(
   } = parsed.data;
 
   try {
-    const [result] = await db.execute<ResultSetHeader>(
-      `
-        INSERT INTO goods_donations (
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+      // Recheck and lock the session/user in the write transaction so logout
+      // and deactivation cannot race an already-authorized donation write.
+      const user = await requireStaff(connection);
+      const [result] = await connection.execute<ResultSetHeader>(
+        `
+          INSERT INTO goods_donations (
+            category,
+            quantity,
+            unit,
+            expiry_date,
+            date_received,
+            recorded_by
+          )
+          VALUES (?, ?, ?, ?, ?, ?)
+        `,
+        [
           category,
           quantity,
           unit,
-          expiry_date,
-          date_received
-        )
-        VALUES (?, ?, ?, ?, ?)
-      `,
-      [
-        category,
-        quantity,
-        unit,
-        expiryDate,
-        dateReceived,
-      ],
-    );
-
-    if (result.affectedRows !== 1) {
-      throw new Error(
-        "Goods donation insert did not affect exactly one row.",
+          expiryDate,
+          dateReceived,
+          user.id,
+        ],
       );
+
+      if (result.affectedRows !== 1) {
+        throw new Error(
+          "Goods donation insert did not affect exactly one row.",
+        );
+      }
+      const [[identity]] = await connection.query<RowDataPacket[]>("SELECT CAST(LAST_INSERT_ID() AS CHAR) AS id");
+      await writeAudit(connection, "GOODS_DONATION_CREATED", user.id, identity.id);
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback().catch(() => {});
+      throw error;
+    } finally {
+      connection.release();
     }
   } catch (error) {
     logFailure("Failed to create goods donation.", error);
@@ -105,7 +129,7 @@ export async function createGoodsDonation(
     return {
       status: "error",
       message:
-        "We couldn't save the goods donation. Please try again.",
+        "We couldn't confirm the goods donation was saved. Contact CES support before resubmitting if the save result is uncertain.",
       fieldErrors: {},
     };
   }
@@ -149,6 +173,11 @@ export async function createCashDonation(
   _previousState: CashDonationActionState,
   formData: FormData,
 ): Promise<CashDonationActionState> {
+  try {
+    await requireStaff();
+  } catch {
+    return { status: "error", message: "Staff sign in is required to save donations.", fieldErrors: {} };
+  }
   let parsed: ReturnType<typeof cashDonationSchema.safeParse>;
   try {
     parsed = cashDonationSchema.safeParse({
@@ -174,12 +203,25 @@ export async function createCashDonation(
 
   const { amount, dateReceived, notes } = parsed.data;
   try {
-    const [result] = await db.execute<ResultSetHeader>(
-      "INSERT INTO cash_donations (amount, date_received, notes) VALUES (?, ?, ?)",
-      [amount, dateReceived, notes],
-    );
-    if (result.affectedRows !== 1) {
-      throw new Error("Cash donation insert did not affect exactly one row.");
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+      const user = await requireStaff(connection);
+      const [result] = await connection.execute<ResultSetHeader>(
+        "INSERT INTO cash_donations (amount, date_received, notes, recorded_by) VALUES (?, ?, ?, ?)",
+        [amount, dateReceived, notes, user.id],
+      );
+      if (result.affectedRows !== 1) {
+        throw new Error("Cash donation insert did not affect exactly one row.");
+      }
+      const [[identity]] = await connection.query<RowDataPacket[]>("SELECT CAST(LAST_INSERT_ID() AS CHAR) AS id");
+      await writeAudit(connection, "CASH_DONATION_CREATED", user.id, identity.id);
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback().catch(() => {});
+      throw error;
+    } finally {
+      connection.release();
     }
   } catch (error) {
     logFailure("Failed to create cash donation.", error);

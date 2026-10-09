@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { GOODS_CATEGORIES } from "@/lib/constants";
 import { getTodayIsoDate, isValidIsoDate } from "@/lib/date";
 import { getExpiryStatus, type ExpiryStatus } from "@/lib/expiry";
+import { requireUser } from "@/lib/auth/session";
 
 type GoodsRow = RowDataPacket & {
   id: string;
@@ -40,6 +41,7 @@ export default async function InventoryPage({
 }: {
   searchParams: Promise<{ category?: string | string[] }>;
 }) {
+  await requireUser("/inventory");
   const input = (await searchParams).category;
   const category = typeof input === "string"
     && GOODS_CATEGORIES.some((value) => value === input) ? input : "";
