@@ -1,6 +1,6 @@
 # Testing
 
-The latest acceptance is [Post-MVP UI/UX redesign — final integrated UI acceptance](#post-mvp-uiux-redesign--final-integrated-ui-acceptance). Earlier sections record historical results, including controlled rows and cash total `125.25`; they do not assert that those rows are still present. UI-5 operator snapshots measured zero rows and cash total `0.00`. The documentation does not infer why the local database state changed.
+The latest acceptance is [CES Portal v2 R1 — Authentication, Authorization, and Audit Foundation](#ces-portal-v2-r1--authentication-authorization-and-audit-foundation), completed on the actual MySQL 8.4.11 target. Earlier sections preserve historical results, including controlled rows and cash total `125.25`; they do not assert that those rows are still present. UI-5 measured zero rows and cash total `0.00`; later R1 measured Goods `1`, Cash `1`, Volunteers `1`, Cash total `0.01` after its single authorized Cash write. These are separate point-in-time measurements; no cause of the intervening database-state difference is inferred. This documentation pass does not rerun acceptance.
 
 # Previously Verified Before Account Migration — Historical Evidence
 
@@ -28,7 +28,7 @@ Runtime acceptance used the integrated browser and the intended local database. 
 - Plain Turbopack `npm run build` encountered an environment-specific local-port `Operation not permitted` restriction. The webpack production build passed; no Phase 2A application defect is inferred from that environment restriction.
 - Expiry earlier than received is allowed and is not hard rejected solely for that relationship. The optional warning was not observed after a persisted browser submission. The non-hard-rejection behavior was supported by browser behavior plus focused code inspection; the warning is optional and does not block acceptance.
 
-Phase 2A remains **PASS WITH NOTES**. Its checkpoint, `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), has been committed and pushed to `origin/main`. No further Goods acceptance write is needed for Phase 2A. `npm run lint` and `npm run build` are available. `scripts/test-db.mjs` is a database connectivity/row-count check and requires configured local credentials; it is not a UI or migration test. No dedicated unit-test script is currently defined.
+Phase 2A remains **PASS WITH NOTES**. Its checkpoint, `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), has been committed and pushed to `origin/main`. No further Goods acceptance write is needed for Phase 2A. `npm run lint` and `npm run build` are available. `scripts/test-db.mjs` is a database connectivity/row-count check and requires configured local credentials; it is not a UI or migration test. No dedicated unit-test script was defined at Phase 2A acceptance; R1 later adds `npm run test:r1`.
 
 ## Historical Phase 2B runtime acceptance — PASS WITH NOTES
 
@@ -82,7 +82,7 @@ Volunteer acceptance is restricted to **SYNTHETIC / LOCAL DEMO ONLY**. It does n
 - Live Volunteer schema matched the expected `utf8mb4` `VARCHAR(100/100/30/150)` fields and generated ID/timestamp. The 141 focused checks, TypeScript, lint, webpack production build, and `git diff --check` passed. No relevant browser console/runtime errors were observed.
 - Save/refresh behavior was checked: the action inserts only the four approved fields; after successful persistence, `/volunteers` and `/dashboard` are revalidated, and refresh failure retains success with do-not-resubmit wording. Logging omits submitted data and raw errors.
 
-Volunteer core workflow implementation is **COMPLETE** and runtime acceptance is **PASS WITH NOTES**. Feature checkpoint `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) is committed. Historical acceptance created one controlled synthetic row: Volunteers changed `0 → 1`, Dashboard Volunteer Submissions correctly became `1`, and no duplicate was found. The evidence remains documented; UI-5 measured zero Volunteer rows. No further Volunteer acceptance submission is required. Real-data operation remains blocked pending an approved access-control/deployment design for `/volunteers`; the route remains unauthenticated/unprotected and authentication is outside MVP scope. Acknowledgement is not stored as consent evidence. Retention policy is pending CES/school policy confirmation; no delete workflow exists.
+Volunteer core workflow implementation is **COMPLETE** and runtime acceptance is **PASS WITH NOTES**. Feature checkpoint `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) is committed. Historical acceptance created one controlled synthetic row: Volunteers changed `0 → 1`, Dashboard Volunteer Submissions correctly became `1`, and no duplicate was found. The evidence remains documented; UI-5 measured zero Volunteer rows. No further Volunteer acceptance submission is required. At that historical acceptance, `/volunteers` was unauthenticated/unprotected and authentication was outside original MVP scope. R1 later protects the route; real-data operation remains unapproved pending broader privacy, retention, deployment, and governance work. Acknowledgement is not stored as consent evidence. Retention policy is pending CES/school policy confirmation; no delete workflow exists.
 
 ## Final integrated system test — PASS WITH NOTES — SYNTHETIC / LOCAL DEMO ONLY
 
@@ -114,7 +114,7 @@ The static QuickChart integration supports the existing Volunteer Signup poster 
 - One mistaken build from the repository allowed Next.js to load `.env.local` internally. The file contents were not inspected, printed, modified, copied, or included in evidence. Successful build and live acceptance then used a secret-free temporary copy/process environment. This is an environment note, not a security incident.
 - Physical phone scan remains unverified because no second device or confirmed phone-reachable URL was available. The exact decoded payload establishes technical QR correctness; a future demonstration should set `VOLUNTEER_SIGNUP_URL` to a phone-reachable host.
 
-Acceptance classification: **PASS WITH NOTES**. Scope remains **SYNTHETIC / LOCAL DEMO ONLY**. Real personal-information collection and public production deployment are not approved; `/volunteers` remains unauthenticated/unprotected, acknowledgement is not stored as durable consent evidence, and retention remains pending. Feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`; documentation synchronization is complete.
+Acceptance classification: **PASS WITH NOTES**. Scope remains **SYNTHETIC / LOCAL DEMO ONLY**. Real personal-information collection and public production deployment were not approved; `/volunteers` was unauthenticated/unprotected at QuickChart acceptance. R1 later protects the route; acknowledgement is still not durable consent evidence and retention remains pending. Feature checkpoint `07c8141792aea8b83ca5b20ed1b19f11507274c6` (`feat: integrate QuickChart Volunteer QR poster`) is committed and pushed to `origin/main`; documentation synchronization is complete.
 
 ## POST-MVP ACADEMIC / DEMO ENHANCEMENT — OpenStreetMap venue acceptance
 
@@ -196,13 +196,103 @@ Docker socket access was denied. No sudo or DB privilege elevation was used. The
 | Volunteers | `0` | `0` |
 | Cash total | `0.00` | `0.00` |
 
-**Before == after; ZERO DATABASE WRITES.** No valid acceptance submissions, seed records, or schema changes occurred. These are current UI-5 measurements, separate from earlier historical controlled-row tests. No reason for the local database-state difference is inferred. UI-5 ended with a clean working tree/index and no source correction or feature commit.
+**Before == after; ZERO DATABASE WRITES.** No valid acceptance submissions, seed records, or schema changes occurred. These are historical UI-5 measurements, separate from earlier controlled-row tests and later R1 target acceptance. No reason for the local database-state difference is inferred. UI-5 ended with a clean working tree/index and no source correction or feature commit.
 
 ### Remaining notes and deployment boundary
 
 Physical printer output and second-device phone QR scanning remain untested. Populated states used prior isolated synthetic UI fixtures; zoom evidence was equivalent reflow rather than actual browser zoom, and accessibility was practical smoke testing. These notes do not block academic/classroom demo readiness.
 
-The project remains **SYNTHETIC / LOCAL DEMO ONLY**: real personal-information collection and public production deployment are unapproved; `/volunteers` remains unauthenticated/unprotected, authentication is outside MVP, acknowledgement is not durable consent evidence, and retention policy awaits CES/school confirmation. UI polish does not change these boundaries.
+At UI-5, the project remained **SYNTHETIC / LOCAL DEMO ONLY**: `/volunteers` was unauthenticated/unprotected and authentication was excluded from the original MVP. Later R1 protects staff routes, while real personal-information collection and public production deployment remain unapproved; acknowledgement is still not durable consent evidence and retention awaits CES/school confirmation. UI-5 did not alter those boundaries.
+
+## CES Portal v2 R1 — Authentication, Authorization, and Audit Foundation
+
+**Classification: PASS WITH NOTES — R1 TARGET MYSQL 8.4 ACCEPTANCE COMPLETE** (2026-10-09).
+
+Source checkpoint: `3c1e9ec9b4d44d8cce8243efe0b548f418fd010f`, `feat: add staff authentication and audit foundation`, committed and pushed to `origin/main`. Authentication was excluded from the original stakeholder-confirmed MVP; R1 is a later operational expansion. This section records completed acceptance, not checks rerun during documentation synchronization.
+
+### Supporting isolated acceptance
+
+Earlier synthetic acceptance passed against isolated MySQL `8.0.46`. Coverage included policy/password/session rules, role enforcement, bootstrap race/refusal, migration preservation/rerun/checksum/checkpoints, direct action rejection, authenticated donation attribution, transactional rollback on injected audit failure, concurrent failed-login locking/fixed-window recovery, login/logout cookies, and audit payload exclusions. Fixtures were restricted to explicitly selected disposable schemas; framework adapters exercised real auth/action functions. This supports deeper concurrency and rollback evidence, not a claim that every case was repeated on the operator target.
+
+### Real target migration and backup readiness
+
+The actual target was MySQL `8.4.11`, database `ces_portal`. Before migration the operator created a logical backup, recorded SHA-256, and restored it into a separate temporary database. Its business snapshot matched Goods `1`, Cash `0`, Volunteers `1`, Cash total `0.00`. The temporary restore database was removed; the main target was not used for the rehearsal. The application account could not create databases; separate operator privileges were used only for the disposable restore check. Backup contents and credentials are excluded from this record.
+
+`database/migrations/001_auth_foundation.sql` applied additively; a second run verified it again. Target evidence confirmed checksum, status `APPLIED`, and 10 checkpointed statements. Tables were `users`, `staff_sessions`, `auth_rate_limits`, `audit_logs`, `schema_migrations`, `goods_donations`, `cash_donations`, and `volunteers`. Verification covered 10 expected R1 indexes, four foreign keys, and eight checks. Both actor columns were nullable unsigned BIGINT; the legacy Goods actor remained NULL. Migration preserved the pre-write business snapshot; no historical actor backfill or destructive reset occurred. Fresh schema and migration/operator behavior were reviewed separately.
+
+### Bootstrap, authentication, authorization, and throttling
+
+- Exactly one active Admin was bootstrapped and an `ADMIN_BOOTSTRAPPED` success audit existed. Repeated bootstrap attempts refused without creating another Admin. Passwords/hashes were not exposed; the CLI uses hidden interactive entry and no default credential.
+- Valid Admin login and generic failed-login behavior passed. Target opaque session creation, logout deletion, post-logout protected-access denial, and nonexistent-session denial passed.
+- Anonymous access to `/dashboard`, `/donations/new`, `/inventory`, `/volunteers`, and `/volunteers/poster` was redirected/denied. `/login` and `/volunteer` remained public.
+- Anonymous direct Goods/Cash Server Action attempts were rejected by application authorization, with no donation rows or donation-success audits.
+- Target database-locking throttle smoke passed using a synthetic identity; Admin was not intentionally throttled. Deep concurrency acceptance belongs to the isolated evidence above. Current policy is five failures per canonical identifier in a 15-minute fixed window, not source/IP-aware throttling.
+- Target bootstrap, login successes/failures, and logout audit evidence excluded sensitive payloads.
+
+### Connected browser and controlled Cash transaction
+
+In the final continuation, `http://127.0.0.1:3000` initially returned `ERR_CONNECTION_REFUSED`; the local runtime was restarted. The connected browser was unauthenticated, and the operator manually signed in directly in that browser without sharing the password. Its header identified Admin Willmer, user `1`.
+
+The previous Cash activation problem was not reproduced. Both enabled controls were buttons with role `tab`, named `Goods Donation` and `Cash Donation`, with matching `aria-controls`/panel labels. Initially Goods was selected (tab index `0`, visible panel); Cash was unselected (tab index `-1`, mounted hidden panel). Clicking the exact accessible name `Cash Donation` succeeded immediately: focus moved to Cash, its selection became true, and its panel became visible while Goods became hidden. Additional keyboard fallback methods were unnecessary; no source workaround was made. The earlier failure's historical cause remains undetermined.
+
+One invalid submission used amount `0`, date `2026-10-08`, and blank notes. Visible rejection was `Amount must be greater than 0.` Before the valid attempt, database queries confirmed zero Cash rows, zero zero-amount rows, and zero `CASH_DONATION_CREATED` success audits.
+
+Exactly one authorized valid submission used:
+
+```text
+Amount: 0.01
+Date Received: 2026-10-08
+Notes: R1 MySQL 8.4 acceptance — synthetic
+```
+
+The browser showed `Cash donation saved successfully.` and reset the form. No valid retry or second acceptance row occurred. Parameterized target queries verified exactly one matching Cash row, ID `1`, exact amount/date/notes, `recorded_by = 1`, and a creation timestamp. Exactly one matching `CASH_DONATION_CREATED` audit, ID `8`, had outcome `SUCCESS`, actor `1`, entity type `CASH_DONATION`, and entity ID `1`. Metadata was NULL; no Cash notes, password/hash, or raw session token was present in the audit.
+
+The required attribution gate passed:
+
+```text
+cash_donations.recorded_by
+= authenticated Admin ID
+= audit_logs.actor_user_id
+= 1
+```
+
+The row and its success audit persisted together; source review confirmed shared transaction/authorization recheck. Audit-failure rollback was exercised in isolated synthetic acceptance, not injected into this target transaction.
+
+### Business measurements and support writes
+
+| Measurement | Before migration | After migration / before controlled write | Final R1 target |
+|---|---|---|---|
+| Goods | `1` | `1` | `1` |
+| Cash | `0` | `0` | `1` |
+| Volunteers | `1` | `1` | `1` |
+| Cash total | `0.00` | `0.00` | `0.01` |
+
+**Business writes:** exactly one authorized R1 synthetic Cash acceptance row. No additional valid Goods or Volunteer submission occurred in the final continuation. Migration itself preserved business records.
+
+**Authentication/support writes:** bootstrap user, sessions, throttle state, and audits were expected acceptance writes; logout deleted sessions. R1 is not zero-write acceptance. In the final continuation, users stayed `1`, sessions went `1 → 2 → 1`, throttle records stayed `2`, and audits went `6 → 9` (login ID `7`, Cash ID `8`, logout ID `9`). The newly created browser session was verified deleted; the pre-existing session record was preserved. Protected donation access returned to Staff Sign In.
+
+UI-5 and R1 are separate point-in-time acceptance measurements. UI-5's zero-row/zero-write evidence above remains unchanged; no cause, actor, timing, reset, or restore is inferred for the intervening database-state difference.
+
+### Regression and static verification
+
+Authenticated Dashboard, Donation workspace, Inventory, Volunteer Submissions, and QR Poster rendered. Public `/volunteer` remained accessible; final HTTP regression returned 200 with the existing privacy notice, required acknowledgement wording, demo warning, and OSM embed present. No Volunteer was submitted. No R2 Activity behavior or other later module was added.
+
+The accepted R1 static checks passed:
+
+```sh
+npx tsc --noEmit --incremental false
+npm run lint
+npm run build -- --webpack
+git diff --check
+```
+
+The final Cash continuation required no source edits and reran only Git integrity checks; the source checkpoint likewise used scope/cached-diff checks without repeating runtime acceptance. No static/runtime/database tests are rerun for this documentation-only pass.
+
+### Remaining notes and operational boundary
+
+The target classification is authoritative; isolated MySQL 8.0.46 evidence is supporting evidence. R1 materially improves access control but does not approve real personal-data collection or public production deployment, or establish penetration testing/certification/compliance. Volunteer retention remains unresolved and acknowledgement is not durable stored consent evidence.
+
+Full Staff account lifecycle (create, deactivate/reactivate, password reset, role changes, last-Admin protection), source/network-aware throttling, session/throttle cleanup, deployment hardening, formal backup/restore procedures, and audit retention/review remain pending. The audit is an application trail, not tamper-proof against a database administrator; full R5 audit management is future work. Existing-Admin bootstrap may prompt before refusing, a nonblocking UX note. Activity Management, Donation Records, Distribution, CSV export, and R4 exact-decimal hardening remain open; R2 has not started. **SYNTHETIC / LOCAL DEMO ONLY** and related UI wording intentionally remain through R1; operational wording transition is deferred to R6.
 
 ## Ongoing regression coverage
 

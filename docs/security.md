@@ -22,9 +22,36 @@ The public `/volunteer` form must show this approved notice before submission: �
 
 Contact numbers may be used for communication related to the selected CES activity and necessary activity coordination. Do not define unrelated promotional use or sharing outside authorized CES personnel. Volunteer Submissions are intended for CES Staff / CES Coordinator.
 
-Staff pages are organized under a route group, but route grouping is not access control. Authentication is currently absent; `/volunteers` must not be described or treated as protected. It may be used only within the approved local/synthetic demonstration boundary. Real-data operation and production deployment require an approved access-control/deployment design. Authentication remains outside the current MVP and must not be added without a scope decision.
+`/volunteers` is now restricted to authenticated active Staff/Admin under CES Portal v2 R1. Authentication was excluded from the original MVP; R1 is a later operational expansion. Route grouping alone is not access control: server verification now protects staff pages and Goods/Cash actions. This improvement does not approve real personal-data collection or production deployment; broader privacy, retention, deployment, and operating controls remain pending.
 
 Retention policy pending CES/school policy confirmation. The MVP has no defined retention duration and no approved delete feature. If durable consent evidence or a retention/deletion workflow is later required, it needs a separate requirements and schema/scope decision.
+
+## CES Portal v2 R1 authentication and authorization
+
+Project-local staff passwords use Argon2id with fresh salts (`memoryCost=19456`, `timeCost=2`, `parallelism=1`, 32-byte hash). Passwords are preserved without trimming and require 12–128 Unicode characters. Canonical usernames are trimmed lowercase ASCII identifiers, 1–64 characters, beginning with an alphanumeric character and allowing dot, underscore, and hyphen. No plaintext password is persisted or logged.
+
+Each successful login generates a random 32-byte opaque token. Only its SHA-256 digest is stored in `staff_sessions`; the raw token is carried in the session cookie. The cookie is HttpOnly, SameSite=Lax, host-only (no Domain), path `/`, and Secure in production. Production requires HTTPS. Sessions expire absolutely after eight hours; logout deletes the database session and clears the cookie. Server checks require an unexpired session and an active account, and unknown roles fail closed. R1 uses no JWT, client-only auth state, or general auth framework.
+
+| Boundary | Current behavior |
+|---|---|
+| Staff pages | `/dashboard`, `/donations/new`, `/inventory`, `/volunteers`, `/volunteers/poster` require authenticated active `ADMIN` or `STAFF`. |
+| Public pages | `/login` and `/volunteer` remain public. |
+| Goods/Cash actions | Independently require active staff; derive the actor from the verified session, never submitted actor fields; recheck and lock session/user in the write transaction. |
+| Layout/navigation | Layout verification supplements individual page and action checks. Hidden links and route grouping are not security boundaries. |
+
+Login failures use a generic message. Shared database throttling allows five failed attempts per canonical identifier in a 15-minute fixed window; identifier keys are hashed and locking prevents stale concurrent increments. Blocked attempts do not repeatedly flood the audit table. This is identifier-based, not source/IP-aware throttling; source/network-aware controls and cleanup remain future hardening.
+
+Initial Admin creation is an explicit operator-run command with hidden password/confirmation input, no password command arguments, no default credential, and no browser registration/setup endpoint. A serialized bootstrap refuses when any Admin exists, including an inactive Admin, and audits creation. The target accepted exactly one active Admin; repeated bootstrap did not create another. Existing-Admin refusal currently occurs after some interactive prompts, a nonblocking UX note. See [operator guidance](../database/migrations/README.md).
+
+## R1 audit and donation attribution
+
+The application audit trail allowlists `ADMIN_BOOTSTRAPPED`, `AUTH_LOGIN_SUCCESS`, `AUTH_LOGIN_FAILURE`, `AUTH_LOGOUT`, `GOODS_DONATION_CREATED`, and `CASH_DONATION_CREATED`. Donation success inserts and their audits share one transaction; the actor derives from the verified session and is also stored in `recorded_by`. Legacy donation actors remain NULL. Bootstrap and failed-login audit actors are NULL; failure subjects are also NULL.
+
+Audit metadata is NULL in R1. Passwords, password hashes, raw session tokens, login identifiers, Cash notes, Volunteer contacts, and request bodies are excluded. Logging uses safe codes rather than raw driver errors/submitted payloads. This is an application audit trail, not tamper-proof evidence against a database administrator; R5 audit-management functionality is not implemented.
+
+## Remaining operational limits
+
+R1 materially improves security but is not production approval, penetration-test evidence, certification, or a regulatory-compliance claim. Full Staff account lifecycle (creation, deactivate/reactivate, password reset, role changes, last-Admin protection), source/network-aware throttling, session/throttle cleanup, Volunteer retention and durable consent evidence, deployment hardening, formal backup/restore procedures, and audit retention/review remain pending. Later R2–R6 work, including R4 exact-decimal hardening, is not implemented. The UI remains **SYNTHETIC / LOCAL DEMO ONLY** through R1; operational wording transition is deferred to R6.
 
 ## QuickChart Volunteer QR integration
 
@@ -34,8 +61,8 @@ The URL must be nonempty, untrimmed, control-character-free, at most 1024 UTF-8 
 
 The endpoint is fixed; redirects are rejected. The operation has a five-second timeout and the streamed body is limited to 512 KiB. The server requires a successful PNG response, validates its signature and exact 600×600 single-image dimensions, and decodes pixels using `sharp`. Safe reason codes are logged without the destination or provider error. Only successfully validated images are cached for 24 hours. No image is stored in MySQL or the application filesystem.
 
-The integration remains **SYNTHETIC / LOCAL DEMO ONLY**. Real personal-information collection and public production deployment are not approved. `/volunteers` remains unauthenticated/unprotected; authentication remains outside the MVP. The Volunteer acknowledgement is not durable consent evidence. Retention policy remains pending and no delete workflow is approved.
+The integration remains **SYNTHETIC / LOCAL DEMO ONLY**. Real personal-information collection and public production deployment are not approved. `/volunteers` is protected by R1 staff authorization; broader operational readiness remains pending. The Volunteer acknowledgement is not durable consent evidence. Retention policy remains pending and no delete workflow is approved.
 
 ## POST-MVP ACADEMIC / DEMO ENHANCEMENT — OpenStreetMap boundary
 
-The public `/volunteer` page embeds `www.openstreetmap.org` in a browser iframe. Loading it connects the visitor's browser to that third-party service; attribution is shown. Only the configured public venue coordinates enter the map URLs. Full Name, Course / Year, Contact Number, Activity, acknowledgement, Volunteer ID, timestamps, database rows, and credentials do not enter them. The current design requires no API key or billing account. The map does not change the **SYNTHETIC / LOCAL DEMO ONLY** deployment boundary: `/volunteers` is unprotected, real personal-data deployment remains unapproved, retention is unresolved, acknowledgement is not durable consent evidence, and no delete workflow is approved.
+The public `/volunteer` page embeds `www.openstreetmap.org` in a browser iframe. Loading it connects the visitor's browser to that third-party service; attribution is shown. Only the configured public venue coordinates enter the map URLs. Full Name, Course / Year, Contact Number, Activity, acknowledgement, Volunteer ID, timestamps, database rows, and credentials do not enter them. The current design requires no API key or billing account. The map does not change the **SYNTHETIC / LOCAL DEMO ONLY** deployment boundary: `/volunteers` is protected by R1, real personal-data deployment remains unapproved, retention is unresolved, acknowledgement is not durable consent evidence, and no delete workflow is approved.

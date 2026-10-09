@@ -2,22 +2,41 @@
 
 ## Current application structure
 
-CES Portal uses Next.js 16 App Router with TypeScript, React, Tailwind CSS, and npm. Route groups organize the staff and public experiences without adding URL prefixes: `(staff)` contains `/dashboard`, `/donations/new`, `/inventory`, `/volunteers`, and `/volunteers/poster`; `(public)` contains `/volunteer`. The root route redirects to `/dashboard`.
+CES Portal uses Next.js 16 App Router with TypeScript, React, Tailwind CSS, and npm. Route groups organize the staff and public experiences without adding URL prefixes: `(staff)` contains `/dashboard`, `/donations/new`, `/inventory`, `/volunteers`, and `/volunteers/poster`; `(public)` contains `/login` and `/volunteer`. The root route redirects to `/dashboard`.
 
-Pages and layouts are Server Components by default. Use Client Components only where browser interaction is required; the current Goods form is one example. The internal write path is:
+Pages and layouts are Server Components by default. Use Client Components only where browser interaction is required; the current Goods form is one example. The authenticated Goods/Cash write path is:
 
 ```text
-Browser
-→ Client form where interaction is needed
+Authenticated browser
 → Next.js Server Action
+→ session + role verification
 → Zod validation
-→ parameterized mysql2/promise query
-→ MySQL
+→ transaction + authorization recheck
+→ parameterized donation + audit inserts
+→ MySQL commit
 ```
 
 The server action and database connection stay on the server. `mysql2/promise` provides the connection pool and SQL access; Zod validates submitted values on the server. There is no separate Express backend, ORM, Redux, or Axios in the current project. A separate ORM, client-state library, or HTTP client is not justified by the current scope. There is no unnecessary internal REST API layer: internal mutations use Server Actions unless a concrete architectural need justifies another boundary.
 
-When implemented, Inventory and Dashboard expiry labels must use one shared date helper and derive status from `expiry_date`; do not persist status or duplicate classification rules. Goods quantities in different units are not additive and must not be shown as one total.
+Inventory and Dashboard expiry labels use one shared date helper and derive status from `expiry_date`; do not persist status or duplicate classification rules. Goods quantities in different units are not additive and must not be shown as one total.
+
+## CES Portal v2 R1 server authentication
+
+R1 is an operational expansion after the original MVP. Its authentication flow is:
+
+```text
+Browser
+→ login Server Action
+→ Argon2id verification
+→ staff_sessions (SHA-256 token digest)
+→ opaque HttpOnly cookie
+→ server-side session verification
+→ authorized staff page/action
+```
+
+Project-local credentials and opaque database-backed sessions support active `ADMIN` and `STAFF` accounts. Sessions expire absolutely after eight hours. Logout deletes the server-side session and clears the cookie. Login throttling uses shared database buckets, canonical identifier keys, and locking. No JWT, client-only auth state, or general auth framework is used.
+
+The staff layout and each of the five staff pages verify the session before protected data/UI access. Goods/Cash actions independently require active staff and recheck/lock session and user inside the write transaction. The actor comes from the verified session, never a submitted actor ID. Donation and success audit either commit together or roll back together. `/volunteer` remains public; its existing submission path is unchanged. See [security](security.md) for policy and remaining limits.
 
 ## Database and local topology
 
@@ -26,8 +45,8 @@ Docker Compose runs MySQL 8.4 as the local database service. The host binds `127
 ## Boundaries
 
 - **Browser/client boundary:** browser code handles interactive UI only. Database credentials and direct database access remain server-side.
-- **Server Action boundary:** internal form mutations receive submitted data, validate it with Zod, execute parameterized SQL, and return a safe result for the UI.
-- **Database boundary:** the MySQL schema is defined in `database/schema.sql`; data access uses `mysql2/promise`.
+- **Server Action boundary:** Goods/Cash mutations independently authorize active staff, validate with Zod, recheck authorization in the transaction, and commit donation plus audit with parameterized SQL. Public Volunteer validation/persistence remains unchanged; actions return safe UI results.
+- **Database boundary:** `database/schema.sql` defines a fresh R1 installation; existing installations evolve through numbered/checksummed additive migrations. Auth/support tables, nullable donation actors, checkpoint tracking, and migration reruns are described in [database design](database-design.md). Data access uses `mysql2/promise`; migrations are operator-run, never automatic startup behavior.
 
 ## External API Integration Boundary
 
@@ -60,10 +79,10 @@ These are two distinct external-service patterns: **QuickChart external API inte
 
 ## Post-MVP presentation architecture
 
-UI-1 through UI-4 retain server-first rendering and separate staff/public route-group layouts. The staff layout provides a responsive shell with a 240px sticky desktop sidebar, compact two-column mobile navigation, active-route semantics, a skip link, and shared PageContainer/PageHeader. Route grouping organizes presentation; it does not enforce access control.
+UI-1 through UI-4 retain server-first rendering and separate staff/public route-group layouts. The staff layout provides a responsive shell with a 240px sticky desktop sidebar, compact two-column mobile navigation, active-route semantics, a skip link, and shared PageContainer/PageHeader. Route grouping itself organizes presentation; R1 now provides real server-side authorization in the staff layout, individual pages, and Goods/Cash actions.
 
 Tailwind 4 semantic design tokens in `app/globals.css` provide shared surface, foreground, border, primary, focus, and status colors. Small Card, StatusBadge, and button/link helpers cover the shared presentation needs; a Donation-specific form-style helper keeps Goods/Cash controls consistent. No shadcn or component-framework dependency was added.
 
-Client Components remain limited to interaction such as staff navigation, Donation tabs, and the Goods/Cash/Volunteer forms. Donation panels remain mounted while the inactive panel is hidden, preserving drafts and keyboard tab behavior. Validation, Server Actions, parameterized SQL, and server-side database/provider boundaries are unchanged.
+Client Components remain limited to interaction such as staff navigation, Donation tabs, login/logout, and the Goods/Cash/Volunteer forms. Donation panels remain mounted while the inactive panel is hidden, preserving drafts and keyboard tab behavior. Validation, Server Actions, parameterized SQL, and server-side database/provider boundaries are unchanged.
 
 The public Volunteer layout gives the form priority in a ~60/40 desktop form/venue grid and places the complete form before the configured OSM venue card on mobile. The QR poster uses a local CSS module; print selectors are scoped to the poster route and remove staff chrome and screen controls while retaining the QR, direct URL when applicable, and demo warning. The QR stays 600×600 at source, approximately 280px on screen, and 74mm in print. These presentation changes do not alter map configuration or QuickChart behavior.

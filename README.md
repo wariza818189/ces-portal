@@ -12,7 +12,9 @@ The stakeholder-confirmed MVP includes Dashboard, Add Donation (Goods and Cash),
 
 The MVP, QuickChart Volunteer QR academic integration, and optional OpenStreetMap venue enhancement are implemented and accepted for **SYNTHETIC / LOCAL DEMO ONLY**. The **Post-MVP UI/UX redesign (UI-1 through UI-5) is complete**, with final integrated UI acceptance **PASS WITH NOTES**. The latest redesign feature checkpoint is `a461fe01f648db1af9252a32827fd483cb2c3300`; UI-5 required no source correction. The project is ready for classroom/local demonstration, with detailed acceptance history and remaining test notes in [docs/testing.md](docs/testing.md).
 
-Real personal-information collection and public production deployment remain **unapproved**. `/volunteers` remains unauthenticated/unprotected; authentication is outside MVP. Volunteer acknowledgement gates submission but is not stored as durable consent evidence, and retention policy awaits CES/school confirmation. Historical controlled-row acceptance evidence remains documented; current UI-5 measurements were Goods `0`, Cash `0`, Volunteers `0`, Cash total `0.00`, unchanged before/after. No reason for the database-state difference is inferred.
+**CES Portal v2 R1 Authentication, Authorization, and Audit Foundation is complete**, accepted **PASS WITH NOTES** on MySQL `8.4.11` (`ces_portal`), and checkpointed at `3c1e9ec9b4d44d8cce8243efe0b548f418fd010f`. This operational expansion follows the original MVP, which excluded authentication. Active staff must sign in for `/dashboard`, `/donations/new`, `/inventory`, `/volunteers`, and `/volunteers/poster`; `/login` and `/volunteer` remain public.
+
+Real personal-information collection and public production deployment remain **unapproved**. Volunteer acknowledgement is not stored as durable consent evidence; retention, deployment hardening, account lifecycle, and operating procedures remain pending. Demo/synthetic UI wording remains intentionally unchanged through R1; its operational transition is deferred to R6. The final R1 target snapshot is Goods `1`, Cash `1`, Volunteers `1`, Cash total `0.01`, including one authorized synthetic Cash acceptance row. Historical UI-5 zero-row measurements remain in [testing](docs/testing.md); no cause of the intervening state difference is inferred.
 
 ## Technology and architecture
 
@@ -30,8 +32,29 @@ Pages use Server Components by default. Client Components are used when browser 
 1. Install Node.js and npm, then install dependencies with `npm install`.
 2. Copy `.env.example` to `.env.local` and set local database connection values and `VOLUNTEER_SIGNUP_URL` to the absolute demo signup URL ending in `/volunteer` (or `/volunteer/`). For a phone-scan demonstration, configure a phone-reachable host. Copy `.env.docker.example` to `.env.docker` and set local-only MySQL container values. These files contain secrets and must not be committed or pasted into logs or documentation. Do not use real credentials in examples.
 3. Start the local MySQL service with `docker compose --env-file .env.docker up -d`.
-4. Apply `database/schema.sql` to the configured local database using a MySQL client.
-5. Start Next.js with `npm run dev` and open `http://localhost:3000`.
+4. Confirm the intended local target and a verified backup before schema changes. Follow the fresh/existing installation paths below.
+5. Bootstrap the initial Admin explicitly in an interactive terminal (hidden password entry, no default credential):
+
+   ```bash
+   node --env-file=.env.local scripts/bootstrap-admin.mjs
+   ```
+
+   This is initial setup only; it refuses if any Admin already exists. There is no browser registration/setup endpoint.
+6. Start Next.js with `npm run dev`, open `http://localhost:3000/login`, and sign in. Public Volunteer Signup remains at `/volunteer`.
+
+### Fresh installation
+
+Apply `database/schema.sql` using your operator MySQL client, then run the migration runner below to verify the R1 structures and record the checksum before bootstrap.
+
+### Existing installation
+
+Preserve the business tables and records; run the additive migration instead of reapplying the fresh schema:
+
+```bash
+node --env-file=.env.local scripts/migrate.mjs --database ces_portal
+```
+
+The explicit database argument must match `DB_NAME`. See [migration and bootstrap guidance](database/migrations/README.md) for privileges, rerun/checkpoint recovery, and isolated test setup. The app does not migrate automatically.
 
 Compose binds host port `3307` to container port `3306` on loopback (`127.0.0.1`). The named volume persists local database data. Database setup and project safety guidance are in [docs/security.md](docs/security.md) and [docs/database-design.md](docs/database-design.md).
 
@@ -63,7 +86,7 @@ Git checkpoints preserve completed work; inspect branch, HEAD, and working-tree 
 - [Codex workflow](docs/codex-workflow.md)
 - [Agent instructions](AGENTS.md)
 
-This is a school mini-project for IT305, not a claim of a production-ready CES service. Authentication and real-production readiness are not established.
+This is a school mini-project for IT305, not a claim of a production-ready CES service. R1 staff authentication is established; production readiness and real-data use remain unapproved.
 
 ## POST-MVP ACADEMIC / DEMO ENHANCEMENT — venue map
 

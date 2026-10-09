@@ -19,8 +19,8 @@ CES needs an organized way to record donation and volunteer information. The por
 - **Cash Donation:** confirmed workflow is physical/event cash collection, manual cash/coin counting outside the system, staff entry of final counted amount, date received, and notes, then system storage. The Dashboard includes a running cash donation total. The Phase 2B form and save action are implemented and runtime accepted as PASS WITH NOTES; its checkpoint is committed and pushed. No additional Cash validation rules are asserted here.
 - **Inventory:** CES Staff view recorded goods, filter by category, search usefully where appropriate, sort by expiry date soonest first, and clearly see expiry status. Read-only implementation and runtime acceptance are complete (**PASS WITH NOTES**); checkpoint `edc6eeba85bfe057c92159554a8794586ef1f735` is committed and pushed to `origin/main`. No free-text search was appropriate for the confirmed Goods fields in this implementation.
 - **Dashboard:** show goods record count, running cash donation total, volunteer submission count, and expiry summary of fresh, expiring soon, and expired. Read-only implementation and runtime acceptance are complete (**PASS**); feature checkpoint `644fceba3822f45d13bad574117c2457cc211b11` is committed and pushed to `origin/main`. Dashboard documentation sync `d0137dd8889dac5b3b43ac8f5d692fc1c6cde7cd` is committed and pushed; documentation synchronization is complete. The Cash total is displayed without a currency identifier because currency has not been explicitly defined. No further Dashboard acceptance write is required.
-- **Volunteer Signup:** Student Volunteer uses public `/volunteer` to submit `full_name`, `course_year`, `contact_number`, and `activity`; the submission has `created_at`. The form is intended to be mobile-friendly for poster QR scans. Core workflow implementation is **COMPLETE**, runtime accepted (**PASS WITH NOTES**), and checkpointed at `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) for **SYNTHETIC / LOCAL DEMO ONLY**. Exactly one controlled synthetic acceptance row remains locally; no duplicate exists and no further acceptance submission is required. This does not approve real personal-information collection or public production deployment. No login is required by the stakeholder-approved MVP.
-- **Volunteer Submissions:** CES Staff / CES Coordinator use `/volunteers` to view submissions in a read-only view. The staff route has no authentication/access enforcement and is suitable only within the approved local/synthetic demonstration boundary. Real-data operation requires an approved access-control/deployment design.
+- **Volunteer Signup:** Student Volunteer uses public `/volunteer` to submit `full_name`, `course_year`, `contact_number`, and `activity`; the submission has `created_at`. The form is intended to be mobile-friendly for poster QR scans. Core workflow implementation is **COMPLETE**, runtime accepted (**PASS WITH NOTES**), and checkpointed at `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) for **SYNTHETIC / LOCAL DEMO ONLY**. Historical Volunteer acceptance created exactly one controlled synthetic row without a duplicate; later point-in-time snapshots are recorded separately in [testing](testing.md). No further Volunteer acceptance submission is required. This does not approve real personal-information collection or public production deployment. No login is required by the stakeholder-approved MVP.
+- **Volunteer Submissions:** CES Staff / CES Coordinator use `/volunteers` to view submissions in a read-only view. At original MVP acceptance, the staff route had no authentication/access enforcement. Later v2 R1 restricts it to authenticated active Staff/Admin; real-data operation still requires broader privacy, retention, deployment, and governance approval.
 
 These are confirmed stakeholder requirements; their confirmation does not imply their implementation is complete.
 
@@ -52,12 +52,16 @@ Goods with unlike units must not be combined into one summed quantity. Use recor
 ## Explicit MVP exclusions and boundaries
 
 - Physical CES donation operations remain outside the software workflow.
-- Authentication/login, users table, roles, admin/super-admin, and multi-office permissions are outside the current MVP.
+- Authentication/login, users table, roles, admin/super-admin, and multi-office permissions were excluded from the original stakeholder-confirmed MVP. The separate v2 expansion below does not retroactively change that scope.
 - OSA module and OSA scheduling are outside the MVP; OSA remains pending a separate stakeholder interview.
 - Calendar/scheduling, volunteer approval/rejection, ranking, attendance, and assignment management are outside the current MVP.
 - SMS, email, AI features, barcode scanning, automated coin counting, and physical stock counting are outside the current MVP.
 - Unrelated reporting, unnecessary analytics, and edit/delete workflows are outside the current MVP unless formally approved later.
 - These exclusions do not remove the confirmed QR poster to Volunteer Signup workflow. An external QR API/provider is an academic implementation decision, not a stakeholder functional requirement.
+
+# CES Portal v2 operational expansion
+
+R1 Authentication, Authorization, and Audit Foundation is a later operational expansion, not an original CES stakeholder-confirmed MVP requirement. Staff authentication, active `ADMIN`/`STAFF` authorization, opaque database sessions, audit logging, additive migrations, and donation actor attribution are implemented and accepted on MySQL 8.4.11. `/volunteer` remains public. This does not approve real personal-data collection or production deployment, or implement later v2 modules. See [project status](../PROJECT_STATUS.md) and [R1 acceptance](testing.md#ces-portal-v2-r1--authentication-authorization-and-audit-foundation).
 
 # Academic / Course Requirement
 
@@ -72,7 +76,7 @@ The accepted classroom enhancement shows one configured public CES/demo venue on
 # Pending / Future Decisions
 
 - Retention policy pending CES/school policy confirmation. No retention duration or software deletion workflow is defined in this MVP.
-- Real-data operation pending an approved access-control/deployment design for the staff submissions route. Staff route grouping does not provide protection; authentication remains outside MVP scope.
+- Real-data operation remains unapproved pending privacy/retention, deployment hardening, and operational governance. Staff route grouping alone does not provide protection; v2 R1 now supplies server-side staff authorization separately from original MVP scope.
 - OSA scope requires a separate stakeholder interview.
 - Define only implementation details not specified by confirmed workflows; do not add unapproved validation or features.
 - Any stakeholder scope change must be formally approved and recorded before implementation.

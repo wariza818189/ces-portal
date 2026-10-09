@@ -20,13 +20,13 @@ The confirmed Dashboard metrics are goods record count, running cash donation to
 
 ## Volunteer Signup and submissions
 
-The confirmed public flow uses `/volunteer`: Student Volunteer enters `full_name`, `course_year`, `contact_number`, and `activity`; the system stores the submission with `created_at`; CES Staff / CES Coordinator later views it at `/volunteers` in a read-only view. The form is intended to be mobile-friendly for a poster QR scan. Core workflow implementation is **COMPLETE**, runtime accepted (**PASS WITH NOTES**), and checkpointed at `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) for **SYNTHETIC / LOCAL DEMO ONLY**. Exactly one controlled synthetic acceptance row remains locally; no duplicate exists and no further Volunteer submission is required. Real personal-information collection and public production deployment are not approved.
+The confirmed public flow uses `/volunteer`: Student Volunteer enters `full_name`, `course_year`, `contact_number`, and `activity`; the system stores the submission with `created_at`; CES Staff / CES Coordinator later views it at `/volunteers` in a read-only view. The form is intended to be mobile-friendly for a poster QR scan. Core workflow implementation is **COMPLETE**, runtime accepted (**PASS WITH NOTES**), and checkpointed at `fedd5337a9ea2e448bad9aff1d8650f0003b3e82` (`feat: complete Volunteer core workflow`) for **SYNTHETIC / LOCAL DEMO ONLY**. Historical acceptance created exactly one controlled synthetic row without a duplicate; later UI-5 and R1 snapshots are recorded separately in [testing](testing.md). No further Volunteer submission is required. Real personal-information collection and public production deployment are not approved.
 
 Before submission, the public form must display: “The information submitted in this form will be used by Community Extension Services to register student volunteers and contact them regarding the CES activity they selected.” Submission requires acknowledgement: “I understand that the information I provide will be used for CES volunteer registration and activity coordination.” This acknowledgement gates submission only; the current schema does not store consent evidence, and no such schema change is approved.
 
 Contact numbers are used for communication related to the selected CES activity and necessary activity coordination. No unrelated promotional use or sharing beyond authorized CES personnel is defined. All four fields are required and nonblank after trimming; surrounding whitespace is trimmed and meaningful internal text preserved. Enforce the existing schema limits (100, 100, 30, and 150 characters) without truncation. Keep contact numbers as strings, preserving leading zeros. No phone format, minimum length, course/activity list, capitalization, or phone normalization rule is defined.
 
-Although intended viewers are CES Staff / CES Coordinator, `/volunteers` has no authentication/access enforcement and is not protected by its staff route group. It is suitable only for the approved local/synthetic demonstration boundary. Real-data operation requires an approved access-control/deployment design. Authentication remains outside the MVP. Retention policy pending CES/school policy confirmation; no deletion feature is approved.
+`/volunteers` is now restricted to authenticated active Staff/Admin under v2 R1; broader privacy, retention, deployment, and operational-governance work remains pending. Route grouping alone is not access control. The approved local/synthetic boundary remains; no real-data deployment or deletion workflow is approved.
 
 Runtime acceptance created exactly one synthetic row, verified its ID and `created_at`, and confirmed that the Dashboard Volunteer submission count reflected it. No further acceptance submission is required.
 
@@ -42,7 +42,13 @@ The QuickChart static QR Code API is the selected provider. Its integration is i
 
 ## Staff/public boundary and physical work
 
-Staff route group pages are for CES Staff record entry and read-only volunteer submission viewing; the public route group is for Student Volunteer signup. Login/authentication, roles, approvals, and other unapproved workflows are outside the current MVP. Physical sorting, counting, storing, and distributing donations happen outside the portal; the system supports record-keeping only.
+Staff route group pages are for CES Staff record entry and read-only volunteer submission viewing; the public route group is for Student Volunteer signup. Authentication and roles were outside the original MVP. The later v2 R1 operational expansion now requires active Staff/Admin sign-in for staff pages; approvals and other future workflows remain unimplemented. Physical sorting, counting, storing, and distributing donations happen outside the portal; the system supports record-keeping only.
+
+## CES Portal v2 R1 staff sign-in and donation attribution
+
+Staff use `/login` with project-local credentials, then access the protected workspace. Goods/Cash saves derive `recorded_by` from the verified session and commit an application audit event in the same transaction. Legacy donations retain a NULL actor. Sign Out revokes that browser session. `/volunteer` remains publicly reachable without staff login; `/volunteers/poster` requires staff authentication to prepare the QR poster.
+
+R1 does not add Staff account-management screens, Activity Management, Donation Records, Distribution, or CSV export. The demo/synthetic wording remains through R1; the operational wording transition is deferred to R6.
 
 ## POST-MVP ACADEMIC / DEMO ENHANCEMENT — venue display
 
