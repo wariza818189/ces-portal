@@ -1,6 +1,6 @@
 "use server";
 
-import type { ResultSetHeader } from "mysql2";
+import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -9,7 +9,7 @@ import { volunteerSchema } from "@/lib/validation/volunteers";
 export type VolunteerActionState = {
   status: "idle" | "success" | "error";
   message: string;
-  fieldErrors: Partial<Record<"full_name" | "course_year" | "contact_number" | "activity" | "acknowledgement", string[]>>;
+  fieldErrors: Partial<Record<"full_name" | "course_year" | "contact_number" | "activity_id" | "acknowledgement", string[]>>;
 };
 
 function logFailure(context: string, error: unknown) {
@@ -30,7 +30,7 @@ export async function createVolunteer(
     full_name: formData.get("full_name"),
     course_year: formData.get("course_year"),
     contact_number: formData.get("contact_number"),
-    activity: formData.get("activity"),
+    activity_id: formData.get("activity_id"),
     acknowledgement: formData.get("acknowledgement"),
   });
   if (!parsed.success) {
@@ -41,15 +41,26 @@ export async function createVolunteer(
     };
   }
 
-  const { full_name, course_year, contact_number, activity } = parsed.data;
+  const { full_name, course_year, contact_number, activity_id } = parsed.data;
   try {
-    const [result] = await db.execute<ResultSetHeader>(
-      "INSERT INTO volunteers (full_name, course_year, contact_number, activity) VALUES (?, ?, ?, ?)",
-      [full_name, course_year, contact_number, activity],
-    );
-    if (result.affectedRows !== 1) {
-      throw new Error("Unexpected volunteer insert result.");
-    }
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+      const [rows] = await connection.execute<RowDataPacket[]>("SELECT CAST(id AS CHAR) AS id, name, status FROM activities WHERE id = ? FOR SHARE", [activity_id]);
+      if (rows.length !== 1 || rows[0].status !== "ACTIVE") {
+        await connection.rollback();
+        return { status: "error", message: "Please choose an available Activity.", fieldErrors: { activity_id: ["This Activity is no longer open for registration. Refresh the available Activities and choose another."] } };
+      }
+      const [result] = await connection.execute<ResultSetHeader>(
+        "INSERT INTO volunteers (full_name, course_year, contact_number, activity, activity_id) VALUES (?, ?, ?, ?, ?)",
+        [full_name, course_year, contact_number, rows[0].name, rows[0].id],
+      );
+      if (result.affectedRows !== 1) throw new Error("Unexpected volunteer insert result.");
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback().catch(() => {});
+      throw error;
+    } finally { connection.release(); }
   } catch (error) {
     logFailure("Volunteer save failed.", error);
     return {

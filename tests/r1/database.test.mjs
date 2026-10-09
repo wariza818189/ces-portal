@@ -33,7 +33,7 @@ suite("R1 integration against explicitly selected disposable MySQL", async (t) =
       assert.deepEqual(goods, { quantity: "1.25", recorded_by: null });
       assert.deepEqual(cash, { amount: "125.25", recorded_by: null });
       assert.deepEqual(volunteer, { activity: "Historical free text", contact_number: "00000000000" });
-      const [[migration]] = await connection.query("SELECT status, completed_statements, LENGTH(checksum) AS checksumLength FROM schema_migrations");
+      const [[migration]] = await connection.query("SELECT status, completed_statements, LENGTH(checksum) AS checksumLength FROM schema_migrations WHERE version = '001_auth_foundation.sql'");
       assert.equal(migration.status, "APPLIED"); assert.equal(migration.completed_statements, 10); assert.equal(migration.checksumLength, 64);
     });
     await t.test("bootstrap race creates exactly one Admin and one null-actor audit", async () => {

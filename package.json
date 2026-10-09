@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:r1": "node --import ./tests/r1/register.mjs --test tests/r1/*.test.mjs",
+    "test:r1": "node --import ./tests/r1/register.mjs --test --test-isolation=none tests/r1/*.test.mjs",
     "db:migrate": "node scripts/migrate.mjs",
-    "db:bootstrap-admin": "node scripts/bootstrap-admin.mjs"
+    "db:bootstrap-admin": "node scripts/bootstrap-admin.mjs",
+    "test:r2": "node --import ./tests/r1/register.mjs --test --test-isolation=none tests/r2/*.test.mjs"
   },
   "dependencies": {
     "argon2": "0.45.1",

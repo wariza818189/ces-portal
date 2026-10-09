@@ -1,11 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import type { PublicActivity } from "@/lib/activities";
 import { buttonStyles } from "@/components/ui/button-styles";
 import { createVolunteer, type VolunteerActionState } from "@/lib/actions/volunteers";
 
 const initialValues = {
-  full_name: "", course_year: "", contact_number: "", activity: "",
+  full_name: "", course_year: "", contact_number: "", activity_id: "",
   acknowledgement: false,
 };
 type FormState = VolunteerActionState & {
@@ -19,14 +21,15 @@ const fields = [
   { name: "full_name", label: "Full Name", maximum: 100 },
   { name: "course_year", label: "Course / Year", maximum: 100 },
   { name: "contact_number", label: "Contact Number", maximum: 30 },
-  { name: "activity", label: "Activity", maximum: 150 },
 ] as const;
 const focusClass = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
 
-export function VolunteerForm() {
+export function VolunteerForm({ activities, selectedId, onSelect }: { activities: PublicActivity[]; selectedId: string; onSelect: (id: string) => void }) {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState(
     async (previousState: FormState, formData: FormData): Promise<FormState> => {
       const result = await createVolunteer(previousState, formData);
+      if (result.status === "success") onSelect("");
       function textValue(name: string) {
         const value = formData.get(name);
         return typeof value === "string" ? value : "";
@@ -38,7 +41,7 @@ export function VolunteerForm() {
           full_name: textValue("full_name"),
           course_year: textValue("course_year"),
           contact_number: textValue("contact_number"),
-          activity: textValue("activity"),
+          activity_id: textValue("activity_id"),
           acknowledgement: formData.get("acknowledgement") === "on",
         },
       };
@@ -61,7 +64,7 @@ export function VolunteerForm() {
           {state.message}
         </div>
       )}
-      <fieldset disabled={isPending} aria-label="Volunteer registration" className="min-w-0 space-y-6">
+      <fieldset disabled={isPending || !activities.length} aria-label="Volunteer registration" className="min-w-0 space-y-6">
         {fields.map(({ name, label, maximum }) => {
           const error = state.fieldErrors[name]?.[0];
           return (
@@ -78,6 +81,20 @@ export function VolunteerForm() {
             </div>
           );
         })}
+        <div>
+          <label htmlFor="volunteer-activity_id" className="block text-sm font-medium text-foreground">Choose a CES Activity <span aria-hidden="true">*</span></label>
+          <select id="volunteer-activity_id" name="activity_id" required value={selectedId} onChange={event => onSelect(event.target.value)}
+            aria-invalid={Boolean(state.fieldErrors.activity_id)} aria-describedby={`volunteer-activity-hint${state.fieldErrors.activity_id ? " volunteer-activity-error" : ""}`}
+            className={`mt-2 min-h-12 w-full min-w-0 rounded-lg border border-input-border bg-surface px-3 py-3 text-base aria-invalid:border-error ${focusClass}`}>
+            <option value="">Choose a CES Activity</option>
+            {selectedId && !activities.some(activity => activity.id === selectedId) && <option value={selectedId} disabled>Previously selected Activity is unavailable</option>}
+            {activities.map(activity => <option key={activity.id} value={activity.id}>{activity.name} — {activity.activity_date}{activities.filter(other => other.name === activity.name && other.activity_date === activity.activity_date).length > 1 ? ` — ${activity.venue_name ?? "Venue not provided"} (Activity ${activity.id})` : ""}</option>)}
+          </select>
+          <p id="volunteer-activity-hint" className="mt-1 text-sm text-muted-foreground">Registration is available for Active Activities, regardless of date.</p>
+          {activities.find(activity => activity.id === selectedId) && <p className="mt-2 wrap-anywhere text-sm">Date: {activities.find(activity => activity.id === selectedId)?.activity_date} · Venue: {activities.find(activity => activity.id === selectedId)?.venue_name ?? "Not provided"}</p>}
+          {state.fieldErrors.activity_id && <p id="volunteer-activity-error" className="mt-1 text-sm text-error">{state.fieldErrors.activity_id[0]}</p>}
+          <button type="button" onClick={() => router.refresh()} className={`${buttonStyles.secondary} mt-3`}>Refresh available Activities</button>
+        </div>
         <section aria-labelledby="volunteer-use-heading" className="rounded-lg border border-info-border bg-info-surface p-4 text-sm leading-6 text-info">
           <h3 id="volunteer-use-heading" className="font-semibold">How the information is used</h3>
           <p className="mt-2">The information submitted in this form will be used by Community Extension Services to register student volunteers and contact them regarding the CES activity they selected.</p>
@@ -93,7 +110,7 @@ export function VolunteerForm() {
           {acknowledgementError && <p id="volunteer-acknowledgement-error" className="mt-1 text-sm text-error">{acknowledgementError}</p>}
         </div>
       </fieldset>
-      <button type="submit" disabled={isPending}
+      <button type="submit" disabled={isPending || !activities.length || Boolean(selectedId && !activities.some(activity => activity.id === selectedId))}
         className={`${buttonStyles.primary} w-full disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto`}>
         {isPending ? "Saving..." : "Submit Volunteer Registration"}
       </button>

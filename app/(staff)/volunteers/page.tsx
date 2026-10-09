@@ -11,6 +11,7 @@ type VolunteerRow = RowDataPacket & {
   course_year: string;
   contact_number: string;
   activity: string;
+  activity_id: string | null;
   created_at: string;
 };
 const columns = [
@@ -28,12 +29,13 @@ export default async function VolunteersPage() {
   try {
     const { db } = await import("@/lib/db");
     const [rows] = await db.execute<VolunteerRow[]>(
-      `SELECT CAST(id AS CHAR) AS id, full_name, course_year, contact_number, activity,
+      `SELECT CAST(id AS CHAR) AS id, CAST(activity_id AS CHAR) AS activity_id, full_name, course_year, contact_number, activity,
               DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at
        FROM volunteers ORDER BY created_at DESC, id DESC`,
     );
     if (!Array.isArray(rows) || rows.some((row) =>
       typeof row.id !== "string" || !/^\d+$/.test(row.id)
+      || (row.activity_id !== null && (typeof row.activity_id !== "string" || !/^[1-9]\d*$/.test(row.activity_id)))
       || columns.some(({ key }) => typeof row[key] !== "string" || !row[key].trim())
       || !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(row.created_at))) {
       throw new Error("Invalid volunteer result.");
@@ -58,7 +60,7 @@ export default async function VolunteersPage() {
       <aside className="rounded-xl border border-warning-border bg-warning-surface p-5 text-sm leading-6 text-warning">
         <h2 className="font-semibold">SYNTHETIC / LOCAL DEMO ONLY</h2>
         <p className="mt-2">Classroom/local demonstration using synthetic test information only.</p>
-        <p className="mt-2">Intended viewers: CES Staff / CES Coordinator. This route has no authentication or access enforcement. Real personal-information collection and public production deployment are not approved.</p>
+        <p className="mt-2">Intended viewers: CES Staff / CES Coordinator. Access is restricted to authenticated active CES staff. Real personal-information collection and public production deployment are not approved.</p>
       </aside>
       {records === null ? (
         <section role="alert" className="rounded-xl border border-error-border bg-error-surface p-6 text-error">
@@ -90,7 +92,7 @@ export default async function VolunteersPage() {
                 {records.map((record) => (
                   <tr key={record.id}>{columns.map(({ key }) => key === "full_name"
                     ? <th key={key} scope="row" className="whitespace-pre-wrap wrap-anywhere px-4 py-4 font-medium">{record[key]}</th>
-                    : <td key={key} className={`whitespace-pre-wrap wrap-anywhere px-4 py-4 ${key === "created_at" || key === "contact_number" ? "tabular-nums" : ""}`}>{record[key]}</td>)}</tr>
+                    : <td key={key} className={`whitespace-pre-wrap wrap-anywhere px-4 py-4 ${key === "created_at" || key === "contact_number" ? "tabular-nums" : ""}`}>{record[key]}{key === "activity" && record.activity_id === null && <span className="mt-1 block text-xs text-muted-foreground">Historical / unlinked</span>}</td>)}</tr>
                 ))}
               </tbody>
             </table>
@@ -102,7 +104,7 @@ export default async function VolunteersPage() {
                 <dl className="mt-4 grid gap-4 text-sm sm:grid-cols-2">
                   <div className="sm:col-span-2">
                     <dt className="font-medium text-muted-foreground">Activity</dt>
-                    <dd className="mt-1 whitespace-pre-wrap wrap-anywhere text-foreground">{record.activity}</dd>
+                    <dd className="mt-1 whitespace-pre-wrap wrap-anywhere text-foreground">{record.activity}{record.activity_id === null && <span className="mt-1 block text-xs text-muted-foreground">Historical / unlinked</span>}</dd>
                   </div>
                   {columns.filter(({ key }) => key !== "full_name" && key !== "activity").map(({ key, label }) => (
                     <div key={key} className="min-w-0"><dt className="font-medium text-muted-foreground">{label}</dt><dd className={`mt-1 whitespace-pre-wrap wrap-anywhere text-foreground ${key === "created_at" || key === "contact_number" ? "tabular-nums" : ""}`}>{record[key]}</dd></div>

@@ -8,6 +8,7 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const framework = new URL("./framework.mjs", import.meta.url).href;
 registerHooks({
   resolve(specifier, context, next) {
+    if (specifier === "next/link") return next("next/link.js", context);
     if (specifier === "server-only") return { url: "data:text/javascript,export{}", shortCircuit: true };
     if (["next/headers", "next/navigation", "next/cache", "next/server"].includes(specifier)) return { url: framework, shortCircuit: true };
     if (specifier.startsWith("@/")) {

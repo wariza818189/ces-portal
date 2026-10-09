@@ -22,3 +22,7 @@ export function revalidatePath() {
   if (requests.getStore()?.refreshFails) throw new Error("Injected refresh failure.");
 }
 export async function connection() {}
+
+// Minimal hooks for static component markup checks; browser tests cover interaction.
+export function useRouter() { return { refresh() {} }; }
+export function usePathname() { return "/activities"; }

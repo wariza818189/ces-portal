@@ -1,10 +1,13 @@
 import { connection } from "next/server";
-import { CesLocationMap } from "@/components/maps/ces-location-map";
-import { VolunteerForm } from "@/components/volunteers/volunteer-form";
-import { Card } from "@/components/ui/card";
+import { VolunteerExperience } from "@/components/volunteers/volunteer-experience";
+import { listPublicActivities, logActivityFailure, type PublicActivity } from "@/lib/activities";
+import { getCesLocationMap } from "@/lib/ces-map";
 
 export default async function VolunteerPage() {
   await connection();
+  let activities: PublicActivity[] | null = null;
+  try { activities = await listPublicActivities(); } catch (error) { logActivityFailure("Public Activities load failed.", error); }
+  const demoMap = getCesLocationMap(process.env.CES_MAP_VENUE_NAME, process.env.CES_MAP_LATITUDE, process.env.CES_MAP_LONGITUDE);
   return (
     <div className="space-y-6">
       <header>
@@ -26,15 +29,7 @@ export default async function VolunteerPage() {
         <p className="mt-2">Classroom/local demonstration using synthetic test information only.</p>
         <p className="mt-2">Do not enter real personal information. Real-data collection and public production deployment are not approved.</p>
       </aside>
-      <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[3fr_2fr]">
-        <section aria-labelledby="volunteer-form-heading" className="min-w-0">
-          <Card>
-            <h2 id="volunteer-form-heading" className="mb-2 text-lg font-semibold text-foreground">Volunteer Registration</h2>
-            <VolunteerForm />
-          </Card>
-        </section>
-        <CesLocationMap />
-      </div>
+      <VolunteerExperience activities={activities} demoMap={demoMap} />
     </div>
   );
 }

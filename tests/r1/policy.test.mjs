@@ -15,7 +15,7 @@ test("password character boundaries preserve spaces and Unicode without composit
   for (const password of ["", "a".repeat(11), "a".repeat(129), "😀".repeat(129), null]) assert.equal(validPassword(password), false);
 });
 test("return paths reject URL, encoding, separator, and protocol tricks", () => {
-  for (const path of ["/dashboard", "/donations/new", "/inventory", "/volunteers", "/volunteers/poster"]) assert.equal(safeReturnPath(path), path);
+  for (const path of ["/dashboard", "/donations/new", "/inventory", "/activities", "/volunteers", "/volunteers/poster"]) assert.equal(safeReturnPath(path), path);
   for (const path of ["https://attacker.test", "//attacker.test", "javascript:alert(1)", "data:text/html,x", "/\\attacker.test", "/%2f%2fattacker.test", "/dashboard\r\nLocation:x", "/login", ["/inventory"], null]) assert.equal(safeReturnPath(path), "/dashboard");
 });
 test("roles and session token formats fail closed", () => {
