@@ -18,8 +18,11 @@ export function redirect(path) {
   error.destination = path;
   throw error;
 }
-export function revalidatePath() {
-  if (requests.getStore()?.refreshFails) throw new Error("Injected refresh failure.");
+export function revalidatePath(path) {
+  const request = requests.getStore();
+  request?.refreshPaths?.push(path);
+  request?.onRefresh?.(path);
+  if (request?.refreshFails) throw new Error("Injected refresh failure.");
 }
 export async function connection() {}
 
