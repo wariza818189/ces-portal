@@ -1,4 +1,4 @@
--- Fresh-install R2 schema. Existing installations use the numbered migration.
+-- Fresh-install midterm schema. Existing installations use the numbered migration.
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     metadata JSON NULL,
     created_at DATETIME(3) NOT NULL DEFAULT (UTC_TIMESTAMP(3)),
     CONSTRAINT fk_audit_actor FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    CONSTRAINT chk_audit_event CHECK (event_type IN ('AUTH_LOGIN_SUCCESS', 'AUTH_LOGIN_FAILURE', 'AUTH_LOGOUT', 'GOODS_DONATION_CREATED', 'CASH_DONATION_CREATED', 'ADMIN_BOOTSTRAPPED', 'ACTIVITY_CREATED', 'ACTIVITY_UPDATED', 'ACTIVITY_STATUS_CHANGED')),
+    CONSTRAINT chk_audit_event CHECK (event_type IN ('AUTH_LOGIN_SUCCESS', 'AUTH_LOGIN_FAILURE', 'AUTH_LOGOUT', 'GOODS_DONATION_CREATED', 'CASH_DONATION_CREATED', 'ADMIN_BOOTSTRAPPED', 'ACTIVITY_CREATED', 'ACTIVITY_UPDATED', 'ACTIVITY_STATUS_CHANGED', 'NOTICE_CREATED', 'NOTICE_UPDATED', 'NOTICE_DELETED')),
     CONSTRAINT chk_audit_outcome CHECK (outcome IN ('SUCCESS', 'FAILURE')),
     INDEX idx_audit_created (created_at, id),
     INDEX idx_audit_actor (actor_user_id, created_at)
@@ -143,4 +143,20 @@ CREATE TABLE IF NOT EXISTS volunteers (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     INDEX idx_volunteers_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS notices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(120) NOT NULL,
+    message VARCHAR(2000) NOT NULL,
+    created_by BIGINT UNSIGNED NOT NULL,
+    created_at DATETIME(3) NOT NULL DEFAULT (UTC_TIMESTAMP(3)),
+    updated_at DATETIME(3) NOT NULL DEFAULT (UTC_TIMESTAMP(3)),
+    revision INT UNSIGNED NOT NULL DEFAULT 1,
+    CONSTRAINT fk_notices_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    CONSTRAINT chk_notices_title CHECK (CHAR_LENGTH(TRIM(title)) > 0),
+    CONSTRAINT chk_notices_message CHECK (CHAR_LENGTH(TRIM(message)) > 0),
+    CONSTRAINT chk_notices_revision CHECK (revision > 0),
+    INDEX idx_notices_created_by (created_by),
+    INDEX idx_notices_updated (updated_at, id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -6,10 +6,30 @@ export class MigrationError extends Error {}
 
 const R1_EVENTS = "'AUTH_LOGIN_SUCCESS', 'AUTH_LOGIN_FAILURE', 'AUTH_LOGOUT', 'GOODS_DONATION_CREATED', 'CASH_DONATION_CREATED', 'ADMIN_BOOTSTRAPPED'";
 const R2_EVENTS = `${R1_EVENTS}, 'ACTIVITY_CREATED', 'ACTIVITY_UPDATED', 'ACTIVITY_STATUS_CHANGED'`;
+const MIDTERM_EVENTS = `${R2_EVENTS}, 'NOTICE_CREATED', 'NOTICE_UPDATED', 'NOTICE_DELETED'`;
 const auditCheck = events => `event_type IN (${events})`;
 export const AUDIT_CHECK_REPLACEMENT = `ALTER TABLE audit_logs DROP CHECK chk_audit_event, ADD CONSTRAINT chk_audit_event CHECK (${auditCheck(R2_EVENTS)})`;
+export const NOTICE_AUDIT_CHECK_REPLACEMENT = `ALTER TABLE audit_logs DROP CHECK chk_audit_event, ADD CONSTRAINT chk_audit_event CHECK (${auditCheck(MIDTERM_EVENTS)})`;
+const NOTICE_CREATE = `CREATE TABLE IF NOT EXISTS notices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(120) NOT NULL,
+    message VARCHAR(2000) NOT NULL,
+    created_by BIGINT UNSIGNED NOT NULL,
+    created_at DATETIME(3) NOT NULL DEFAULT (UTC_TIMESTAMP(3)),
+    updated_at DATETIME(3) NOT NULL DEFAULT (UTC_TIMESTAMP(3)),
+    revision INT UNSIGNED NOT NULL DEFAULT 1,
+    CONSTRAINT fk_notices_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    CONSTRAINT chk_notices_title CHECK (CHAR_LENGTH(TRIM(title)) > 0),
+    CONSTRAINT chk_notices_message CHECK (CHAR_LENGTH(TRIM(message)) > 0),
+    CONSTRAINT chk_notices_revision CHECK (revision > 0),
+    INDEX idx_notices_created_by (created_by),
+    INDEX idx_notices_updated (updated_at, id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`;
+const MIDTERM_CHECKSUM = "5030fb936e85f381a191288ef7a26805ec3a154056e339d161015df04c291967";
 const compactSql = sql => sql.replace(/\s+/g, " ").trim();
-const isAuditReplacement = sql => compactSql(sql) === AUDIT_CHECK_REPLACEMENT;
+const replacementState = sql => compactSql(sql) === AUDIT_CHECK_REPLACEMENT ? "R2"
+  : compactSql(sql) === NOTICE_AUDIT_CHECK_REPLACEMENT ? "MIDTERM" : null;
+const isAuditReplacement = sql => replacementState(sql) !== null;
 const normalizeCheck = value => value.replace(/\\'/g, "'").split(/('(?:[^']|'')*')/).map((part, index) => index % 2
   ? part : part.toLowerCase().replace(/_(?:ascii|utf8mb4)/g, "").replace(/[`\s()]/g, "")).join("");
 
@@ -17,7 +37,7 @@ async function auditCheckState(connection, database) {
   const [rows] = await connection.execute(
     "SELECT t.ENFORCED, c.CHECK_CLAUSE FROM information_schema.TABLE_CONSTRAINTS t JOIN information_schema.CHECK_CONSTRAINTS c ON c.CONSTRAINT_SCHEMA = t.CONSTRAINT_SCHEMA AND c.CONSTRAINT_NAME = t.CONSTRAINT_NAME WHERE t.TABLE_SCHEMA = ? AND t.TABLE_NAME = 'audit_logs' AND t.CONSTRAINT_NAME = 'chk_audit_event' AND t.CONSTRAINT_TYPE = 'CHECK'", [database]);
   if (rows.length !== 1 || rows[0].ENFORCED !== "YES") throw new MigrationError("Audit event CHECK is missing or unenforced.");
-  for (const [state, events] of [["R1", R1_EVENTS], ["R2", R2_EVENTS]]) {
+  for (const [state, events] of [["R1", R1_EVENTS], ["R2", R2_EVENTS], ["MIDTERM", MIDTERM_EVENTS]]) {
     if (normalizeCheck(rows[0].CHECK_CLAUSE) === normalizeCheck(auditCheck(events))) return state;
   }
   throw new MigrationError("Audit event CHECK differs from approved migration chain.");
@@ -47,8 +67,12 @@ export function migrationStatements(sql) {
 
 async function alreadyAppliedAlter(connection, database, statement, chain = {}) {
   if (isAuditReplacement(statement)) {
-    if (!chain.successor) throw new MigrationError("Audit CHECK replacement requires the approved successor migration.");
-    return (await auditCheckState(connection, database)) === "R2";
+    const target = replacementState(statement);
+    if (!chain.states?.includes(target)) throw new MigrationError("Audit CHECK replacement requires the approved successor migration.");
+    const state = await auditCheckState(connection, database);
+    if (state === target || (target === "R2" && state === "MIDTERM" && chain.states.includes("MIDTERM"))) return true;
+    if (state !== (target === "R2" ? "R1" : "R2")) throw new MigrationError("Unrecognized audit CHECK transition.");
+    return false;
   }
   const column = /^ALTER TABLE (\w+) ADD COLUMN (\w+) BIGINT UNSIGNED NULL$/i.exec(statement);
   if (column) {
@@ -143,14 +167,24 @@ async function verifyExistingCreate(connection, database, statement, chain = {})
   const [checks] = await connection.execute("SELECT t.CONSTRAINT_NAME, t.ENFORCED, c.CHECK_CLAUSE FROM information_schema.TABLE_CONSTRAINTS t JOIN information_schema.CHECK_CONSTRAINTS c ON c.CONSTRAINT_SCHEMA = t.CONSTRAINT_SCHEMA AND c.CONSTRAINT_NAME = t.CONSTRAINT_NAME WHERE t.TABLE_SCHEMA = ? AND t.TABLE_NAME = ? AND t.CONSTRAINT_TYPE = 'CHECK'", [database, table]);
   for (const line of lines) {
     const check = /^CONSTRAINT (\w+) CHECK \((.*)\)$/i.exec(line);
-    if (check && table === "audit_logs" && check[1] === "chk_audit_event" && chain.successor) {
+    if (check && table === "audit_logs" && check[1] === "chk_audit_event" && chain.states) {
       const state = await auditCheckState(connection, database);
-      if (chain.requireSuccessor && state !== "R2") throw new MigrationError("Applied successor audit CHECK is missing.");
+      if (!chain.states.includes(state) || (chain.requiredState && state !== chain.requiredState)) throw new MigrationError("Applied successor audit CHECK is missing.");
       continue;
     }
     if (check && !checks.some(row => row.CONSTRAINT_NAME === check[1] && row.ENFORCED === "YES" && normalizeCheck(row.CHECK_CLAUSE) === normalizeCheck(check[2]))) throw new MigrationError(`Existing check differs from migration: ${table}.${check[1]}`);
     if (/^CONSTRAINT \w+ FOREIGN KEY /i.test(line)
       && !(await alreadyAppliedAlter(connection, database, `ALTER TABLE ${table} ADD ${line}`))) throw new MigrationError(`Existing foreign key missing: ${table}`);
+  }
+  if (table === "notices") {
+    if (new Set(indexes.map(row => row.INDEX_NAME)).size !== keys.length
+      || checks.length !== 3) throw new MigrationError("Existing Notice constraints/indexes differ from migration.");
+    const [foreignKeys] = await connection.execute("SELECT CONSTRAINT_NAME FROM information_schema.REFERENTIAL_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = ? AND TABLE_NAME = ?", [database, table]);
+    if (foreignKeys.length !== 1 || foreignKeys[0].CONSTRAINT_NAME !== "fk_notices_created_by") throw new MigrationError("Existing Notice foreign keys differ from migration.");
+    const [details] = await connection.execute("SELECT INDEX_NAME, COLLATION, SUB_PART, INDEX_TYPE, IS_VISIBLE FROM information_schema.STATISTICS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?", [database, table]);
+    if (details.some(row => row.COLLATION !== "A" || row.SUB_PART !== null || row.INDEX_TYPE !== "BTREE" || row.IS_VISIBLE !== "YES")
+      || columns.some(row => row.EXTRA.replace(/DEFAULT_GENERATED|auto_increment/g, "").trim()
+        || (["title", "message"].includes(row.COLUMN_NAME) && !row.COLLATION_NAME?.startsWith("utf8mb4_")))) throw new MigrationError("Existing Notice storage differs from migration.");
   }
   return true;
 }
@@ -182,13 +216,54 @@ export async function applyMigrations(connection, directory = fileURLToPath(new 
     }
     const predecessor = migrations.find(item => item.version === "001_auth_foundation.sql");
     const successor = migrations.find(item => item.version === "002_activity_management.sql");
-    // Only this historical constraint may be superseded, by this exact reviewed chain.
-    const chain = { successor: false, requireSuccessor: successor?.rows[0]?.status === "APPLIED" };
-    if (successor) {
+    const midterm = migrations.find(item => item.version === "003_midterm_notices.sql");
+    // Permit only these exact, immutable identities and statement positions.
+    const chain = { states: ["R1"] };
+    if (successor || midterm) {
       if (predecessor?.checksum !== "7c018fd31fabb353545a9dd04cea3bfd4327e88ddab488764fecb2acdfa85d3d"
-        || successor.checksum !== "e2704724d5bae39b2027bf50889001a198fa1d0051023f03b600f89e277b8a81"
-        || successor.statements.length !== 5 || !isAuditReplacement(successor.statements[4])) throw new MigrationError("Unrecognized audit CHECK successor chain.");
-      chain.successor = true;
+        || predecessor.statements.length !== 10
+        || successor?.checksum !== "e2704724d5bae39b2027bf50889001a198fa1d0051023f03b600f89e277b8a81"
+        || successor.statements.length !== 5 || replacementState(successor.statements[4]) !== "R2") throw new MigrationError("Unrecognized audit CHECK successor chain.");
+      chain.states.push("R2");
+    }
+    if (midterm) {
+      if (midterm.checksum !== MIDTERM_CHECKSUM || midterm.statements.length !== 2
+        || compactSql(midterm.statements[0]) !== compactSql(NOTICE_CREATE)
+        || replacementState(midterm.statements[1]) !== "MIDTERM") throw new MigrationError("Unrecognized Notice successor chain.");
+      chain.states.push("MIDTERM");
+    }
+    if (migrations.some(item => item.statements.some(sql => isAuditReplacement(sql)
+      && !((item === successor && replacementState(sql) === "R2") || (item === midterm && replacementState(sql) === "MIDTERM"))))) throw new MigrationError("Unrecognized audit CHECK successor identity.");
+    for (const [later, earlier] of [[successor, predecessor], [midterm, successor]]) {
+      if (later?.rows.length && earlier?.rows[0]?.status !== "APPLIED") throw new MigrationError("Migration checkpoints are out of chain order.");
+    }
+    // A finished/checkpointed successor cannot regress. The single next DDL
+    // may already have committed before its checkpoint; verify its exact state.
+    const [auditTables] = await connection.execute("SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?", [database, "audit_logs"]);
+    if (auditTables.length) {
+      const state = await auditCheckState(connection, database);
+      const fresh = migrations.every(item => !item.rows.length);
+      let allowed = ["R1"];
+      if (successor?.rows[0]?.status === "APPLIED" || successor?.rows[0]?.completed_statements === 5) allowed = ["R2"];
+      else if (successor?.rows[0]?.completed_statements === 4) allowed.push("R2");
+      if (midterm?.rows[0]?.status === "APPLIED" || midterm?.rows[0]?.completed_statements === 2) allowed = ["MIDTERM"];
+      else if (midterm?.rows[0]?.completed_statements === 1) allowed.push("MIDTERM");
+      // Latest-schema adoption can be interrupted while recording earlier
+      // migrations. No future CHECK is accepted without its entire exact
+      // predecessor structure; checkpointed successors may never regress.
+      const adopting = fresh || (state === "R2" && successor && !successor.rows.length)
+        || (state === "MIDTERM" && midterm && (!midterm.rows.length
+          || (midterm.rows[0].status === "APPLYING" && midterm.rows[0].completed_statements === 0)));
+      if (adopting && chain.states.includes(state)) allowed.push(state);
+      if (!allowed.includes(state)) throw new MigrationError("Audit CHECK state is ahead of or behind migration checkpoints.");
+      if (state !== "R1" && adopting) {
+        for (const statement of successor.statements.slice(0, 4)) {
+          const exists = /^CREATE /i.test(statement) ? await verifyExistingCreate(connection, database, statement) : await alreadyAppliedAlter(connection, database, statement);
+          if (!exists) throw new MigrationError("Fresh successor structure is missing.");
+        }
+      }
+      if (state === "MIDTERM" && !(await verifyExistingCreate(connection, database, midterm.statements[0]))) throw new MigrationError("Notice successor table is missing.");
+      chain.requiredState = state;
     }
     for (const item of migrations) {
       const { version, checksum, statements, rows } = item;
@@ -196,11 +271,11 @@ export async function applyMigrations(connection, directory = fileURLToPath(new 
       // Validate pre-existing CREATE definitions even on a completed rerun.
       for (const statement of statements.filter(sql => /^CREATE /i.test(sql))) {
         const exists = await verifyExistingCreate(connection, database, statement, verificationChain);
-        if (rows[0]?.status === "APPLIED" && !exists) throw new MigrationError("Applied migration table is missing.");
+        if ((rows[0]?.status === "APPLIED" || statements.indexOf(statement) < (rows[0]?.completed_statements ?? 0)) && !exists) throw new MigrationError("Applied migration table is missing.");
       }
       if (rows[0]?.status === "APPLIED") {
         for (const statement of statements.filter(sql => /^ALTER /i.test(sql))) {
-          if (!(await alreadyAppliedAlter(connection, database, statement, version === "002_activity_management.sql" ? chain : {}))) throw new MigrationError("Applied migration actor schema is missing.");
+          if (!(await alreadyAppliedAlter(connection, database, statement, (version === "002_activity_management.sql" || version === "003_midterm_notices.sql") ? chain : {}))) throw new MigrationError("Applied migration actor schema is missing.");
         }
         continue;
       }
@@ -210,12 +285,12 @@ export async function applyMigrations(connection, directory = fileURLToPath(new 
       const completed = rows[0]?.completed_statements ?? 0;
       if (completed > statements.length) throw new MigrationError("Invalid migration checkpoint.");
       for (const statement of statements.slice(0, completed).filter(sql => /^ALTER /i.test(sql))) {
-        if (!(await alreadyAppliedAlter(connection, database, statement, version === "002_activity_management.sql" ? chain : {}))) throw new MigrationError("Checkpointed schema is missing.");
+        if (!(await alreadyAppliedAlter(connection, database, statement, (version === "002_activity_management.sql" || version === "003_midterm_notices.sql") ? chain : {}))) throw new MigrationError("Checkpointed schema is missing.");
       }
       for (let index = completed; index < statements.length; index++) {
         if (/^CREATE /i.test(statements[index])) {
           if (!(await verifyExistingCreate(connection, database, statements[index], verificationChain))) await connection.query(statements[index]);
-        } else if (!(await alreadyAppliedAlter(connection, database, statements[index], version === "002_activity_management.sql" ? chain : {}))) await connection.query(statements[index]);
+        } else if (!(await alreadyAppliedAlter(connection, database, statements[index], (version === "002_activity_management.sql" || version === "003_midterm_notices.sql") ? chain : {}))) await connection.query(statements[index]);
         await connection.execute("UPDATE schema_migrations SET completed_statements = ? WHERE version = ?", [index + 1, version]);
       }
       await connection.execute("UPDATE schema_migrations SET status = 'APPLIED', applied_at = UTC_TIMESTAMP(3) WHERE version = ?", [version]);

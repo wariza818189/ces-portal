@@ -10,6 +10,7 @@
     "test:r1": "node --import ./tests/r1/register.mjs --test --test-isolation=none tests/r1/*.test.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "db:bootstrap-admin": "node scripts/bootstrap-admin.mjs",
+    "test:midterm": "node --import ./tests/r1/register.mjs --test --test-isolation=none tests/midterm/*.test.mjs",
     "test:r2": "node --import ./tests/r1/register.mjs --test --test-isolation=none tests/r2/*.test.mjs"
   },
   "dependencies": {
