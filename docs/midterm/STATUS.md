@@ -5,8 +5,9 @@
 This is the single authoritative midterm tracker. Update it after verified
 midterm changes; other documents define the specification and capture process,
 not competing completion trackers. Planning foundation reviewed; core CRUD/RBAC
-design LOCKED. Implementation not started; evidence not captured; team inputs
-pending. No runtime acceptance is claimed.
+design LOCKED. Implementation not started; evidence not captured. Team name and
+five-member roster recorded; remaining team/evidence inputs pending. No runtime
+acceptance is claimed.
 
 ## Baseline and boundaries
 
@@ -18,9 +19,9 @@ date, not a historical development, evidence, signature, or commit date.
 | Original worktree | `/home/whis/Projects/ces-portal`, branch `main`; approved unstaged R3 Donation Records work is frozen. |
 | Original and midterm committed baseline | `66595665c32c0cb1e3803afa5a47d0d2a10a1bce` — `docs: sync R2 activity management status`. |
 | Midterm worktree | `/home/whis/Projects/ces-portal-midterm`; created only after confirming path and local branch were absent. |
-| Midterm branch | `midterm-integration-checkpoint`; planning checkpoint descends directly from the baseline SHA. |
+| Midterm branch | `midterm-integration-checkpoint`; initial planning checkpoint `be863193ed2efad5dfcde04a10441d917ba19b7f` descends directly from the R2 baseline; team-input checkpoint follows it. |
 | Initial midterm state | Clean checkout of committed R2; no R3 changes copied. |
-| Current midterm Git state | Checkpoint scope: exactly five Markdown files in `docs/midterm/`. This task authorizes explicit staging, one documentation commit, and dedicated-branch push; verify resulting SHA/remote/clean state in the execution report. |
+| Current midterm Git state | Initial planning checkpoint contains five Markdown files. Current team-input checkpoint changes only STATUS.md and EVIDENCE_PLAN.md; one documentation commit and dedicated-branch push authorized. Verify SHA/remote/clean state in the execution report. |
 | Databases / Docker | No connections, queries, schema changes, data changes, container actions, or volume actions in this task. Accepted `ces_portal` remains outside midterm writes. |
 | Unrelated directory | `.aws remains unrelated, untouched, and excluded.` |
 
@@ -60,24 +61,46 @@ is not authorized.** Record any later approved design revision here first.
 
 ## TEAM INPUTS REQUIRED
 
-All remain PENDING; they do not block this planning checkpoint and must be
-resolved before evidence production is finalized.
+Team name and complete roster are supplied. Remaining inputs do not block this
+documentation checkpoint and must be resolved before evidence production is
+finalized.
 
-- Team name
-- Complete member roster
-- Submission deadline/date
-- Chosen representative
-- Which members already have Git commits
-- YouTube/channel availability for each walkthrough
-- Planned collaboration-proof method
+- Team name: **The Visionaries**
+- Complete member roster: five members, listed below
+- Submission deadline/date/time: **PENDING — instructor has not posted the exact date/time yet**
+- Google Classroom representative: **PENDING — Wariza or Layupan**
+- Existing per-member Git contribution mapping: **UNVERIFIED**
+- YouTube/channel availability for each walkthrough: **PENDING**
+- Collaboration-proof method: **PENDING**; accepted options are a real-time
+  timestamped group photo, meeting minutes, or both. No method chosen.
+
+## Team roster — The Visionaries
+
+- Wariza Robert James
+- Layupan Jonel
+- Amores Jayson
+- Largo Willmer
+- Casipong Rommel Jave
+
+## Future genuine contribution categories — unassigned
+
+1. Notice validation
+2. Notice UI
+3. ADMIN/STAFF authorization behavior
+4. Tests
+5. Accessibility/documentation plus code walkthrough
+
+No category is assigned to a named member. Assignments follow verified Git-author
+mapping and confirmed member availability.
 
 ## Git/team evidence risk
 
 Historical repository review found **35 commits and two recorded author
-identities**. This does not prove all current team members are represented. A
-complete roster is required and must be compared before inferring member
-coverage. Missing history requires genuine future contributions each member
-understands. Do not fabricate/backdate commits. The instructor preference for
+identities**. This does not prove all current team members are represented. The
+five-member roster is recorded, but actual Git-author/member mapping remains
+UNVERIFIED. Five-member coverage is unresolved until that mapping is checked;
+do not claim any member has or has not already contributed. Any verified missing
+history requires genuine future contributions each member understands. Do not fabricate/backdate commits. The instructor preference for
 work spread across weeks cannot be retroactively manufactured; this is an
 evidence risk, never a reason to falsify history.
 
@@ -95,7 +118,7 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 | Input | Why needed | Effect |
 | --- | --- | --- |
 | Deep review of pushed implementation specification | Required before Phase 1 implementation authorization. | Planning design locked; no code/database authorization yet. |
-| TeamName, roster, roles, actual authorship mapping, representative | Needed for cover, contribution assignments, and Classroom comment. | Submission/input gap; no core design blocker. |
+| Git-author/member mapping, availability, assignments, representative | The Visionaries and complete five-member roster are recorded; mapping is UNVERIFIED and representative is PENDING — Wariza or Layupan. | Resolve before contribution assignments and final submission; no technical decision changes. |
 | Exact instructor AI Declaration form and allowed attachment delivery | Confirm exact use-level terminology, signature method, whether excerpts prove hashes, and evidence access rules. | Match form faithfully; conservative Generated recommendation stands. |
 | Instructor acceptance of paired Postman + application proof | Postman demonstrates the same provider call, not the application's server network trace. | If necessary, capture server egress as planned; do not change integration. |
 | Weeks 5–7 rubric / dates and submission deadline | Only Weeks 1–4 and proof/format instructions are supplied. | Proposed next steps remain proposals; do not invent dates or requirements. |
@@ -115,8 +138,8 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 | Proof 3: API request/status/response | Postman request and binary PNG preview, paired with app usage. | Capture pending; do not treat history as new capture. |
 | Proof 4: DB create/update/delete before/after | Same Notice ID through absent → created → updated → absent; retained audit. | No Notice rows/schema/evidence yet. |
 | Proof 5: hashed password and regular-user denial | Synthetic Argon2id evidence, ADMIN access, STAFF login/direct denial. | Safe capture plan complete; no account credentials or stored account hashes inspected. |
-| Proof 6: each member walkthrough/change/YouTube | Roster-linked actual file/function, genuine change, real commit, video link. | Names, assignments, contributions, recordings, uploads pending. |
-| Collaboration / timestamped group image | Genuine dated collaboration proof and real-time date/time image. | Not supplied; never fabricated. |
+| Proof 6: each member walkthrough/change/YouTube | Roster-linked actual file/function, genuine change, real commit, video link. | Five names recorded; mapping UNVERIFIED; assignments, contribution evidence, recordings, YouTube readiness/uploads pending. |
+| Collaboration proof | Real-time timestamped group photo, meeting minutes, or both; method not chosen. | Method and authentic proof PENDING; never fabricated. |
 | AI disclosure / log / proof / signatures | Episode log, actual commit mapping, `/ai-evidence` proof, individual declarations. | Plan only; form, evidence exports, truthful reconstruction, signatures pending. |
 | PDF / Classroom | Required structure/format/filename and individual completion checklist. | Assembly and submission pending. |
 
@@ -141,7 +164,10 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 
 ## Next exact action
 
-Deep-review the pushed implementation specification from GitHub, resolve team inputs, then authorize Phase 1 midterm implementation. No implementation has started.
+Deep-review current Git author identities against the five-member roster, then authorize Phase 1 midterm implementation. Deadline, final representative, YouTube readiness, and collaboration-proof method remain pending.
+
+No implementation has started; implementation remains unauthorized until the
+next explicit phase.
 
 Planning foundation reviewed; core CRUD/RBAC design LOCKED. The execution report
 records the actual planning commit, push result, and remote verification. Evidence

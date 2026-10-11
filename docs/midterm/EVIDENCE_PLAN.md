@@ -6,6 +6,21 @@ screenshots, recordings, exports, diagram image, PDF, or submission is created
 now. Use synthetic/local data only. Every capture must come from the actual
 checkpoint/run, with real date/time; do not create historical proof.
 
+## Team inputs
+
+Team: **The Visionaries**. Complete five-member roster is recorded in
+[STATUS.md](STATUS.md#team-roster--the-visionaries); use those supplied full names
+for the submission plan.
+
+- Deadline/date/time: **PENDING — instructor has not posted the exact date/time yet**
+- Google Classroom representative: **PENDING — Wariza or Layupan**
+- Git-author/member mapping: **UNVERIFIED**; five-member coverage unresolved
+- Member walkthrough/YouTube readiness: **PENDING**
+- Collaboration-proof method: **PENDING** — real-time timestamped group photo,
+  meeting minutes, or both; no method selected
+- Artifact owners and contribution assignments: **TBD** after author mapping and
+  member availability are confirmed
+
 ## 1. Instructor requirement → artifact matrix
 
 Owner labels are placeholders, not assigned people. The team must map each to a
@@ -20,11 +35,11 @@ the coverage plan is complete, not the artifact.
 | Week 4 — login and at least two roles; proof 5 | ADMIN and STAFF authenticated views, role context, STAFF direct management denial, hash evidence | Synthetic accounts; capture hidden-password login, ADMIN management, STAFF feed then typed direct `/admin/notices`; sanitized hash projection and hashing source | After guarded fixtures and role tests; before recording | [Authentication owner] | R1 baseline exists; new restriction/proof pending |
 | Proof 1 — Git repository history | Real chronological commit history and checkpoint SHA/branch; per-member contribution references | `git log`/`git show` read-only views of actual commits; repository access for instructor; no history rewriting | Baseline inventory now; capture actual authorized future checkpoints before final PDF | [Git coordinator] | 35 baseline commits / 2 recorded identities; roster mapping pending |
 | Proof 2 — unedited 3–5 minute screen recording | One continuous legible demo recording and accessible link/file | Follow timed script below; no cuts, speed-ups, overlays replacing evidence, or stitched successful takes | Rehearse after all feature checks; final take on declared source checkpoint | [Demo presenter] | Not recorded |
-| Proof 6 — each member one file/function walkthrough, genuine small change, YouTube | Per-member explanation/change/real commit plus video URL(s) | Each member opens actual owned file/function, explains its behavior, makes a reviewable change and verifies it; record and upload to YouTube | Contributions before final checkpoint; walkthrough/upload after review | [Each member] / [Upload owner] | Roster, assignments, changes, videos pending |
-| Collaboration proof | Authentic collaboration screenshots/records, contribution matrix, group image with real-time date/time stamp | Capture genuine working session and original image with visible current date/time (device display/capture timestamp acceptable subject to instructor format); preserve originals | During real collaborative work, not staged after the fact as historical proof | [Collaboration owner] | Not supplied |
+| Proof 6 — each member one file/function walkthrough, genuine small change, YouTube | Per-member explanation/change/real commit plus video URL(s) | Each member opens actual owned file/function, explains its behavior, makes a reviewable change and verifies it; record and upload to YouTube | Contributions before final checkpoint; walkthrough/upload after review | [Each member] / [Upload owner] | Five-member roster recorded; mapping unverified; assignments, changes, YouTube readiness/videos pending |
+| Collaboration proof | Authentic collaboration proof; method PENDING: real-time timestamped group photo, meeting minutes, or both | Capture genuine collaboration using the chosen method once confirmed; any photo/image must show real-time date/time; preserve originals | During real collaborative work, not staged after the fact as historical proof | [Collaboration owner] | Method and proof PENDING |
 | AI declaration, log and proof | Individual completed/signed forms, truthful episode log, exported chat links or full dated screenshots under `/ai-evidence` | Follow AI plan; check access, dates, privacy and real commit mapping | During each episode; final declarations after verification and understanding review | [Each member] / [AI evidence coordinator] | Plan only; no evidence created |
 | Short technical document | Required sections, integration table, setup/run, issues, Weeks 5–7 next steps | Assemble actual results using structure below; clearly label pending items | After acceptance and artifact review | [Document editor] | Structure planned; PDF not created |
-| Formatting / filename | A4 formatted PDF `IT305_Midterm_TeamName.pdf` with readable figures/page numbers | Apply exact settings below; render/inspect every final page, test links | Final assembly | [Document editor] / [Submission reviewer] | TeamName and PDF pending |
+| Formatting / filename | A4 formatted PDF `IT305_Midterm_TeamName.pdf` with readable figures/page numbers | Apply exact settings below; render/inspect every final page, test links | Final assembly | [Document editor] / [Submission reviewer] | Team name recorded; PDF pending |
 | Classroom submission | One representative submission, complete-name comment, individual completion state | Representative attaches final package/link and comments names; each other member Mark as Done / Turn In as applicable; verify receipt/access | After final human review, before actual instructor deadline | [Representative] / [Each member] | Representative/deadline pending |
 
 The six numbered proofs above are all mandatory. Architecture, declarations,
@@ -212,8 +227,8 @@ Diagram narrative must identify:
 
 The final PDF is a future artifact, not one of this task's five files.
 
-1. **Cover:** exact checkpoint title, TeamName placeholder replaced with actual
-   team name, course/section, complete member names, instructor/date as supplied;
+1. **Cover:** exact checkpoint title, team **The Visionaries**, complete member names
+   from STATUS, course/section and instructor/date as supplied;
    no invented people/dates. No visible page number on cover.
 2. **Project context and Integration Plan v2:** existing CES project, stakeholder
    MVP versus later R1/R2 and academic Notices; architecture figure and technology,
@@ -282,16 +297,19 @@ identify which checkpoint each artifact proves.
 ## 8. Git history and genuine team contribution plan
 
 Baseline inspection found **35 commits and 2 distinct recorded author identities**.
-Names/emails are not copied into planning documents. Roster is not supplied;
-verify whether those identities map to actual members. Do not imply all members
-already contributed. The instructor preference for work spread across weeks
+Git author identities are not copied into planning documents. The complete
+five-member roster is recorded in STATUS; actual author/member mapping remains
+UNVERIFIED. Five-member coverage is unresolved until that mapping is checked.
+Do not claim any member has or has not already contributed. The instructor
+preference for work spread across weeks
 cannot be retroactively manufactured. This is an evidence risk, not a reason to
 falsify history. Missing member history is an evidence gap requiring genuine
 future work with accurate author configuration and real chronology. Never create
 empty/fake commits, alter timestamps, impersonate other authors, or rewrite old
 AI-produced work as somebody else's historical contribution.
 
-This task authorizes the five-file planning commit and dedicated-branch push.
+The initial five-file planning checkpoint is pushed. This task authorizes only
+the team-input documentation checkpoint and dedicated-branch push.
 After future explicit authorization, use separate implementation, evidence/
 documentation and final checkpoints, with smaller genuine member changes within
 the approved implementation scope. Stage only explicit intended paths when later
@@ -302,16 +320,16 @@ approved access rather than publishing secrets or making it public for proof.
 Each actual member chooses a change they can understand, explains one real
 file/function before/after, performs it, verifies relevant behavior, reviews its
 diff, and references its real commit in the contribution matrix/video. Suggested
-categories (unassigned):
+categories (unassigned; assign only after actual author mapping and member
+availability are confirmed):
 
 | Category | Small genuine contribution | Walkthrough / verification |
 | --- | --- | --- |
-| Validation | Useful Unicode/control/length edge handling within agreed limits | Explain Notice schema, add meaningful boundary check and verify accepted/rejected cases. |
+| Notice validation | Useful Unicode/control/length edge handling within agreed limits | Explain Notice schema, add meaningful boundary check and verify accepted/rejected cases. |
 | Notice UI | Clear empty/saved/conflict presentation | Explain component state and server result; demonstrate the affected UI. |
-| Authorization message | Improve fixed denial text/role context without altering permission rules | Explain page guard/action guard difference; demonstrate STAFF blocked. |
+| ADMIN/STAFF authorization behavior | Improve fixed denial text/role context without altering permission rules | Explain page guard/action guard difference; demonstrate STAFF blocked. |
 | Tests | Add a missing stale-delete or audit-rollback case | Explain assertion's failure mode and demonstrate real test result. |
-| Documentation | Accurate setup/integration explanation after verifying it | Explain documented flow and reproduce its checks with safe targets. |
-| Accessibility | Correct label/focus/error association or confirmation keyboard behavior | Explain component/function and demonstrate keyboard navigation. |
+| Accessibility/documentation plus code walkthrough | Accurate setup/integration explanation or useful accessibility correction after verification | Explain a relevant real source file/function and reproduce documented or keyboard checks with safe targets. |
 
 Changes must address a real need; no cosmetic churn merely to manufacture proof.
 Instructor requires a code walkthrough even for a documentation contribution:
@@ -331,8 +349,10 @@ and link manifests may go into Git later. Private credentials/hashes/signatures
 remain out of Git and public videos. Required member names belong in final
 submission, not unnecessary personal profiles in repository history.
 
-Group photo/image must be real collaboration with a visible **real-time date
-and time stamp**, captured when collaboration happens. Keep original proof;
+Collaboration-proof method is PENDING: real-time timestamped group photo,
+meeting minutes, or both. Do not choose a method or fabricate proof now. If
+using a photo/image, it must show real collaboration with a visible **real-time
+date and time stamp**, captured when collaboration happens. Keep original proof;
 do not fabricate an overlay suggesting a different event/time. If instructor
 requires a specific stamping method, obtain it before capture. Collaboration
 proof should correspond to real discussion/work and genuine changes.
@@ -369,7 +389,8 @@ Classroom checklist:
 - Representative comments **complete member names** as required.
 - Every other member individually selects **Mark as Done / Turn In**, as the
   actual Classroom assignment permits/requires.
-- Include authentic collaboration proof and timestamped group photo/image.
+- Include authentic collaboration proof by the confirmed method; any photo/image
+  must have a real-time date/time stamp.
 - Confirm submission receipt, expected attachment naming, instructor-accessible
   YouTube/chat/evidence links, and actual deadline. Do not submit/upload/message
   on behalf of the team during this planning task.
@@ -391,7 +412,8 @@ unnecessary features. Capture authentic collaboration before the deadline.
 ## 12. Operational blockers to evidence capture
 
 No Notice implementation/schema/demo database yet; review/authorization must come
-first. TeamName/roster/representative/deadline, real contribution mapping,
+first. The Visionaries and five-member roster are recorded. Final representative,
+deadline, verified contribution mapping, collaboration-proof method,
 instructor AI form/hash/client acceptance, safe account provisioning, network and
 recording tools, actual collaboration events, member signatures and YouTube
 access remain inputs. None requires choosing another CRUD domain or weakening
