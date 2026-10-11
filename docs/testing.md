@@ -1,6 +1,6 @@
 # Testing
 
-The latest acceptance is [CES Portal v2 R1 — Authentication, Authorization, and Audit Foundation](#ces-portal-v2-r1--authentication-authorization-and-audit-foundation), completed on the actual MySQL 8.4.11 target. Earlier sections preserve historical results, including controlled rows and cash total `125.25`; they do not assert that those rows are still present. UI-5 measured zero rows and cash total `0.00`; later R1 measured Goods `1`, Cash `1`, Volunteers `1`, Cash total `0.01` after its single authorized Cash write. These are separate point-in-time measurements; no cause of the intervening database-state difference is inferred. This documentation pass does not rerun acceptance.
+The latest acceptance is [CES Portal v2 R2 — Activity Management](#ces-portal-v2-r2--activity-management), classified **PASS WITH NOTES — R2 TARGET MYSQL 8.4 ACCEPTANCE COMPLETE** on actual MySQL 8.4.11 (`ces_portal`). Earlier sections preserve separate point-in-time evidence: historical controlled rows/Cash total `125.25`, UI-5 zero rows/`0.00`, and R1 Goods `1`, Cash `1`, Volunteers `1`, Cash total `0.01`. R2 preserved that pre-write state and ended with Volunteers `2` and Activities `1`, other values unchanged. No cause of older database-state differences is inferred. This documentation pass records supplied completed acceptance evidence and does not rerun it. The full R1 section below remains historical to its own checkpoint; its then-pending R2 statements are superseded by the later R2 section.
 
 # Previously Verified Before Account Migration — Historical Evidence
 
@@ -293,6 +293,111 @@ The final Cash continuation required no source edits and reran only Git integrit
 The target classification is authoritative; isolated MySQL 8.0.46 evidence is supporting evidence. R1 materially improves access control but does not approve real personal-data collection or public production deployment, or establish penetration testing/certification/compliance. Volunteer retention remains unresolved and acknowledgement is not durable stored consent evidence.
 
 Full Staff account lifecycle (create, deactivate/reactivate, password reset, role changes, last-Admin protection), source/network-aware throttling, session/throttle cleanup, deployment hardening, formal backup/restore procedures, and audit retention/review remain pending. The audit is an application trail, not tamper-proof against a database administrator; full R5 audit management is future work. Existing-Admin bootstrap may prompt before refusing, a nonblocking UX note. Activity Management, Donation Records, Distribution, CSV export, and R4 exact-decimal hardening remain open; R2 has not started. **SYNTHETIC / LOCAL DEMO ONLY** and related UI wording intentionally remain through R1; operational wording transition is deferred to R6.
+
+## CES Portal v2 R2 — Activity Management
+
+**Classification: PASS WITH NOTES — R2 TARGET MYSQL 8.4 ACCEPTANCE COMPLETE**
+
+Source checkpoint: `7a0ea4e859b35a0e3b404f2ccecabe93435fcc8e`, `feat: add activity management and volunteer linking`, committed and pushed to `origin/main`. R1 authentication/security foundation and R2 Activity Management are COMPLETE; R3 has not started. R2 is a later operational expansion, not part of original stakeholder-confirmed MVP scope. This section records completed synthetic acceptance supplied for documentation synchronization, not newly executed checks.
+
+### Isolated implementation acceptance
+
+Implementation checks used isolated/disposable MySQL **8.0.46**. Configured R2 suite: **32 passed, zero failures/skips**. R1 security regression: **18 passed, zero failures/skips**. TypeScript, ESLint, webpack production build, and `git diff --check` passed. Coverage included Activity validation/lifecycle/audit, migration recovery/drift, signup/closure concurrency, historical snapshot preservation, OSM/public selector behavior, and responsive/practical accessibility smoke. These deeper isolated cases are supporting evidence; they are not represented as all repeated on the real target. No full WCAG audit is claimed.
+
+### Target preflight and pre-R2 backup/restore proof
+
+Authoritative real-target acceptance used **MySQL 8.4.11**, database **`ces_portal`**. Accepted pre-R2 state: Goods `1`, Cash `1`, Volunteers `1`, Cash total `0.01`, Activities `0` (R2 table absent before migration). The historical Volunteer retained its stored Activity text and later gained a NULL relationship only.
+
+A fresh logical backup was created before Migration 002, checksum verified, and restored into a disposable database. Restored business state matched source; only Migration 001 existed in the restored pre-R2 snapshot, and R2 schema was absent. The disposable restore database was removed. No credentials, backup contents, or operator-secret details are published here.
+
+### Migration 002, rerun, and historical preservation
+
+`database/migrations/002_activity_management.sql` applied successfully on MySQL 8.4.11. Migration 001 and Migration 002 both verified; Migration 002 completed-statement count was **5**. An unchanged rerun passed without duplicate schema/business data. Activity columns/defaults, exact DATE/DECIMAL definitions, indexes/FKs/checks, and expanded enforced audit-event CHECK were verified. Migration 001 remained unchanged.
+
+Migration 002 created Activities, added nullable indexed Volunteer `activity_id` with restrictive FK, and expanded audit events. No seeds, historical text matching/backfill, or destructive business-data operation occurred. Immediately after migration: Goods `1`, Cash `1`, Volunteers `1`, Cash total `0.01`, Activities `0`. Historical Volunteer kept its text and `activity_id = NULL`.
+
+### Controlled Activity lifecycle and UI acceptance
+
+Exactly one controlled synthetic target Activity was created:
+
+| Property | Accepted value |
+|---|---|
+| ID | `1` |
+| Initial name | `R2 MySQL 8.4 Acceptance Activity` |
+| Activity date | `2026-10-15` |
+| Venue | `Assumption College of Davao` |
+| Latitude / longitude | `7.088190` / `125.624200` |
+| Creator | Admin user `1` |
+| Initial state | DRAFT, revision `1` |
+| Final name | `R2 MySQL 8.4 Acceptance Activity — Updated` |
+| Final state | ARCHIVED, revision `5` |
+
+| Revision | Controlled acceptance operation |
+|---|---|
+| `1` | Created DRAFT |
+| `2` | DRAFT → ACTIVE |
+| `3` | Renamed while ACTIVE |
+| `4` | ACTIVE → CLOSED |
+| `5` | CLOSED → ARCHIVED |
+
+The complete implemented lifecycle (not every branch repeated on target) is:
+
+```text
+DRAFT → ACTIVE
+DRAFT → ARCHIVED
+ACTIVE → CLOSED
+CLOSED → ACTIVE
+CLOSED → ARCHIVED
+ARCHIVED → terminal
+```
+
+Activities are created DRAFT; registration opens explicitly via ACTIVE. Draft/Active details may be edited; Closed/Archived details are read-only. Archived is terminal; no application hard delete. Date is informational and does not open/close registration. Only ACTIVE determines public eligibility, including past/future dates.
+
+Authenticated `/activities` loaded; five primary links (Dashboard, Donations, Inventory, Activities, Volunteers) appeared. Creation, editing, and status UI operated successfully. Desktop sidebar and visible two-column mobile navigation remained, with five links naturally spanning three narrow-screen rows, no hamburger, and poster under Volunteers. Archived Activity displayed read-only. No obvious horizontal overflow was observed in accepted browser checks; this is practical smoke evidence, not a full accessibility audit.
+
+### Linked Volunteer and name snapshot acceptance
+
+Exactly one new linked synthetic Volunteer was created, Volunteer ID **`2`**, Activity ID **`1`**, stored Activity snapshot **`R2 MySQL 8.4 Acceptance Activity`**. Public managed selection worked. The server loads canonical ID/name and verifies ACTIVE with `FOR SHARE` through insertion; the browser does not provide a trusted Activity name. Staff updates use `FOR UPDATE`, revision/state checks, reauthorization, and transactional audit; deeper concurrency cases are in isolated evidence above.
+
+After Activity rename to **`R2 MySQL 8.4 Acceptance Activity — Updated`**, Volunteer `2` still stored **`R2 MySQL 8.4 Acceptance Activity`** with `activity_id = 1`. This proves the intentional distinction between current Activity metadata and historical submission-time name snapshot. Only name is snapshotted, not date, venue, or coordinates. Historical Volunteer remained unlinked and displayed **Historical / unlinked**.
+
+### Activity success audit evidence
+
+Exactly five Activity success events existed for entity `1`, actor user `1`, outcome `SUCCESS`:
+
+1. `ACTIVITY_CREATED` — creation metadata NULL.
+2. `ACTIVITY_STATUS_CHANGED` — DRAFT → ACTIVE.
+3. `ACTIVITY_UPDATED` — rename.
+4. `ACTIVITY_STATUS_CHANGED` — ACTIVE → CLOSED.
+5. `ACTIVITY_STATUS_CHANGED` — CLOSED → ARCHIVED.
+
+Rename metadata contained only name before/after and revision information. Status metadata contained previous/new status and revisions. Mutation and success audit are transactional, actor derives from verified session, and metadata is strictly allowlisted without Volunteer PII. Existing R1 events remain; this is an application trail, not tamper-proof evidence.
+
+### Activity-aware OSM, no-Active state, and QR boundary
+
+Selected Activity's own stored venue/location was authoritative and Activity-specific OSM worked. Venue plus coordinates renders an Activity map; venue alone renders text without a broken iframe; no venue renders no Activity map. Without selection, the configured venue was correctly labeled **Configured CES demonstration venue** rather than presented as managed Activity location. Original independent configured-map acceptance remains historical above.
+
+After closure/archive, no-Active state worked: **No CES volunteer activities are currently open for registration.** No free-text fallback exists. OSM URLs contain only public coordinates/map parameters, no Volunteer name/course/contact/acknowledgement, session/token, or Activity staff actor. No geocoding, API key, or billing is required. QuickChart architecture remains unchanged; QR stays generic `/volunteer`, without per-Activity QR.
+
+### Route/security regression and nonblocking notes
+
+Protected routes correctly redirected anonymous visitors to login; authenticated Activity workspace and public signup behavior passed. Current `/volunteers` wording was corrected to **Access is restricted to authenticated active CES staff.** The broader synthetic/demo warning remains. Both active ADMIN/STAFF manage Activities under server-side authorization, without creator-only restrictions or a new role/account-lifecycle feature.
+
+Anonymous route smoke normalized the post-login return destination to **`/dashboard`** instead of retaining each original protected destination. This is an accepted **nonblocking UX note**, not an authorization defect, and was not fixed during documentation synchronization. Existing bootstrap prompt-before-refusal, optional physical print/second-device QR scan, and broader operational gaps remain notes. Dashboard did not gain Activity count/status metrics; its Volunteer count includes historical unlinked and new linked rows.
+
+### Final R2 target business state and operational boundary
+
+| Measurement | Pre-R2 / immediately after Migration 002 | Final R2 acceptance |
+|---|---|---|
+| Goods | `1` | `1` |
+| Cash | `1` | `1` |
+| Volunteers | `1` | `2` |
+| Cash total | `0.01` | `0.01` |
+| Activities | `0` | `1` |
+
+Controlled Activity remains Archived at revision `5`; linked synthetic Volunteer remains; historical Volunteer remains unlinked. No destructive business cleanup occurred. R2 acceptance included controlled business writes and is not zero-write acceptance. UI-5, R1, and R2 are distinct chronological measurements; older differences are not explained by inference.
+
+**SYNTHETIC / LOCAL DEMO ONLY** remains. Real personal-data collection and public production deployment are unapproved; acknowledgement is not durable consent evidence. Full Staff account lifecycle, Volunteer privacy/retention, source/network-aware throttling, session/throttle cleanup, broader public-abuse controls, deployment hardening, formal backup/restore operating procedures, audit retention/review, and currency before operational Cash reporting/export remain pending. R3 Donation Records has not started; R4 Distribution/stock-out and exact-decimal hardening, R5 CSV exports/audit hardening, and R6 operational wording/integrated acceptance remain future work. Next: review this documentation diff and authorize a separate R2 documentation checkpoint.
 
 ## Ongoing regression coverage
 

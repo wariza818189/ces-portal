@@ -24,7 +24,7 @@ CES needs an organized way to record donation and volunteer information. The por
 
 These are confirmed stakeholder requirements; their confirmation does not imply their implementation is complete.
 
-For Volunteer implementation, all four fields are required and trimmed only around the outside. Maximum lengths matching the database are Full Name 100, Course / Year 100, Contact Number 30, and Activity 150 characters; values are rejected rather than truncated. Contact numbers remain strings. The approved use notice and required acknowledgement appear before submission; acknowledgement is not persisted as consent evidence.
+For the original MVP Volunteer implementation, all four fields are required and trimmed only around the outside. Maximum lengths matching the database are Full Name 100, Course / Year 100, Contact Number 30, and Activity 150 characters; values are rejected rather than truncated. Contact numbers remain strings. The approved use notice and required acknowledgement appear before submission; acknowledgement is not persisted as consent evidence.
 
 ## Confirmed Goods fields and validation
 
@@ -61,7 +61,17 @@ Goods with unlike units must not be combined into one summed quantity. Use recor
 
 # CES Portal v2 operational expansion
 
-R1 Authentication, Authorization, and Audit Foundation is a later operational expansion, not an original CES stakeholder-confirmed MVP requirement. Staff authentication, active `ADMIN`/`STAFF` authorization, opaque database sessions, audit logging, additive migrations, and donation actor attribution are implemented and accepted on MySQL 8.4.11. `/volunteer` remains public. This does not approve real personal-data collection or production deployment, or implement later v2 modules. See [project status](../PROJECT_STATUS.md) and [R1 acceptance](testing.md#ces-portal-v2-r1--authentication-authorization-and-audit-foundation).
+R1 Authentication, Authorization, and Audit Foundation is a later operational expansion, not an original CES stakeholder-confirmed MVP requirement. Staff authentication, active `ADMIN`/`STAFF` authorization, opaque database sessions, audit logging, additive migrations, and donation actor attribution are implemented and accepted on MySQL 8.4.11. `/volunteer` remains public. This does not approve real personal-data collection or production deployment, or itself implement later v2 modules; R2 completion is recorded separately below. See [project status](../PROJECT_STATUS.md) and [R1 acceptance](testing.md#ces-portal-v2-r1--authentication-authorization-and-audit-foundation).
+
+## CES Portal v2 operational expansion — R2 Activity Management
+
+R2 is COMPLETE and accepted **PASS WITH NOTES — R2 TARGET MYSQL 8.4 ACCEPTANCE COMPLETE** on MySQL 8.4.11 (`ces_portal`), source `7a0ea4e859b35a0e3b404f2ccecabe93435fcc8e` (`feat: add activity management and volunteer linking`). This later operational scope does not rewrite the original stakeholder-confirmed MVP: it accepted Activity as free text and excluded authentication and managed Activity administration.
+
+Current R2 supplies protected `/activities` management for both active ADMIN/STAFF, Draft/Active editing, explicit DRAFT → ACTIVE/ARCHIVED, ACTIVE → CLOSED, CLOSED → ACTIVE/ARCHIVED transitions, terminal ARCHIVED, no hard delete, revision protection, and transactional Activity audit. Duplicate names are allowed. Public `/volunteer` now selects managed Activities by ID; eligibility is exactly ACTIVE, including past/future dates, with no automatic date deadline and no free-text fallback.
+
+New submissions store a nullable Activity relationship plus server-derived canonical Activity-name snapshot. Existing rows retain historical text and NULL links without matching/backfill; later rename preserves snapshots. Only name is snapshotted. Activity-aware OSM uses selected Activity location; configured venue is demonstration context only without selection. QR remains generic `/volunteer`, Dashboard has no Activity metrics, and staff navigation has five primary links: Dashboard, Donations, Inventory, Activities, Volunteers. See [R2 acceptance](testing.md#ces-portal-v2-r2--activity-management).
+
+R3 has not started; R3–R6 functionality and Staff account lifecycle remain pending. R2 does not approve real-data collection/public production deployment or resolve retention, durable consent evidence, deployment hardening, or operational governance.
 
 # Academic / Course Requirement
 
@@ -71,7 +81,7 @@ The **QuickChart static QR Code API** at `https://quickchart.io/qr` is implement
 
 ## POST-MVP ACADEMIC / DEMO ENHANCEMENT — configured venue map
 
-The accepted classroom enhancement shows one configured public CES/demo venue on `/volunteer`, currently **Assumption College of Davao**, using OpenStreetMap. It is independent of the Volunteer Activity field and adds no Volunteer data collection or database/schema change. This is separate from stakeholder-confirmed MVP scope and from the QuickChart external API integration. The map is a third-party browser iframe integration and requires no API key or billing account. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed and acceptance is **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**.
+The original accepted classroom enhancement showed one configured public CES/demo venue on `/volunteer`, currently **Assumption College of Davao**, using OpenStreetMap. At that historical acceptance it was independent of the Volunteer Activity field and added no Volunteer data collection or database/schema change. R2 later added Activity-specific venue/map presentation while retaining configured venue only as demonstration context without selection. This is separate from stakeholder-confirmed MVP scope and from the QuickChart external API integration. The map is a third-party browser iframe integration and requires no API key or billing account. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed and acceptance is **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**.
 
 # Pending / Future Decisions
 

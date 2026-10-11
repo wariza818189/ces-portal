@@ -20,7 +20,7 @@ Concise record of current technical and scope decisions. Pending items are label
 | Goods quantity `DECIMAL(10,2)` | Matches schema precision and validation limit; reject excess precision rather than silently rounding. |
 | Volunteer demo deployment boundary | Core Volunteer workflow may be implemented and runtime-tested using synthetic data in a classroom/local demonstration only. Real personal-data collection and production deployment remain unapproved. R1 now protects `/volunteers` through server-side active-staff authorization; privacy, retention, deployment, and operational governance remain pending. Route grouping alone is not protection. |
 | Volunteer notice and acknowledgement | Show the approved privacy/use notice before public form submission and require the approved acknowledgement. It gates submission only; consent evidence is not stored and no schema change for storage is approved. |
-| Volunteer field validation | Require all four fields nonblank after trimming; trim only surrounding whitespace, preserve internal text, enforce schema maxima (100/100/30/150) without truncation, and keep contact number a string. No phone regex, minimum, options list, capitalization, or normalization rules. |
+| Original MVP Volunteer field validation | Historical free-text Activity flow: require all four fields nonblank after trimming; trim only surrounding whitespace, preserve internal text, enforce schema maxima (100/100/30/150) without truncation, and keep contact number a string. No phone regex, minimum, options list, capitalization, or normalization rules. |
 | Volunteer contact use and viewers | Contact number is for communication about the selected CES activity and necessary coordination. Intended viewers: CES Staff / CES Coordinator. No unrelated promotion or sharing beyond authorized CES personnel is defined. |
 | Volunteer retention | Retention policy pending CES/school policy confirmation. No duration or delete feature is approved for the MVP. |
 
@@ -38,7 +38,7 @@ QuickChart static QR Code API supports the existing Volunteer Signup poster work
 
 | Decision | Rationale and boundary |
 |---|---|
-| OpenStreetMap third-party map integration | Show one configured public CES/demo venue on `/volunteer` through an HTTPS OpenStreetMap browser iframe with attribution and larger-map link. Accepted venue: Assumption College of Davao. The venue is independent of Volunteer Activity and sends no Volunteer PII. No API key, billing, database/schema, or persistence change. Google Maps was abandoned before commit because its Cloud/billing setup was unsuitable for this classroom enhancement; no Google Maps source entered Git history. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed; acceptance **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**. |
+| Original OpenStreetMap third-party map integration | Historical accepted enhancement: show one configured public CES/demo venue on `/volunteer` through an HTTPS OpenStreetMap browser iframe with attribution and larger-map link. Accepted venue: Assumption College of Davao. The venue is independent of Volunteer Activity and sends no Volunteer PII. No API key, billing, database/schema, or persistence change. Google Maps was abandoned before commit because its Cloud/billing setup was unsuitable for this classroom enhancement; no Google Maps source entered Git history. Feature commit `104f187dd653d76b9175f4673b0208c23eb05a83` is pushed; acceptance **PASS WITH NOTES** under **SYNTHETIC / LOCAL DEMO ONLY**. |
 
 ## Post-MVP UI/UX redesign — lightweight UI system
 
@@ -58,3 +58,22 @@ R1 follows the original MVP and does not retroactively change its stakeholder sc
 | Transactional donation audit and attribution | Donation plus success audit share one transaction. `recorded_by` records new verified staff actors; legacy actors remain NULL. Sensitive payloads are excluded from the application audit trail. |
 | Numbered/checksummed additive migrations | Operational schema evolution uses serialized execution and statement checkpoints because MySQL DDL implicitly commits. Unchanged reruns verify/resume; no destructive reset or historical actor backfill. |
 | Demo wording retained through R1 | R1 does not approve real-data production deployment. Operational wording transition is deferred to R6; later modules and R4 exact-decimal hardening remain pending. |
+
+## CES Portal v2 R2 — Activity Management decisions
+
+R2 is a later operational expansion, preserving the original stakeholder-confirmed free-text Activity MVP history. Source checkpoint `7a0ea4e859b35a0e3b404f2ccecabe93435fcc8e` (`feat: add activity management and volunteer linking`) is accepted **PASS WITH NOTES — R2 TARGET MYSQL 8.4 ACCEPTANCE COMPLETE** on actual MySQL 8.4.11. See [R2 testing](testing.md#ces-portal-v2-r2--activity-management).
+
+| Decision | Rationale and boundary |
+|---|---|
+| Explicit managed Activity lifecycle | Create DRAFT; DRAFT → ACTIVE/ARCHIVED; ACTIVE → CLOSED; CLOSED → ACTIVE/ARCHIVED; ARCHIVED terminal. Draft/Active details editable; Closed/Archived read-only. No hard delete. |
+| Status-only registration eligibility | Only ACTIVE is eligible. Date is informational; past/future ACTIVE records remain selectable and no automatic opening/closure occurs. No free-text fallback. |
+| Duplicate Activity names allowed | IDs are canonical; names are descriptive rather than unique identifiers. |
+| Both ADMIN/STAFF manage Activities | Active authenticated roles may create/edit/transition without creator-only restrictions or a new role. Actor derives from verified session. Account lifecycle remains pending. |
+| Nullable Activity relationship + immutable name snapshot | Legacy `activity` text remains with NULL `activity_id`; no automatic historical matching/backfill. New submissions store server-derived canonical ID/name. Later rename preserves submission-time text. Only name is snapshotted. |
+| Shared/exclusive locking + revision token | Signup holds `FOR SHARE` through current ACTIVE verification and insert; staff mutation uses `FOR UPDATE`, reauthorization, state/revision checks, and increment. Prevent closure races and stale edits. |
+| Transactional Activity audit | Mutation and allowlisted success audit commit together; update/status metadata is restricted and excludes Volunteer PII. This is not a tamper-proof trail. |
+| Activity-aware OSM | Selected Activity venue/location is authoritative; venue-only text and no-venue cases omit iframe. Configured map appears only without selection as demonstration context. No Volunteer PII or staff actor enters map URLs. |
+| Generic QR preserved | QuickChart continues to target `/volunteer`; no per-Activity QR. |
+| Existing Dashboard metrics preserved | No Activity count/status metric. Volunteer count includes historical unlinked and managed linked rows. |
+| Narrow Migration-002 audit CHECK successor | Exact known CHECK replacement only, with chain checksums/checkpoints/serialization and DATE/DECIMAL/default/schema verification. Arbitrary destructive SQL remains rejected. |
+| Operational boundaries preserved | R2 is not real-data/public deployment approval. R3–R6 and account lifecycle/governance/hardening remain pending; currency must be decided before operational Cash reporting/export. |
