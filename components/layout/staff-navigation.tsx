@@ -8,6 +8,7 @@ const navigation = [
   { href: "/donations/new", label: "Donations" },
   { href: "/inventory", label: "Inventory" },
   { href: "/activities", label: "Activities" },
+  { href: "/notices", label: "Notices" },
   { href: "/volunteers", label: "Volunteers" },
 ];
 
@@ -17,7 +18,8 @@ export function StaffNavigation() {
   return (
     <nav aria-label="Staff navigation" className="mt-4 grid grid-cols-2 gap-2 lg:mt-6 lg:grid-cols-1">
       {navigation.map(({ href, label }) => {
-        const active = pathname === href || pathname.startsWith(`${href}/`);
+        const roots = href === "/notices" ? ["/notices", "/admin/notices"] : [href];
+        const active = roots.some(root => pathname === root || pathname.startsWith(`${root}/`));
         return (
           <Link
             key={href}

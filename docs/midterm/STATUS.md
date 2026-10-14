@@ -1,18 +1,22 @@
 # Midterm Status
 
-**PHASE 2 SOURCE CHECKPOINT — SERVER CRUD/RBAC COMPLETE; INDEPENDENT COMMITTED-SOURCE REVIEW PENDING**
+**PHASE 3A SOURCE CHECKPOINT — UI/ROUTES COMPLETE; INDEPENDENT COMMITTED REVIEW PENDING**
 
 This is the single authoritative midterm tracker. Phase 1 is independently
-reviewed and approved at `9f0e6dd777dbcec1221febed00f5daff8710186c`
-(`feat: add midterm notices persistence foundation`). Phase 2 Notice server
-CRUD, ADMIN mutation authorization, STAFF read authorization, and validation are
-implemented, locally source-reviewed, and freshly isolated-verified on MySQL
-**8.0.46**. This separately authorized Phase 2 source checkpoint preserves the
-server/domain implementation for independent committed-source review.
-UI/routes/navigation, demo database, demo STAFF provisioning,
-and grading evidence remain pending. No MySQL 8.4.11 target acceptance or full
-midterm completion is claimed. Team name and five-member roster are recorded;
-remaining team/evidence inputs remain pending.
+reviewed and approved at `9f0e6dd777dbcec1221febed00f5daff8710186c`.
+Phase 2 is independently reviewed and approved at
+`11a9277a6d30202de31f6241f4b192bcdcaf6cce`
+(`feat: add midterm notices CRUD and authorization`). The separately authorized
+Phase 3A implements Notice UI/routes/navigation and a guarded demo-only STAFF
+fixture command. Source checks and actual isolated browser CRUD/RBAC acceptance
+pass on private MySQL **8.0.46**. Final local source review and fresh automated
+reruns pass, including a bounded delete-feedback correction and affected browser
+recheck. This separately authorized Phase 3A source checkpoint preserves the
+reviewed implementation for independent committed-source review. The fixture
+command has **not** run against the real demo database.
+No `ces_portal_midterm_demo` creation, MySQL 8.4.11 demo acceptance, grading
+evidence, AI evidence, or final PDF is claimed. Remaining team/evidence inputs
+remain pending.
 
 ## Baseline and boundaries
 
@@ -26,8 +30,8 @@ date, not a historical development, evidence, signature, or commit date.
 | Midterm worktree | `/home/whis/Projects/ces-portal-midterm`; created only after confirming path and local branch were absent. |
 | Midterm branch | `midterm-integration-checkpoint`; initial planning checkpoint `be863193ed2efad5dfcde04a10441d917ba19b7f` descends directly from the R2 baseline; team-input checkpoint follows it. |
 | Initial midterm state | Clean checkout of committed R2; no R3 changes copied. |
-| Current midterm Git state | Phase 2 began clean with HEAD = `origin/midterm-integration-checkpoint` = `9f0e6dd777dbcec1221febed00f5daff8710186c`, the approved Phase 1 checkpoint. The checkpoint-gate task also began at that HEAD/remote with exactly eight intended unstaged Phase 2 paths and an empty index. Its execution report records the new Phase 2 checkpoint SHA, push, remote equality and final clean state. |
-| Databases / Docker | Phase 1 and Phase 2 tests each use a new private socket-only MySQL 8.0.46 server under `/tmp` and fresh guarded midterm/R1/R2 synthetic test schemas only. No destructive cleanup, Docker/container/volume actions, accepted `ces_portal` access, or demo database creation. |
+| Current midterm Git state | Phase 3A began clean on `midterm-integration-checkpoint`, HEAD = remote = `11a9277a6d30202de31f6241f4b192bcdcaf6cce`, the independently approved Phase 2 checkpoint. The separately authorized checkpoint gate also began at this HEAD/remote with exactly nine intended unstaged Phase 3A paths and an empty index. Its execution report records the actual new checkpoint SHA, push/remote equality, and final clean state. |
+| Databases / Docker | Phase 1, Phase 2 and Phase 3A tests each use a new private socket-only MySQL 8.0.46 server under `/tmp` and fresh guarded midterm/R1/R2 synthetic test schemas only. No destructive cleanup, Docker/container/volume actions, accepted `ces_portal` access, or demo database creation. |
 | Unrelated directory | `.aws remains unrelated, untouched, and excluded.` |
 
 The baseline `PROJECT_STATUS.md` and requirements say R3 has not started because
@@ -39,11 +43,12 @@ do not rewrite baseline documentation or infer that R3 belongs to this branch.
 
 The planning decisions below remain LOCKED. The 2026-10-11 Phase 1 task
 explicitly authorized foundation implementation and isolated tests, followed by
-its separately authorized checkpoint and independent approval. The current
-checkpoint task authorizes final local source review, fresh isolated
-reruns, and one Phase 2 commit/push only after all gates pass. Phase 3 remains
-unapproved.
-UI, demo setup/provisioning, and evidence capture require later authorization.
+its separately authorized checkpoint and independent approval. Phase 2 was
+separately checkpointed and independently approved. The 2026-10-14 implementation task authorized Phase 3A UI/routes/navigation,
+the guarded STAFF fixture command and isolated browser acceptance. The separate
+checkpoint task now authorizes final local review/correction, fresh checks,
+explicit-path staging, and one Phase 3A commit/normal push after all gates pass.
+Phase 3B real demo setup and Phase 4 grading evidence remain unapproved.
 Record any approved design revision here first.
 
 1. Use **CES Staff Notices**, internal informational messages, as the legitimate
@@ -129,7 +134,7 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 
 | Input | Why needed | Effect |
 | --- | --- | --- |
-| Independent committed Phase 2 source review | Phase 1 is approved; Phase 2 local source review and fresh isolated verification pass in this separate source checkpoint. | Deep-review committed Phase 2 from GitHub before authorizing Phase 3. |
+| Independent committed Phase 3A source review | Phase 1/2 independently approved. Phase 3A final local review, fresh checks and affected browser recheck pass in this separate source checkpoint. | Deep-review the committed Phase 3A source directly from GitHub before authorizing Phase 3B setup. |
 | Git-author/member mapping, availability, assignments, representative | The Visionaries and complete five-member roster are recorded; one-account mapping is verified, five-member coverage is unresolved, and representative is PENDING — Wariza or Layupan. | Resolve before contribution assignments and final submission; no technical decision changes. |
 | Exact instructor AI Declaration form and allowed attachment delivery | Confirm exact use-level terminology, signature method, whether excerpts prove hashes, and evidence access rules. | Match form faithfully; conservative Generated recommendation stands. |
 | Instructor acceptance of paired Postman + application proof | Postman demonstrates the same provider call, not the application's server network trace. | If necessary, capture server egress as planned; do not change integration. |
@@ -143,8 +148,8 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 | --- | --- | --- |
 | Week 1: Integration Plan v2 | Architecture source, technologies, flows, boundaries, dependencies, integration table. | Plan complete; final rendered diagram/document pending. |
 | Week 2: working API response used in app | Existing QuickChart POST → validated PNG → Volunteer QR Poster. | Baseline source inspected; historical acceptance documented; fresh checkpoint evidence not captured. |
-| Week 3: DB, full CRUD, parameterization | Notice create/read/update/delete with bound SQL and audit transaction. | Phase 1 foundation approved; Phase 2 server CRUD/parameterization isolated-verified; UI/demo DB/evidence pending. |
-| Week 4: login, two roles, restriction | Existing R1 plus ADMIN-only Notice management and shared read page. | Login/roles exist at R2; Phase 2 direct mutation/read authorization and revocation checks verified; visible denial/UI and demo STAFF setup pending. |
+| Week 3: DB, full CRUD, parameterization | Notice create/read/update/delete with bound SQL and audit transaction. | Phase 1/2 approved; server and UI CRUD isolated-verified; real demo DB and grading evidence pending. |
+| Week 4: login, two roles, restriction | Existing R1 plus ADMIN-only Notice management and shared read page. | Phase 2 server RBAC/revocation and Phase 3A real-login/visible STAFF denial isolated-verified; guarded fixture command implemented; real demo setup/evidence pending. |
 | Proof 1: Git history | Real baseline plus future authorized checkpoints and member contributions. | Historical team-input inspection: 37 branch-history commits, two author-name variants, one account `wariza818189`; five-member coverage unresolved. |
 | Proof 2: unedited 3–5 minute recording | Timed demo covering API/app, CRUD, login, denial, and source evidence. | Script planned; no recording created. |
 | Proof 3: API request/status/response | Postman request and binary PNG preview, paired with app usage. | Capture pending; do not treat history as new capture. |
@@ -162,8 +167,9 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 - Two recorded author-name variants map to one GitHub account. Five-member
   coverage remains an evidence gap; the other four members need genuine
   contribution mapping/work, never reassigned or backdated authorship.
-- R2 has no ordinary STAFF-account provisioning workflow. Plan a guarded
-  demo-only operator fixture, not a new account-management product feature.
+- R2 has no ordinary STAFF-account provisioning workflow. Phase 3A provides a
+  guarded demo-only operator fixture; its real demo execution remains Phase 3B.
+  It is not a product account-management feature.
 - The runner now recognizes exactly R1 → R2 → MIDTERM, with fixed checksums and
   statement definitions; unknown states/successors fail closed. This remains
   approved branch-only foundation work, not shared-target migration approval.
@@ -365,9 +371,176 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
   started. No MySQL 8.4.11 acceptance or full midterm completion is claimed;
   deadline, representative, YouTube and collaboration-proof inputs remain pending.
 
+## Phase 3A implementation and isolated acceptance — 2026-10-14
+
+- Baseline: dedicated branch `midterm-integration-checkpoint`, HEAD = remote =
+  `11a9277a6d30202de31f6241f4b192bcdcaf6cce`, clean worktree/index and diff check.
+  The user's Phase 3A authorization confirms independent Phase 2 approval.
+- Nine intended paths only: shared and ADMIN Notice pages, Notice form/delete
+  components, shared navigation, guarded STAFF fixture command, two midterm test
+  files, and this tracker. No package/dependency/lockfile change or extra route.
+- Each page independently calls `requireUser` before protected loading. ADMIN
+  management redirects non-ADMIN immediately, before search params, list loading,
+  selection or controls. Shared feed uses protected `listNotices`, escaped text,
+  `whitespace-pre-wrap`/wrapping, explicitly UTC timestamps, separate empty/load
+  failure states, synthetic/local-only warning, and ADMIN-only management link.
+- STAFF denial uses only the exact scalar `access=admin-required` and fixed
+  message. Arrays/repeated/arbitrary values produce no denial or reflected text.
+  The query is informational; all server authorization remains intact. Existing
+  `safeReturnPath` still defaults new Notice destinations to `/dashboard`.
+- Small `useActionState` create/edit form: required labels/hints, associated
+  field errors, disabled pending fields/buttons, textarea, no browser maxLength,
+  create success reset, invalid/conflict draft retention, returned expected
+  revision after save, successful no-op and Close editor. Hidden IDs/revisions
+  remain untrusted and validated by unchanged server actions.
+- Native delete confirmation shows escaped title/current revision. No
+  confirmation/cancellation writes nothing; pending says `Deleting...` with
+  disabled controls. Stale delete refuses newer content. Confirmed deletion
+  feedback persists in a small listener above the revalidated list, implemented
+  in the existing delete-control file; no additional component file or library.
+- Navigation has Dashboard, Donations, Inventory, Activities, Notices, Volunteers.
+  `grid-cols-2 lg:grid-cols-1` is retained. Notice active state covers only
+  `/notices`, `/admin/notices` and children of those exact roots.
+- `node scripts/seed-midterm-demo.mjs` is a demo-only interactive operator command.
+  It checks live `SELECT DATABASE()` for exactly `ces_portal_midterm_demo`, exact
+  APPLIED Migration 003 with two completed statements, and all required tables.
+  It validates name/canonical username/password, uses hidden password and
+  confirmation prompts, Argon2id, fixed active STAFF role, bound SQL, duplicate
+  refusal, exactly one inserted row, safe string identity, commit/rollback and
+  bounded safe CLI errors. It performs no migrations/schema/privilege management,
+  overwrite, provisioning audit invention or browser endpoint. Tested only with
+  fake connections; **not executed on the real demo database**.
+- `npm run test:midterm`: **58 passed, zero failed/skipped**, including seven
+  fixture and seven UI tests plus all accepted Phase 1/2 checks. New page tests
+  exercise actual page functions/session guards/list projections with fake reads;
+  browser authorization is separately verified, not inferred from markup.
+  Initial full runs exposed premature test module DB import and a reused nonempty
+  test target; delayed imports and a fresh retained schema corrected test setup.
+- `npm run test:r1`: **18 passed, zero failed/skipped**, latest migration chain.
+  Historical full R2 compatibility: **32 passed, zero failed/skipped**, unchanged
+  tests, committed R2 schema/001–002 and five-link navigation with current shared
+  runner/audit. Current R2 policy/database: **27 passed, zero failed/skipped**,
+  current application source/six-link navigation with the same two-migration
+  compatibility fixture. Separate current policy run: **8 passed**. Historical
+  `tests/r2/ui.test.mjs` remains byte-identical: its exact five-link assertion is
+  intentionally superseded by current midterm six-link UI tests, not claimed to
+  pass against current navigation. All latest-chain semantics remain covered by
+  midterm/R1; current Activities/Volunteer browser smoke also passes.
+- TypeScript `npx tsc --noEmit --incremental false`, ESLint `npm run lint`, webpack
+  `npm run build -- --webpack`, and `git diff --check` pass. Runtime/checks use
+  explicit secret-free `/tmp` source copies and installed lockfile dependencies,
+  with synthetic configuration only; source byte parity was verified.
+- Actual in-app Chromium browser against fresh
+  `ces_midterm_test_browser_1791980327169` synthetic target, private socket-only MySQL
+  `8.0.46-0ubuntu0.24.04.4`. The actual target uses a numeric unique suffix; no
+  accepted/demo target or original environment files. The initial dev process
+  ended during QA; acceptance resumed on the successful current production build.
+  Standalone Playwright browser binaries were unavailable, so in-app Chromium
+  completed acceptance; no repository dependency was added.
+- Anonymous `/notices` and `/admin/notices`: actual HTTP **307** login redirects,
+  no protected content/controls; existing safe `/dashboard` return behavior.
+  Actual real-login ADMIN create/read/no-op/changed edit/delete succeeds. Notice
+  ID `1` advances revision `1 → 2 → 3`, then is physically absent. A second
+  synthetic Notice ID `2` verifies deletion pending, then is physically absent.
+  Read-only DB checks verify newer revision survives stale attempts and retained
+  Notice audits after deletion. No business feature submissions were made.
+- Real-login STAFF reads the created Notice without Manage Notices, directly
+  requests management and receives `/notices?access=admin-required` with the exact
+  denial text and no Create/Save/Delete controls. Dev HTTP log records **307**,
+  not 403. Exact/repeated/arbitrary signal behavior also passes in production.
+- Browser validation: native required title/message; server whitespace-title
+  field error with correct associations and retained multiline draft; visible
+  disabled `Saving...`; successful create clears fields and refreshes lists;
+  no-op remains successful at revision 1; changed edit retains saved values and
+  returned revision; two-tab stale edit retains draft/revision and stale delete
+  cannot remove newer revision 3. Confirmed DELETE removes rows and refreshes
+  shared feed. A read-only transaction lock on synthetic ID 2 makes disabled
+  `Deleting...`/confirmation observable; lock released with rollback, no write.
+- Visual/DOM inspections at **390 × 844** and **1440 × 900**: no horizontal
+  overflow, six usable links/two-column mobile grid, long literal Notice wrapping,
+  fitting create/edit/delete controls and readable list. Keyboard: skip link
+  reaches main, nav/Manage Notices work, create/edit field order, buttons,
+  confirmation, deletion and Close editor work with visible focus. No formal
+  WCAG certification is claimed. Browser console: no new Notice errors,
+  hydration/key/nesting/failed-action exceptions observed. Temporary runtime
+  connection-refused navigation and one synthetic login retry were QA setup
+  interruptions, not counted as Notice defects.
+- Current Dashboard, Activities, public Volunteer Registration, Volunteer
+  Submissions, Volunteer poster, Donations and Inventory render successfully
+  without business writes. Poster gracefully handles absent synthetic URL;
+  QuickChart source/integration remains byte-identical. No new provider call or
+  Week 2 grading evidence is claimed.
+- All Phase 1/2 protected contracts, auth policy, historical R2 UI test and
+  migrations, dependency/lockfile, original R3 and QuickChart files remain
+  byte-identical. Original `main`/HEAD, empty index, same 14 unfinished paths and
+  all SHA-256 fingerprints match the before-work snapshot. No `.aws` inspection.
+- Private schemas/data are retained; the task-created private MySQL server and
+  Next.js runtime are stopped after QA. No Docker action, shared DB access, real demo creation, DROP/TRUNCATE/reset,
+  environment/credential file in Git, final grading capture, AI evidence or PDF.
+  Contributions remain unassigned; no invented authorship or backdating.
+- Classification: **PASS — MIDTERM PHASE 3A UI/ROUTES AND ISOLATED BROWSER
+  ACCEPTANCE COMPLETE**. Ready for independent unstaged-source review, not full
+  midterm or MySQL 8.4.11 demo acceptance. No staging, commit or push.
+
+## Phase 3A final local review and source checkpoint — 2026-10-14
+
+- Gate began at approved Phase 2 HEAD = remote =
+  `11a9277a6d30202de31f6241f4b192bcdcaf6cce` on the dedicated branch, with an
+  empty index and exactly the nine intended unstaged Phase 3A paths.
+- Reviewed every page/component/navigation/fixture/test in full. Independent
+  page authentication, ADMIN redirect-before-load/construction, exact scalar
+  denial/edit queries, protected list projection, escaped multiline text and UTC
+  labels satisfy the locked design. Form key/defaultValue state retains failed
+  drafts, resets successful creates, and advances revisions only on success.
+  Native delete confirmation is an affordance, never server authorization.
+- One narrow Phase 3A correction: persistent delete feedback now accepts only
+  the two fixed server success messages, including confirmed-save refresh advice.
+  Other event payloads are ignored, never reflected. This retains the listener
+  above the removed row and preserves row-local stale errors. No route, data,
+  auth, action or dependency contract changes. A new executable helper regression
+  test rejects arrays, objects, oversized text, markup and appended arbitrary text.
+- Fresh final automated runs: `npm run test:midterm` **59 passed** (seven fixture,
+  eight UI checks plus accepted Phase 1/2 coverage); `npm run test:r1` **18 passed**;
+  current R2 policy/database compatibility **27 passed**; historical full R2
+  compatibility **32 passed**. All: **zero failed/skipped**. R2 schema/001–002
+  fixture compatibility preserves its historical migration-count semantics.
+  Historical five-link UI assertion is unchanged and intentionally superseded by
+  current six-link coverage; no rendering manipulation to satisfy both counts.
+- TypeScript `npx tsc --noEmit --incremental false`, ESLint `npm run lint`, webpack
+  `npm run build -- --webpack`, and unstaged/cached whitespace checks pass.
+  Checks run in secret-free byte-matched `/tmp` copies using installed lockfile
+  dependencies and synthetic configuration. New private socket-only MySQL
+  **8.0.46-0ubuntu0.24.04.4**; separate fresh guarded schemas. Previous QA server,
+  deleted Notice IDs and six retained minimal audits are not cleaned or reused.
+- Reused completed implementation browser QA for unchanged routes/RBAC/forms,
+  responsive/keyboard/console and existing features. Reran affected deletion
+  behavior on the corrected production build at loopback port 3218 against a
+  fresh `ces_midterm_test_browser_checkpoint_<unique>` schema: actual ADMIN login,
+  UI create/confirmed physical delete, persistent `Notice deleted.` after row
+  removal, empty shared feed and no browser console warnings/errors all pass.
+  That correction-check Notice is absent and its two minimal audits are retained.
+  This is engineering QA, not final grading evidence.
+- Exactly nine checkpoint paths: two Notice pages, two client component files,
+  navigation, demo-only fixture, two test files and this tracker. All protected
+  Phase 1/2/auth policy/schema/migration/package/lockfile files and historical R2
+  UI test remain byte-identical to Phase 2. No env/credentials, R3, `.aws`, grading
+  evidence, AI evidence, PDF, new dependency or additional source file.
+- Repository-local noreply email and actual effective author identity verified;
+  global identity unchanged. Explicit-path staging and complete cached review
+  only. One separate authorized commit: `feat: add midterm notices management UI`.
+  Normal push targets only `midterm-integration-checkpoint`, with no amendment,
+  main update or force-push. Actual SHA/push/remote/clean-state results are in the
+  execution report; no self-referential documentation-only follow-up commit.
+- Original R3 `main`/HEAD, empty index, all 14 unfinished source paths and SHA-256
+  fingerprints remain frozen. `.aws remains unrelated, untouched, and excluded.`
+- No real demo fixture invocation or `ces_portal_midterm_demo` creation/mutation.
+  MySQL 8.4.11 Phase 3B and independent committed Phase 3A review remain pending.
+  Grading/AI evidence, PDF, real contribution coverage and other team inputs are
+  still pending. This checkpoint does not claim final midterm acceptance.
+
 ## Next exact action
 
-Deep-review the committed Phase 2 source from GitHub. If approved, authorize
-Phase 3 Notice UI/routes/navigation, guarded synthetic STAFF fixture, and browser
-acceptance planning. Deadline, final representative, YouTube readiness and
-collaboration-proof method remain pending. No grading evidence was captured.
+Deep-review the committed Phase 3A source directly from GitHub. If approved,
+authorize Phase 3B setup and acceptance of the dedicated MySQL 8.4.11
+ces_portal_midterm_demo environment. Do not capture final grading evidence until
+Phase 3B acceptance passes.
