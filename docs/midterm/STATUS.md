@@ -1,22 +1,21 @@
 # Midterm Status
 
-**PHASE 3A SOURCE CHECKPOINT — UI/ROUTES COMPLETE; INDEPENDENT COMMITTED REVIEW PENDING**
+**PHASE 3B — MYSQL 8.4.11 DEMO ACCEPTANCE COMPLETE**
 
-This is the single authoritative midterm tracker. Phase 1 is independently
-reviewed and approved at `9f0e6dd777dbcec1221febed00f5daff8710186c`.
-Phase 2 is independently reviewed and approved at
-`11a9277a6d30202de31f6241f4b192bcdcaf6cce`
-(`feat: add midterm notices CRUD and authorization`). The separately authorized
-Phase 3A implements Notice UI/routes/navigation and a guarded demo-only STAFF
-fixture command. Source checks and actual isolated browser CRUD/RBAC acceptance
-pass on private MySQL **8.0.46**. Final local source review and fresh automated
-reruns pass, including a bounded delete-feedback correction and affected browser
-recheck. This separately authorized Phase 3A source checkpoint preserves the
-reviewed implementation for independent committed-source review. The fixture
-command has **not** run against the real demo database.
-No `ces_portal_midterm_demo` creation, MySQL 8.4.11 demo acceptance, grading
-evidence, AI evidence, or final PDF is claimed. Remaining team/evidence inputs
-remain pending.
+This is the single authoritative midterm tracker. Phase 1 and Phase 2 are
+independently reviewed and approved at `9f0e6dd777dbcec1221febed00f5daff8710186c`
+and `11a9277a6d30202de31f6241f4b192bcdcaf6cce`. The Phase 3B authorization
+confirms independent committed-source review **PASS** for Phase 3A checkpoint
+`f9f0a3760799846ef5e78b948e4882ae9a80da09`
+(`feat: add midterm notices management UI`); this task did not repeat that
+independent review. The unchanged source now passes engineering acceptance on
+the dedicated actual local MySQL **8.4.11** database `ces_portal_midterm_demo`,
+using separate scoped operator/runtime accounts and human-created synthetic
+ADMIN/STAFF credentials. Schema/migrations, real browser ADMIN Notice CRUD,
+STAFF read/management denial, auth/audit behavior, QuickChart rendering and
+accepted-target integrity pass. This tracker records the acceptance checkpoint.
+No final grading evidence, AI evidence or PDF was created;
+remaining team/evidence inputs and midterm submission work remain pending.
 
 ## Baseline and boundaries
 
@@ -30,8 +29,8 @@ date, not a historical development, evidence, signature, or commit date.
 | Midterm worktree | `/home/whis/Projects/ces-portal-midterm`; created only after confirming path and local branch were absent. |
 | Midterm branch | `midterm-integration-checkpoint`; initial planning checkpoint `be863193ed2efad5dfcde04a10441d917ba19b7f` descends directly from the R2 baseline; team-input checkpoint follows it. |
 | Initial midterm state | Clean checkout of committed R2; no R3 changes copied. |
-| Current midterm Git state | Phase 3A began clean on `midterm-integration-checkpoint`, HEAD = remote = `11a9277a6d30202de31f6241f4b192bcdcaf6cce`, the independently approved Phase 2 checkpoint. The separately authorized checkpoint gate also began at this HEAD/remote with exactly nine intended unstaged Phase 3A paths and an empty index. Its execution report records the actual new checkpoint SHA, push/remote equality, and final clean state. |
-| Databases / Docker | Phase 1, Phase 2 and Phase 3A tests each use a new private socket-only MySQL 8.0.46 server under `/tmp` and fresh guarded midterm/R1/R2 synthetic test schemas only. No destructive cleanup, Docker/container/volume actions, accepted `ces_portal` access, or demo database creation. |
+| Current midterm Git state | Phase 3B began clean on `midterm-integration-checkpoint`, HEAD = tracking ref = actual GitHub branch = `f9f0a3760799846ef5e78b948e4882ae9a80da09`. Application source remains byte-identical; this STATUS update records the acceptance checkpoint. |
+| Databases / Docker | Historical Phases 1–3A used private socket-only MySQL 8.0.46 test servers under `/tmp`. Phase 3B uses the existing running `ces-mysql` MySQL 8.4.11 service, loopback `127.0.0.1:3307`, with separate retained `ces_portal_midterm_demo`. No container restart/recreation, volume change or destructive cleanup; accepted `ces_portal` is read-only and unchanged. |
 | Unrelated directory | `.aws remains unrelated, untouched, and excluded.` |
 
 The baseline `PROJECT_STATUS.md` and requirements say R3 has not started because
@@ -46,9 +45,11 @@ explicitly authorized foundation implementation and isolated tests, followed by
 its separately authorized checkpoint and independent approval. Phase 2 was
 separately checkpointed and independently approved. The 2026-10-14 implementation task authorized Phase 3A UI/routes/navigation,
 the guarded STAFF fixture command and isolated browser acceptance. The separate
-checkpoint task now authorizes final local review/correction, fresh checks,
-explicit-path staging, and one Phase 3A commit/normal push after all gates pass.
-Phase 3B real demo setup and Phase 4 grading evidence remain unapproved.
+checkpoint task authorized final local review/correction, fresh checks,
+explicit-path staging and the Phase 3A commit/normal push. The subsequent
+Phase 3B authorization approved dedicated demo provisioning and engineering
+acceptance using that independently approved source. Phase 3B is complete;
+Phase 4 grading evidence remains pending separate review/authorization.
 Record any approved design revision here first.
 
 1. Use **CES Staff Notices**, internal informational messages, as the legitimate
@@ -134,12 +135,11 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 
 | Input | Why needed | Effect |
 | --- | --- | --- |
-| Independent committed Phase 3A source review | Phase 1/2 independently approved. Phase 3A final local review, fresh checks and affected browser recheck pass in this separate source checkpoint. | Deep-review the committed Phase 3A source directly from GitHub before authorizing Phase 3B setup. |
 | Git-author/member mapping, availability, assignments, representative | The Visionaries and complete five-member roster are recorded; one-account mapping is verified, five-member coverage is unresolved, and representative is PENDING — Wariza or Layupan. | Resolve before contribution assignments and final submission; no technical decision changes. |
 | Exact instructor AI Declaration form and allowed attachment delivery | Confirm exact use-level terminology, signature method, whether excerpts prove hashes, and evidence access rules. | Match form faithfully; conservative Generated recommendation stands. |
 | Instructor acceptance of paired Postman + application proof | Postman demonstrates the same provider call, not the application's server network trace. | If necessary, capture server egress as planned; do not change integration. |
 | Weeks 5–7 rubric / dates and submission deadline | Only Weeks 1–4 and proof/format instructions are supplied. | Proposed next steps remain proposals; do not invent dates or requirements. |
-| Demo machine, DB operator, hidden local credentials, recording/YouTube access | Needed to run and submit real evidence later. | Operational evidence blockers, not unresolved schema/RBAC decisions. |
+| Recording/YouTube access and phone-reachable demo URL if needed | Local demo machine, scoped DB operator/runtime and hidden synthetic credentials are established. Recording/upload and optional second-device arrangements remain pending. | Evidence dependencies, not schema/RBAC decisions. |
 | Future main-product approval and migration reconciliation | Notices is approved academic/demo scope, not stakeholder-confirmed CES scope. | Branch-only 003 reserved; reconcile any main collision before shared main-development application. |
 
 ## Requirement coverage and evidence readiness
@@ -147,14 +147,14 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
 | Requirement | Planned coverage | Current readiness |
 | --- | --- | --- |
 | Week 1: Integration Plan v2 | Architecture source, technologies, flows, boundaries, dependencies, integration table. | Plan complete; final rendered diagram/document pending. |
-| Week 2: working API response used in app | Existing QuickChart POST → validated PNG → Volunteer QR Poster. | Baseline source inspected; historical acceptance documented; fresh checkpoint evidence not captured. |
-| Week 3: DB, full CRUD, parameterization | Notice create/read/update/delete with bound SQL and audit transaction. | Phase 1/2 approved; server and UI CRUD isolated-verified; real demo DB and grading evidence pending. |
-| Week 4: login, two roles, restriction | Existing R1 plus ADMIN-only Notice management and shared read page. | Phase 2 server RBAC/revocation and Phase 3A real-login/visible STAFF denial isolated-verified; guarded fixture command implemented; real demo setup/evidence pending. |
+| Week 2: working API response used in app | Existing QuickChart POST → validated PNG → Volunteer QR Poster. | Phase 3B actual poster renders the validated 600×600 QuickChart PNG for the configured local URL; final API/app grading capture pending. |
+| Week 3: DB, full CRUD, parameterization | Notice create/read/update/delete with bound SQL and audit transaction. | Phase 1/2 approved; real MySQL 8.4.11 UI create/read/update/physical delete and minimal audits pass; grading evidence pending. |
+| Week 4: login, two roles, restriction | Existing R1 plus ADMIN-only Notice management and shared read page. | Real demo ADMIN/STAFF fixtures, Argon2id format, login/logout, shared read and direct management denial pass; final grading evidence pending. |
 | Proof 1: Git history | Real baseline plus future authorized checkpoints and member contributions. | Historical team-input inspection: 37 branch-history commits, two author-name variants, one account `wariza818189`; five-member coverage unresolved. |
 | Proof 2: unedited 3–5 minute recording | Timed demo covering API/app, CRUD, login, denial, and source evidence. | Script planned; no recording created. |
 | Proof 3: API request/status/response | Postman request and binary PNG preview, paired with app usage. | Capture pending; do not treat history as new capture. |
-| Proof 4: DB create/update/delete before/after | Same Notice ID through absent → created → updated → absent; retained audit. | Notice schema verified in isolation; CRUD/demo rows/evidence pending. |
-| Proof 5: hashed password and regular-user denial | Synthetic Argon2id evidence, ADMIN access, STAFF login/direct denial. | Safe capture plan complete; no account credentials or stored account hashes inspected. |
+| Proof 4: DB create/update/delete before/after | Same Notice ID through absent → created → updated → absent; retained audit. | Phase 3B verified same Notice ID 1 through revision 1 → 2 → physically absent, with retained audits; final before/after captures pending. |
+| Proof 5: hashed password and regular-user denial | Synthetic Argon2id evidence, ADMIN access, STAFF login/direct denial. | Argon2id format-only checks and real STAFF denial pass for synthetic accounts; no full hashes/passwords displayed and no final grading screenshot captured. |
 | Proof 6: each member walkthrough/change/YouTube | Roster-linked actual file/function, genuine change, real commit, video link. | Five names recorded; one Git account mapped, four-member coverage unresolved; assignments, contribution evidence, recordings, YouTube readiness/uploads pending. |
 | Collaboration proof | Real-time timestamped group photo, meeting minutes, or both; method not chosen. | Method and authentic proof PENDING; never fabricated. |
 | AI disclosure / log / proof / signatures | Episode log, actual commit mapping, `/ai-evidence` proof, individual declarations. | Plan only; form, evidence exports, truthful reconstruction, signatures pending. |
@@ -168,8 +168,8 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
   coverage remains an evidence gap; the other four members need genuine
   contribution mapping/work, never reassigned or backdated authorship.
 - R2 has no ordinary STAFF-account provisioning workflow. Phase 3A provides a
-  guarded demo-only operator fixture; its real demo execution remains Phase 3B.
-  It is not a product account-management feature.
+  guarded demo-only operator fixture, now executed by the human operator in
+  Phase 3B. It is not a product account-management feature.
 - The runner now recognizes exactly R1 → R2 → MIDTERM, with fixed checksums and
   statement definitions; unknown states/successors fail closed. This remains
   approved branch-only foundation work, not shared-target migration approval.
@@ -538,9 +538,121 @@ migration identity; an applied-chain collision requires reviewed reconciliation.
   Grading/AI evidence, PDF, real contribution coverage and other team inputs are
   still pending. This checkpoint does not claim final midterm acceptance.
 
+## Phase 3B dedicated MySQL 8.4.11 demo acceptance — 2026-10-14
+
+- Baseline: `midterm-integration-checkpoint`, local HEAD/tracking ref/actual
+  GitHub branch all `f9f0a3760799846ef5e78b948e4882ae9a80da09`; clean tracked
+  worktree/index and diff check before work. Independent Phase 3A review PASS is
+  confirmed by the user's approval, not a new review performed in this task.
+- The initial opaque accepted runtime configuration had insufficient provisioning
+  privileges. Stopped without widening `ces_app`; the separately authorized
+  Docker root path resolved provisioning. `ces-mysql` was already running MySQL
+  8.4.11, with only `127.0.0.1:3307 → 3306` published. Root authoritatively
+  confirmed the exact demo DB and both account names absent before creation.
+  Container defaults files were mode 0600 and removed after use; root credentials
+  were never printed/copied/changed. No sudo, container recreation or volume action.
+- Created only `ces_portal_midterm_demo`, matching metadata-validated `utf8mb4` /
+  `utf8mb4_0900_ai_ci`. Separate independent random passwords protect
+  `ces_midterm_operator` and `ces_midterm_runtime`, both restricted to exact host
+  `172.18.0.1`, verified as the Docker gateway and host-side connection source.
+  No `%` host grants. Database grant patterns escape underscores for exact scope.
+- Operator grants are ALL PRIVILEGES only on the exact demo DB, with no global
+  administrative privilege, GRANT OPTION or accepted-target access. Runtime has
+  demo-wide SELECT; Notice INSERT/UPDATE/DELETE; auth-rate-limit INSERT/UPDATE;
+  session INSERT/DELETE; audit INSERT; Activity INSERT/UPDATE; Goods/Cash/Volunteer
+  INSERT. Exact live grants match the approved source needs. No user mutations,
+  audit UPDATE/DELETE, business DELETE, DDL or global administrative privileges.
+  Runtime connection, reads and rollback-only locking reads passed; real app
+  login/logout/Notice transactions subsequently exercised required mutations.
+- `.env.midterm-operator.local` and `.env.midterm-demo.local` contain only new
+  scoped credentials/safe demo settings; both ignored/untracked and mode 0600.
+  No ambiguous `.env.local` exists in this worktree. Accepted credentials were
+  used opaquely only for accepted-target read-only comparisons, never demo setup
+  after the new operator path or application runtime. No env contents displayed.
+- Fresh committed `database/schema.sql` installed unchanged through the scoped
+  operator after live exact-database and zero-table guards. Runtime table grants
+  followed table creation. Committed migration command with the new operator env
+  passed twice unchanged. 001/002/003 have exact approved checksums, status
+  APPLIED and completed statement counts 10/5/2. Historical migration bytes stay
+  unchanged; 003 checksum remains
+  `5030fb936e85f381a191288ef7a26805ec3a154056e339d161015df04c291967`.
+- Live information_schema verified all ten InnoDB tables, seven Notice columns,
+  exact three indexes, creator FK RESTRICT/RESTRICT, three enforced Notice CHECKs,
+  the final twelve-event audit CHECK and intact Volunteer–Activity FK. Temporary
+  read-only helpers corrected their index-order, Date-comparison and valid
+  Argon2 parameter-order assumptions; no database/application correction.
+- Human operator ran the committed hidden-password scripts: active ADMIN ID 1,
+  `midterm.admin`, `Synthetic Midterm Admin`; active STAFF ID 2, `midterm.staff`,
+  intentionally named `Midterm Staff`. Exactly two users; both Argon2id formats
+  verified through booleans, no full hash output/plaintext password field. One
+  ADMIN_BOOTSTRAPPED audit references USER 1 with NULL actor/reason/metadata;
+  no invented STAFF provisioning event or business fixture.
+- Production webpack build passed with explicit demo runtime settings. Direct
+  Node `--env-file` invocation first failed because Next propagated that flag
+  into worker NODE_OPTIONS, where Node rejects it. A `/tmp` parent launcher loads
+  the env opaquely and starts Next with inherited environment and no such flag.
+  No source/config fix. The actual production runtime binds only 127.0.0.1:3220
+  using the runtime account. The managed shell later ended with exit 143; the
+  same build resumed as a detached loopback process, preserving DB/session state.
+- Anonymous `/notices` and `/admin/notices`: actual HTTP 307 to
+  `/login?next=%2Fdashboard`, with login UI and no protected management controls.
+  One read-only probe's automatic approval review timed out; its permitted retry
+  succeeded. This was not an application failure or a 403 response.
+- Actual human ADMIN login through the form, shared feed/Manage Notices and
+  management access passed. Exactly one engineering Notice ID 1 was created
+  through UI at revision 1, read, updated to revision 2 and physically deleted.
+  Creator ID 1/creation time remained unchanged; valid UTC update time advanced.
+  CREATE metadata NULL; UPDATE only changed_fields [title,message] and revisions
+  1/2; DELETE only previous_revision 2. Exactly one of each success audit remains,
+  with no Notice text. Pending controls, refreshed feed and persistent delete
+  feedback were observed. No other business submissions.
+- Real ADMIN logout invalidated its session. Real human STAFF login showed
+  Midterm Staff; `/notices` read the current empty feed without Manage Notices.
+  Direct `/admin/notices` navigation redirected to `/notices?access=admin-required`
+  with exact `Access denied. Only ADMIN can manage CES Staff Notices.` and no
+  Create/Save/Delete management controls. Current STAFF logout returned to login.
+  A forged authenticated STAFF Server Action was not repeated in this browser
+  run; unchanged direct-write guards are covered by the approved Phase 2 tests.
+  No STAFF Notice write/success audit occurred. This optional check is not claimed
+  as live HTTP mutation evidence.
+- Final retained audits: ADMIN_BOOTSTRAPPED 1, AUTH_LOGIN_SUCCESS 3, AUTH_LOGOUT 2,
+  NOTICE_CREATED/UPDATED/DELETED 1 each (9 total), all successful. The additional
+  human STAFF login left one earlier STAFF session; retained without cleanup.
+  No failure audit was manufactured. Auth metadata is NULL; actor/entity IDs and
+  minimal Notice metadata verified. No username/password/raw token/Notice text
+  in auth metadata. Demo core business tables and Notices remain empty.
+- Browser smoke passed Dashboard, Goods/Cash workspace, Inventory, Activities,
+  Volunteer Submissions, public Volunteer Registration, poster and Notices.
+  The empty public form shows no ACTIVE Activities; map settings are absent.
+  Existing server-side QuickChart POST succeeded and poster rendered a complete
+  validated 600×600 PNG for `http://127.0.0.1:3220/volunteer`. No provider/source
+  change, standalone Postman proof, phone scan or final grading API capture.
+- Short browser checks at 390×844 and 1440×900 verified six navigation links,
+  Notice feed, ADMIN controls and STAFF denial fit without horizontal overflow.
+  Viewport restored. No new uncaught/hydration/Server Action/DB permission errors
+  in the recovered browser/runtime. Shell-lifetime and viewport-transition
+  interruptions were resolved without application changes. Full Phase 3A visual/
+  keyboard coverage was not repeated; no formal WCAG certification.
+- Exact accepted-target before/after snapshots match: Goods 1, Cash 1, Activities
+  1, Volunteers 2, cash total 0.01; all four deterministic business digests,
+  migration records and nine schema fingerprints unchanged. No accepted writes
+  or grants; no accepted personal row content printed.
+- Original R3 main/HEAD `66595665c32c0cb1e3803afa5a47d0d2a10a1bce`, empty index,
+  same 14 unfinished files and SHA-256 fingerprints match the established baseline.
+  `.aws remains unrelated, untouched, and excluded.` No DROP/TRUNCATE/reset/audit
+  deletion, final grading captures/recording, AI evidence, declarations,
+  contribution fabrication or PDF. Browser views were engineering QA only.
+  Only this STATUS file changed; all application source remains at the approved
+  checkpoint. Local env files stay ignored;
+  temporary helpers/reports live only under `/tmp`.
+- Classification: **PASS — MIDTERM PHASE 3B MYSQL 8.4.11 DEMO ACCEPTANCE COMPLETE**.
+  This is engineering acceptance, not completion of the midterm submission.
+
 ## Next exact action
 
-Deep-review the committed Phase 3A source directly from GitHub. If approved,
-authorize Phase 3B setup and acceptance of the dedicated MySQL 8.4.11
-ces_portal_midterm_demo environment. Do not capture final grading evidence until
-Phase 3B acceptance passes.
+Begin the grading-evidence phase from the stable Phase 3B demo environment.
+Plan and capture evidence in rubric order without altering accepted source:
+Git history/team contributions, unedited 3–5 minute recording, QuickChart API
+proof, Notice DB CRUD before/after proof, password-hash/RBAC proof, individual
+member walkthroughs, collaboration proof, AI declarations/log/evidence, and the
+final technical PDF. Classroom submission steps remain pending.
