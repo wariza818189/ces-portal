@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import { databaseTlsConfiguration } from "../lib/db-tls.mjs";
 
 const requiredVariables = [
   "DB_HOST",
@@ -16,6 +17,8 @@ for (const variable of requiredVariables) {
 
 const connection = await mysql.createConnection({
   host: process.env.DB_HOST,
+  socketPath: process.env.DB_SOCKET || undefined,
+  ssl: databaseTlsConfiguration(),
   port: Number(process.env.DB_PORT),
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,

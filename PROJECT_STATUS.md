@@ -14,6 +14,15 @@ This is the single authoritative current project-status tracker. Functional scop
 
 ## Git state
 
+Deployment branch follow-up (2026-10-16): `deploy/azure-ces-demo` adds optional
+`DB_SSL_MODE=VERIFY_IDENTITY` through a shared runtime/operator TLS helper. Both
+CA trust and the configured DNS hostname are verified; invalid modes, IP literals
+in verified mode, and TLS combined with `DB_SOCKET` are rejected. Unset mode
+preserves local TCP and isolated Unix socket configuration. This is configuration
+support only, with no Azure/database connection or deployment acceptance. See the
+[TLS verification record](docs/testing.md#optional-azure-mysql-tls--deployment-branch)
+for checks and limitations. The historical source checkpoints below remain unchanged.
+
 - **Branch:** `main`
 - **Phase 2A feature checkpoint:** `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), pushed to `origin/main`.
 - **Phase 2B feature checkpoint:** `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), pushed to `origin/main`.

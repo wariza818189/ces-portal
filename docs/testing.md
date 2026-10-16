@@ -2,6 +2,54 @@
 
 The latest acceptance is [CES Portal v2 R2 — Activity Management](#ces-portal-v2-r2--activity-management), classified **PASS WITH NOTES — R2 TARGET MYSQL 8.4 ACCEPTANCE COMPLETE** on actual MySQL 8.4.11 (`ces_portal`). Earlier sections preserve separate point-in-time evidence: historical controlled rows/Cash total `125.25`, UI-5 zero rows/`0.00`, and R1 Goods `1`, Cash `1`, Volunteers `1`, Cash total `0.01`. R2 preserved that pre-write state and ended with Volunteers `2` and Activities `1`, other values unchanged. No cause of older database-state differences is inferred. This documentation pass records supplied completed acceptance evidence and does not rerun it. The full R1 section below remains historical to its own checkpoint; its then-pending R2 statements are superseded by the later R2 section.
 
+## Optional Azure MySQL TLS — deployment branch
+
+2026-10-16, `deploy/azure-ces-demo`, baseline HEAD
+`0d890c13f18c4db13aa0e084252ab20c26569a9a`. Existing standalone output and native
+install-script approval edits were preserved. No migrations, bootstrap/seed
+commands, actual database connections, secret files, or deployments were used.
+
+`lib/db-tls.mjs` serves the Next.js pool, operator connection, and connectivity
+check script. Unset `DB_SSL_MODE` retains local non-TLS TCP/Unix socket behavior.
+Only exact `VERIFY_IDENTITY` enables TLS, with `rejectUnauthorized: true` and
+mysql2 `verifyIdentity: true`, using Node's trusted CAs. Verified mode requires
+the database DNS hostname; installed mysql2 3.24.5 omits its TLS servername for IP
+literals, so those are rejected. Combining verified mode with `DB_SOCKET` also
+fails explicitly. Empty, misspelled, and unsupported modes fail before connection
+creation. Restart processes after configuration changes.
+
+Database-free verification uses synthetic environment values and a guard against
+network/socket connection attempts. The TLS suite replaces database creation with
+captured options and exercises the installed driver's TLS upgrade using an inert
+stream and Node's certificate hostname checker. It accepts the configured DNS
+name and rejects a mismatched certificate with `ERR_TLS_CERT_ALTNAME_INVALID`.
+It does not perform a real TLS handshake or validate an Azure certificate chain.
+
+| Check | Result |
+| --- | --- |
+| `node --import ./tests/r1/register.mjs --test --test-isolation=none tests/db/tls.test.mjs` | 8 passed: local defaults, both verified consumers, invalid modes/cached pool, R1/R2/midterm socket paths, socket/TLS rejection, DNS requirement, connectivity script, driver hostname mismatch. |
+| `npm run test:r1` | 6 passed; 1 database integration suite intentionally skipped. |
+| `npm run test:r2` | 12 passed; 1 database suite skipped; 1 existing navigation assertion failed (`6 !== 5`). The identical failure was reproduced from committed HEAD in a secret-free temporary copy. Accepted midterm navigation has six links, covered by the passing midterm suite. No unrelated UI/test change made. |
+| `npm run test:midterm` | 25 passed; 2 database integration suites intentionally skipped. |
+| `npm run lint` | Passed; changed source/test files also checked after final test adjustment. |
+| `node node_modules/typescript/bin/tsc --noEmit --incremental false` | Passed in the secret-free build copy. |
+| `npm run build -- --webpack` | Passed on the process-capture retry: compilation, TypeScript, all 14 generated pages, standalone build tracing. Synthetic verified-TLS settings and network/socket guard enabled. |
+| `git diff --check` and new-file whitespace review | Passed. |
+
+The production build uses a temporary copy of tracked source plus the new TLS
+files, excluding environment files except public examples, with existing local
+dependencies linked. Process settings are synthetic: host
+`build-only.mysql.invalid`, port `1`, user `synthetic`, password
+`synthetic-build-only`, database `ces_build_only`, and
+`DB_SSL_MODE=VERIFY_IDENTITY`. A network/socket guard remains enabled. The first
+sandboxed `npm run build -- --webpack` attempt failed because Next.js received
+empty TypeScript `--showConfig` subprocess output; direct TypeScript checking
+passed. The retry outside that sandbox process-capture restriction passed without
+changing the application or build configuration.
+
+Live Azure connectivity and database integration acceptance remain untested by
+design; no accepted midterm business logic or database migration was changed.
+
 # Previously Verified Before Account Migration — Historical Evidence
 
 The project handoff records successful pre-migration evidence for:

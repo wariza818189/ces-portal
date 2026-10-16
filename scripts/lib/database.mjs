@@ -1,4 +1,5 @@
 import { createConnection } from "mysql2/promise";
+import { databaseTlsConfiguration } from "../../lib/db-tls.mjs";
 
 export function databaseConfiguration() {
   const required = ["DB_HOST", "DB_PORT", "DB_USER", "DB_PASSWORD", "DB_NAME"];
@@ -7,6 +8,7 @@ export function databaseConfiguration() {
   return {
     host: process.env.DB_HOST, port: Number(process.env.DB_PORT),
     socketPath: process.env.DB_SOCKET || undefined,
+    ssl: databaseTlsConfiguration(),
     user: process.env.DB_USER, password: process.env.DB_PASSWORD, database: process.env.DB_NAME,
     supportBigNumbers: true, bigNumberStrings: true, timezone: "Z",
   };
