@@ -1,0 +1,113 @@
+{
+  "mode": "preview",
+  "databaseConnected": false,
+  "plan": {
+    "batch": "CES-PRESENTATION-20261016-v1",
+    "date": "2026-10-16",
+    "goods": [
+      {
+        "category": "Canned",
+        "quantity": "120.00",
+        "unit": "pcs",
+        "date_received": "2026-10-06",
+        "expiry_date": "2027-01-14"
+      },
+      {
+        "category": "Rice",
+        "quantity": "25.00",
+        "unit": "kg",
+        "date_received": "2026-10-11",
+        "expiry_date": "2026-10-19"
+      },
+      {
+        "category": "Noodles",
+        "quantity": "40.00",
+        "unit": "packs",
+        "date_received": "2026-10-09",
+        "expiry_date": "2026-10-16"
+      },
+      {
+        "category": "Other",
+        "quantity": "6.00",
+        "unit": "boxes",
+        "date_received": "2026-10-02",
+        "expiry_date": "2026-10-15"
+      }
+    ],
+    "cash": [
+      {
+        "amount": "1500.00",
+        "date_received": "2026-10-14",
+        "notes": "[CES-PRESENTATION-20261016-v1] Fictional Starling Outreach Circle collection."
+      },
+      {
+        "amount": "725.50",
+        "date_received": "2026-10-15",
+        "notes": "[CES-PRESENTATION-20261016-v1] Fictional Willow Student Circle collection."
+      }
+    ],
+    "activities": [
+      {
+        "name": "[CES-PRESENTATION-20261016-v1] Community packing",
+        "activity_date": "2026-10-20",
+        "venue_name": "Fictional Starling Community Hall",
+        "transitions": [
+          "ACTIVE"
+        ]
+      },
+      {
+        "name": "[CES-PRESENTATION-20261016-v1] Reading circle",
+        "activity_date": "2026-10-26",
+        "venue_name": "Fictional Willow Learning Room",
+        "transitions": []
+      },
+      {
+        "name": "[CES-PRESENTATION-20261016-v1] Supply sorting",
+        "activity_date": "2026-10-13",
+        "venue_name": "Fictional Meadow Hall",
+        "transitions": [
+          "ACTIVE",
+          "CLOSED"
+        ]
+      },
+      {
+        "name": "[CES-PRESENTATION-20261016-v1] Archived planning rehearsal",
+        "activity_date": "2026-10-09",
+        "venue_name": null,
+        "transitions": [
+          "ARCHIVED"
+        ]
+      }
+    ],
+    "volunteers": [
+      {
+        "full_name": "Synthetic Mira Starling [Presentation]",
+        "course_year": "Fictional BSIT / Year 1",
+        "contact_number": "00000000000",
+        "activityIndex": 0
+      },
+      {
+        "full_name": "Synthetic Niko Willow [Presentation]",
+        "course_year": "Fictional BSIT / Year 2",
+        "contact_number": "00000000000",
+        "activityIndex": 0
+      },
+      {
+        "full_name": "Synthetic Lina Meadow [Presentation]",
+        "course_year": "Fictional BSIT / Year 3",
+        "contact_number": "00000000000",
+        "activityIndex": 0
+      }
+    ],
+    "notices": [
+      {
+        "title": "[CES-PRESENTATION-20261016-v1] Packing briefing",
+        "message": "Fictional Starling Outreach Circle: review packing assignments before the community activity. Synthetic information only."
+      },
+      {
+        "title": "[CES-PRESENTATION-20261016-v1] Volunteer orientation",
+        "message": "Fictional Willow Student Circle: review the selected activity venue and coordination instructions. Synthetic information only."
+      }
+    ]
+  }
+}

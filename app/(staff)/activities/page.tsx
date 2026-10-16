@@ -24,8 +24,7 @@ export default async function ActivitiesPage({ searchParams }: { searchParams: P
   try { records = await listActivities(); } catch (error) { logActivityFailure("Activities load failed.", error); }
   const selected = requested?.success ? records?.find(row => row.id === requested.data) : undefined;
   return <div className="space-y-8">
-    <PageHeader title="Activities" description="Manage synthetic CES Activities and their public registration state." />
-    <aside className="rounded-xl border border-warning-border bg-warning-surface p-5 text-sm text-warning"><h2 className="font-semibold">SYNTHETIC / LOCAL DEMO ONLY</h2><p className="mt-2">Use synthetic Activity and Volunteer information only. Real-data collection and public production deployment are not approved.</p></aside>
+    <PageHeader title="Activities" description="Manage CES activities and their registration status." />
     {records === null ? <Card><h2 role="alert" className="text-error">Unable to load Activities.</h2><p className="mt-2">Reload this workspace or contact CES support.</p></Card> : <>
       <Card><details><summary className="cursor-pointer rounded text-lg font-semibold focus-visible:outline-2 focus-visible:outline-focus">Create Activity</summary><div className="mt-5"><ActivityForm /></div></details></Card>
       {requested && (!requested.success || !selected) && <p role="alert" className="text-error">Activity not found or invalid edit request.</p>}

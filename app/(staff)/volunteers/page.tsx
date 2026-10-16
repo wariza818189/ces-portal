@@ -54,14 +54,10 @@ export default async function VolunteersPage() {
     <div className="space-y-8">
       <PageHeader
         title="Volunteer Submissions"
-        description="Read-only view of recorded synthetic Volunteer submissions."
+        description="Review volunteer registrations for CES activities."
         action={<Link href="/volunteers/poster" prefetch={false} className={buttonStyles.secondary}>Volunteer Signup poster</Link>}
       />
-      <aside className="rounded-xl border border-warning-border bg-warning-surface p-5 text-sm leading-6 text-warning">
-        <h2 className="font-semibold">SYNTHETIC / LOCAL DEMO ONLY</h2>
-        <p className="mt-2">Classroom/local demonstration using synthetic test information only.</p>
-        <p className="mt-2">Intended viewers: CES Staff / CES Coordinator. Access is restricted to authenticated active CES staff. Real personal-information collection and public production deployment are not approved.</p>
-      </aside>
+      <p className="text-sm text-muted-foreground">Intended viewers: CES Staff / CES Coordinator. Access is restricted to authenticated active CES staff.</p>
       {records === null ? (
         <section role="alert" className="rounded-xl border border-error-border bg-error-surface p-6 text-error">
           <h2 className="font-semibold">Unable to load Volunteer submissions</h2>
@@ -70,14 +66,14 @@ export default async function VolunteersPage() {
       ) : !records.length ? (
         <section className="rounded-xl border border-border bg-surface p-6">
           <h2 className="text-lg font-semibold text-foreground">No Volunteer submissions recorded</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Synthetic submissions will appear here after the demonstration form is saved.</p>
+          <p className="mt-2 text-sm text-muted-foreground">Registrations will appear here after volunteers submit the signup form.</p>
         </section>
       ) : (
         <>
           <p className="text-sm text-muted-foreground">Newest submissions first. Submission times are shown as recorded in the database session time zone.</p>
           <div className="hidden rounded-xl border border-border bg-surface xl:block">
             <table className="w-full table-fixed text-left text-sm">
-              <caption className="px-5 py-4 text-left font-semibold text-foreground">Recorded synthetic Volunteer submissions</caption>
+              <caption className="px-5 py-4 text-left font-semibold text-foreground">Recorded volunteer submissions</caption>
               <colgroup>
                 <col className="w-[20%]" />
                 <col className="w-[18%]" />
@@ -97,7 +93,7 @@ export default async function VolunteersPage() {
               </tbody>
             </table>
           </div>
-          <section aria-label="Recorded synthetic Volunteer submissions" className="space-y-4 xl:hidden">
+          <section aria-label="Recorded volunteer submissions" className="space-y-4 xl:hidden">
             {records.map((record) => (
               <article key={record.id} className="min-w-0 rounded-xl border border-border bg-surface p-5">
                 <h2 className="whitespace-pre-wrap wrap-anywhere text-lg font-semibold text-foreground">{record.full_name}</h2>

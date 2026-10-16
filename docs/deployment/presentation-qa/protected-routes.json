@@ -1,0 +1,50 @@
+[
+  {
+    "path": "/dashboard",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  },
+  {
+    "path": "/donations/new",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  },
+  {
+    "path": "/inventory",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  },
+  {
+    "path": "/activities",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  },
+  {
+    "path": "/notices",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  },
+  {
+    "path": "/admin/notices",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  },
+  {
+    "path": "/volunteers",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  },
+  {
+    "path": "/volunteers/poster",
+    "url": "https://ces-portal-demo-2026-gwhzg4c0hadshmd9.eastasia-01.azurewebsites.net/login?next=%2Fdashboard",
+    "heading": "Staff Sign In",
+    "staffNavigation": 0
+  }
+]

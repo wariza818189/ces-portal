@@ -7,6 +7,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <header>
+        <p className="mb-2 text-xl font-bold text-primary">CES Portal</p>
         <p className="text-sm font-semibold text-primary">Community Extension Services</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">Staff Sign In</h1>
         <p className="mt-3 text-base leading-6 text-muted-foreground">Use your CES staff account to access the staff workspace.</p>

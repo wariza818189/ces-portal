@@ -18,19 +18,19 @@ export default async function VolunteerPosterPage() {
       <article className={styles.poster}>
         <p className={styles.eyebrow}>Community Extension Services</p>
         <h1>Volunteer Signup</h1>
-        <p className={styles.intro}>Join the CES volunteer demonstration. Open the signup form to explore how students can take part.</p>
+        <p className={styles.intro}>Take part in a CES activity. Open the signup form to view activities accepting volunteers.</p>
         {qr.state === "available" ? (
           <Image className={styles.qr} src={qr.image} width={600} height={600} unoptimized alt="QR code opening the configured Volunteer Signup page" />
         ) : (
           <p className={styles.status} role="status">{qr.state === "not_configured"
-            ? "The Volunteer Signup link is not configured for this demo."
+            ? "The Volunteer Signup link is not configured. Contact CES support."
             : "QR generation is temporarily unavailable. Please use the Volunteer Signup link below."}</p>
         )}
-        <h2>Scan to open Volunteer Signup</h2>
+        {qr.state === "available" && <h2>Scan to open Volunteer Signup</h2>}
         {qr.state !== "not_configured" && <a className={styles.url} href={qr.url}>{qr.url}</a>}
         <aside className={styles.warning}>
-          <strong>SYNTHETIC / LOCAL DEMO ONLY</strong>
-          <p>Real personal-information collection is not approved. Use synthetic test information only.</p>
+          <strong>Academic prototype</strong>
+          <p>Use fictional information only. Do not submit real personal or contact information. Institutional production use is not approved.</p>
         </aside>
       </article>
     </div>

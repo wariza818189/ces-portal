@@ -1,0 +1,272 @@
+[
+  {
+    "path": "/dashboard",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Dashboard",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/donations/new",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Add Donation",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/inventory",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Inventory",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/activities",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Activities",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/notices",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Staff Notices",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/admin/notices",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Manage Staff Notices",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/volunteers",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Volunteer Submissions",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/volunteer",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Volunteer Registration",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/volunteers/poster",
+    "clientWidth": 345,
+    "disclosures": 1,
+    "heading": "Volunteer Signup",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 345,
+    "width": 360
+  },
+  {
+    "path": "/dashboard",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Dashboard",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/donations/new",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Add Donation",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/inventory",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Inventory",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/activities",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Activities",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/notices",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Staff Notices",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/admin/notices",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Manage Staff Notices",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/volunteers",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Volunteer Submissions",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/volunteer",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Volunteer Registration",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/volunteers/poster",
+    "clientWidth": 375,
+    "disclosures": 1,
+    "heading": "Volunteer Signup",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "path": "/dashboard",
+    "clientWidth": 1366,
+    "disclosures": 1,
+    "heading": "Dashboard",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1366,
+    "width": 1366
+  },
+  {
+    "path": "/donations/new",
+    "clientWidth": 1351,
+    "disclosures": 1,
+    "heading": "Add Donation",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1351,
+    "width": 1366
+  },
+  {
+    "path": "/inventory",
+    "clientWidth": 1351,
+    "disclosures": 1,
+    "heading": "Inventory",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1351,
+    "width": 1366
+  },
+  {
+    "path": "/activities",
+    "clientWidth": 1351,
+    "disclosures": 1,
+    "heading": "Activities",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1351,
+    "width": 1366
+  },
+  {
+    "path": "/notices",
+    "clientWidth": 1366,
+    "disclosures": 1,
+    "heading": "Staff Notices",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1366,
+    "width": 1366
+  },
+  {
+    "path": "/admin/notices",
+    "clientWidth": 1351,
+    "disclosures": 1,
+    "heading": "Manage Staff Notices",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1351,
+    "width": 1366
+  },
+  {
+    "path": "/volunteers",
+    "clientWidth": 1366,
+    "disclosures": 1,
+    "heading": "Volunteer Submissions",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1366,
+    "width": 1366
+  },
+  {
+    "path": "/volunteer",
+    "clientWidth": 1351,
+    "disclosures": 1,
+    "heading": "Volunteer Registration",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1351,
+    "width": 1366
+  },
+  {
+    "path": "/volunteers/poster",
+    "clientWidth": 1351,
+    "disclosures": 1,
+    "heading": "Volunteer Signup",
+    "height": 768,
+    "overflow": [],
+    "scrollWidth": 1351,
+    "width": 1366
+  }
+]

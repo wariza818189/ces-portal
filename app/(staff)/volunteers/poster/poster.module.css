@@ -56,7 +56,7 @@
 .qr { display: block; width: 280px; max-width: 100%; height: auto; margin: 28px auto 24px; break-inside: avoid; }
 .url { display: block; overflow-wrap: anywhere; color: var(--ces-primary); font-size: 14px; line-height: 1.6; text-decoration: underline; text-underline-offset: 3px; }
 .status { margin: 28px auto 24px; padding: 24px; border: 1px solid var(--ces-border); border-radius: 12px; background: var(--ces-background); color: var(--ces-muted); }
-.warning { margin-top: 28px; padding: 16px 20px; border: 1px solid var(--ces-warning-border); border-radius: 10px; background: var(--ces-warning-surface); color: var(--ces-warning); font-size: 14px; break-inside: avoid; }
+.warning { margin-top: 28px; padding: 12px 16px; border: 1px solid var(--ces-info-border); border-radius: 10px; background: var(--ces-info-surface); color: var(--ces-info); font-size: 14px; break-inside: avoid; }
 .warning strong { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
 .warning p { margin-top: 8px; }
 

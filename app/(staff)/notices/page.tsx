@@ -14,10 +14,6 @@ export default async function NoticesPage({ searchParams }: {
   try { notices = await listNotices(); } catch { console.error("Notice feed unavailable."); }
   return <div className="space-y-6">
     <PageHeader title="Staff Notices" description="Internal CES informational messages for authenticated staff." />
-    <aside className="rounded-xl border border-warning-border bg-warning-surface p-5 text-sm text-warning">
-      <h2 className="font-semibold">SYNTHETIC / LOCAL DEMO ONLY</h2>
-      <p className="mt-2">Use synthetic Notice information only. Real-data use and public production deployment are not approved.</p>
-    </aside>
     {user.role === "STAFF" && query.access === "admin-required" &&
       <p role="alert" className="rounded-lg border border-error-border bg-error-surface p-4 text-error">Access denied. Only ADMIN can manage CES Staff Notices.</p>}
     {user.role === "ADMIN" && <Link href="/admin/notices" className={buttonStyles.secondary}>Manage Notices</Link>}

@@ -1,0 +1,113 @@
+{
+  "mode": "preview",
+  "databaseConnected": false,
+  "plan": {
+    "batch": "CES-PRESENTATION-20261016-v2",
+    "date": "2026-10-16",
+    "goods": [
+      {
+        "category": "Canned",
+        "quantity": "120.00",
+        "unit": "pcs",
+        "date_received": "2026-10-06",
+        "expiry_date": "2027-01-14"
+      },
+      {
+        "category": "Rice",
+        "quantity": "25.00",
+        "unit": "kg",
+        "date_received": "2026-10-11",
+        "expiry_date": "2026-10-19"
+      },
+      {
+        "category": "Noodles",
+        "quantity": "40.00",
+        "unit": "packs",
+        "date_received": "2026-10-09",
+        "expiry_date": "2026-10-16"
+      },
+      {
+        "category": "Other",
+        "quantity": "6.00",
+        "unit": "boxes",
+        "date_received": "2026-10-02",
+        "expiry_date": "2026-10-15"
+      }
+    ],
+    "cash": [
+      {
+        "amount": "1500.00",
+        "date_received": "2026-10-14",
+        "notes": "Academic sample: Starling Outreach Circle collection (fictional)."
+      },
+      {
+        "amount": "725.50",
+        "date_received": "2026-10-15",
+        "notes": "Academic sample: Willow Student Circle collection (fictional)."
+      }
+    ],
+    "activities": [
+      {
+        "name": "Community Packing and Outreach",
+        "activity_date": "2026-10-20",
+        "venue_name": "Starling Community Hall (fictional)",
+        "transitions": [
+          "ACTIVE"
+        ]
+      },
+      {
+        "name": "Student Reading Circle",
+        "activity_date": "2026-10-26",
+        "venue_name": "Willow Learning Room (fictional)",
+        "transitions": []
+      },
+      {
+        "name": "Community Supply Sorting",
+        "activity_date": "2026-10-13",
+        "venue_name": "Meadow Hall (fictional)",
+        "transitions": [
+          "ACTIVE",
+          "CLOSED"
+        ]
+      },
+      {
+        "name": "Outreach Planning Rehearsal",
+        "activity_date": "2026-10-09",
+        "venue_name": null,
+        "transitions": [
+          "ARCHIVED"
+        ]
+      }
+    ],
+    "volunteers": [
+      {
+        "full_name": "Mira Starling (fictional)",
+        "course_year": "BSIT / Year 1",
+        "contact_number": "00000000000",
+        "activityIndex": 0
+      },
+      {
+        "full_name": "Niko Willow (fictional)",
+        "course_year": "BSIT / Year 2",
+        "contact_number": "00000000000",
+        "activityIndex": 0
+      },
+      {
+        "full_name": "Lina Meadow (fictional)",
+        "course_year": "BSIT / Year 3",
+        "contact_number": "00000000000",
+        "activityIndex": 0
+      }
+    ],
+    "notices": [
+      {
+        "title": "Packing team briefing",
+        "message": "Review packing assignments before the community outreach activity. Academic sample from the fictional Starling Outreach Circle."
+      },
+      {
+        "title": "Volunteer orientation",
+        "message": "Review the selected activity venue and coordination instructions before arrival. Academic sample from the fictional Willow Student Circle."
+      }
+    ]
+  }
+}

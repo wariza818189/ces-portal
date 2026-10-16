@@ -72,10 +72,10 @@ test("shared page allows ADMIN management link and only exact scalar STAFF denia
     const result = await page("STAFF", { access }); assert.ok(!result.html.includes("Access denied.") && !result.html.includes("arbitrary reflected text"));
   }
 });
-test("feed escapes plain text, preserves newlines, UTC labels, synthetic context and distinct empty/failure states", async () => {
+test("feed escapes plain text and preserves UTC labels and empty/failure states without repeating the shell disclosure", async () => {
   await initialize();
   const { html } = await page("STAFF"); assert.match(html, /&lt;script&gt;/); assert.match(html, /&lt;b&gt;/); assert.match(html, /whitespace-pre-wrap/); assert.match(html, /wrap-anywhere/);
-  assert.match(html, /Created \(UTC\)/); assert.match(html, /Updated \(UTC\)/); assert.match(html, /SYNTHETIC \/ LOCAL DEMO ONLY/);
+  assert.match(html, /Created \(UTC\)/); assert.match(html, /Updated \(UTC\)/); assert.ok(!html.includes("LOCAL DEMO ONLY"));
   for (const name of ["app/(staff)/notices/page.tsx", "app/(staff)/admin/notices/page.tsx"]) assert.ok(!(await source(name)).includes("dangerouslySetInnerHTML"));
   assert.match((await page("STAFF", {}, [])).html, /No Notices recorded/);
   assert.match((await page("STAFF", {}, null)).html, /Unable to load Notices/);

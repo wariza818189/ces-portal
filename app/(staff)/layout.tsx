@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { PageContainer } from "@/components/layout/page-container";
 import { requireUser } from "@/lib/auth/session";
 import { LogoutForm } from "@/components/auth/logout-form";
+import { PrototypeNotice } from "@/components/layout/prototype-notice";
 
 export default async function StaffLayout({
   children,
@@ -27,7 +28,10 @@ export default async function StaffLayout({
           <LogoutForm />
         </header>
         <main id="main-content" tabIndex={-1} className="min-w-0">
-          <PageContainer>{children}</PageContainer>
+          <PageContainer>
+            <div data-staff-chrome className="mb-6"><PrototypeNotice /></div>
+            {children}
+          </PageContainer>
         </main>
       </div>
     </div>

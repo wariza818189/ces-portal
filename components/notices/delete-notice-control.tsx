@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Notice } from "@/lib/notices";
 import { deleteNotice, type NoticeActionState } from "@/lib/actions/notices";
 import { donationFeedbackStyles } from "@/components/donations/form-styles";
@@ -12,7 +13,9 @@ export function DeleteNoticeControl({ notice }: { notice: Pick<Notice, "id" | "t
   const [state, action, pending] = useActionState(async (previous: NoticeActionState, form: FormData) => {
     if (form.get("confirm") !== "yes") return { ...initial, status: "error" as const, message: "Confirm deletion before submitting." };
     const result = await deleteNotice(previous, form);
-    if (result.status === "success") window.dispatchEvent(new CustomEvent("ces-notice-deleted", { detail: result.message }));
+    if (result.status === "success") window.dispatchEvent(new CustomEvent("ces-notice-deleted", {
+      detail: { id: notice.id, message: result.message },
+    }));
     return result;
   }, initial);
   const id = `delete-${notice.id}`;
@@ -39,14 +42,22 @@ export function readDeletionFeedback(value: unknown): string | null {
 // Keep confirmed deletion feedback outside the row removed by revalidation.
 export function NoticeDeletionFeedback() {
   const [message, setMessage] = useState("");
+  const router = useRouter();
   useEffect(() => {
     const receive = (event: Event) => {
       if (!(event instanceof CustomEvent)) return;
-      const confirmedMessage = readDeletionFeedback(event.detail);
-      if (confirmedMessage !== null) setMessage(confirmedMessage);
+      const confirmedMessage = readDeletionFeedback(event.detail?.message);
+      if (confirmedMessage === null) return;
+      setMessage(confirmedMessage);
+      // A successful delete can revalidate the open editor before this event.
+      // Leave that deleted record's editor so success has no stale error banner.
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("edit") === event.detail.id) {
+        router.replace("/admin/notices", { scroll: false });
+      }
     };
     window.addEventListener("ces-notice-deleted", receive);
     return () => window.removeEventListener("ces-notice-deleted", receive);
-  }, []);
+  }, [router]);
   return message ? <p role="status" className={donationFeedbackStyles("success", message)}>{message}</p> : null;
 }

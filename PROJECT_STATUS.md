@@ -14,6 +14,33 @@ This is the single authoritative current project-status tracker. Functional scop
 
 ## Git state
 
+Final presentation polish follow-up (2026-10-16, same deployment HEAD): all prior
+uncommitted QA changes are preserved. Compact shared staff and obvious public
+academic/no-real-data disclosures replace repetitive banners. A fresh isolated
+production-build browser run verifies deletion feedback without an edit error,
+retained Notice audits/fixture rows, local STAFF denial, real QuickChart PNG and
+27 responsive page/size combinations. A proposed clean-display v2 dataset keeps
+the 15-record coverage, supports original v1 journals and strengthens collision/
+snapshot checks; 12 private MySQL 8.0.46 safety tests pass. Lint, TypeScript,
+build, 5 presentation checks, 25 DB-free Notice checks and 8 TLS checks pass;
+the existing R2 five-link assertion remains separately documented. No Azure
+writes/settings, commit, push or deployment occurred. Azure runtime QR setting,
+live role acceptance, separately approved seed and phone/print checks remain.
+See [final polish acceptance](docs/deployment/PRESENTATION_QA.md#7-final-presentation-polish--local-production-acceptance).
+
+Presentation QA follow-up (2026-10-16, deployment branch): live Azure ADMIN
+login/logout, Goods/Cash, Inventory, Activity transitions, synthetic Volunteer
+signup, Notice CRUD and anonymous route protection were exercised. Eight pages
+fit all three requested viewport sizes. Small presentation-copy/branding edits
+and a fix for stale Notice edit feedback are uncommitted and undeployed; the
+delete-fix browser regression was left untested at the operator's request.
+The live QR poster is blocked by missing signup-URL configuration, and live
+STAFF denial remains unverified. A guarded synthetic dataset/rollback tool is
+prepared and tested only in a private socket-only MySQL 8.0.46 instance; no
+Azure seed ran. See [presentation QA](docs/deployment/PRESENTATION_QA.md) for
+exact live writes, verification and remaining readiness work. Historical R2 and
+midterm source/acceptance checkpoints remain unchanged.
+
 Deployment branch follow-up (2026-10-16): `deploy/azure-ces-demo` adds optional
 `DB_SSL_MODE=VERIFY_IDENTITY` through a shared runtime/operator TLS helper. Both
 CA trust and the configured DNS hostname are verified; invalid modes, IP literals

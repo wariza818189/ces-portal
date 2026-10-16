@@ -21,10 +21,6 @@ export default async function ManageNoticesPage({ searchParams }: {
   const selected = requested?.success ? notices?.find(notice => notice.id === requested.data) : undefined;
   return <div className="space-y-6">
     <PageHeader title="Manage Staff Notices" description="Publish, edit, and delete internal CES informational messages." />
-    <aside className="rounded-xl border border-warning-border bg-warning-surface p-5 text-sm text-warning">
-      <h2 className="font-semibold">SYNTHETIC / LOCAL DEMO ONLY</h2>
-      <p className="mt-2">Use synthetic Notice information only. Real-data use and public production deployment are not approved.</p>
-    </aside>
     <Link href="/notices" className={buttonStyles.secondary}>Read Staff Notices</Link>
     {notices === null ? <Card><h2 role="alert" className="text-error">Unable to load Notices.</h2><p className="mt-2">Reload this workspace or contact CES support.</p></Card> : <>
       <Card><h2 className="mb-4 text-lg font-semibold">Create Notice</h2><NoticeForm /></Card>

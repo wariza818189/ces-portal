@@ -2,6 +2,7 @@ import { connection } from "next/server";
 import { VolunteerExperience } from "@/components/volunteers/volunteer-experience";
 import { listPublicActivities, logActivityFailure, type PublicActivity } from "@/lib/activities";
 import { getCesLocationMap } from "@/lib/ces-map";
+import { PrototypeNotice } from "@/components/layout/prototype-notice";
 
 export default async function VolunteerPage() {
   await connection();
@@ -20,15 +21,11 @@ export default async function VolunteerPage() {
         </h1>
 
         <p className="mt-3 text-base leading-6 text-muted-foreground">
-          Register as a student volunteer for a CES activity in this local demonstration.
+          Register as a student volunteer for a CES activity.
         </p>
       </header>
 
-      <aside className="rounded-xl border border-warning-border bg-warning-surface p-5 text-sm leading-6 text-warning">
-        <h2 className="font-semibold">SYNTHETIC / LOCAL DEMO ONLY</h2>
-        <p className="mt-2">Classroom/local demonstration using synthetic test information only.</p>
-        <p className="mt-2">Do not enter real personal information. Real-data collection and public production deployment are not approved.</p>
-      </aside>
+      <PrototypeNotice publicFacing />
       <VolunteerExperience activities={activities} demoMap={demoMap} />
     </div>
   );
