@@ -23,6 +23,14 @@ support only, with no Azure/database connection or deployment acceptance. See th
 [TLS verification record](docs/testing.md#optional-azure-mysql-tls--deployment-branch)
 for checks and limitations. The historical source checkpoints below remain unchanged.
 
+Standalone packaging follow-up (2026-10-16): MySQL2 was bundled by Turbopack and
+absent from standalone `node_modules`. Explicit `serverExternalPackages: ["mysql2"]`
+now traces lockfile version `3.24.5` and its runtime dependencies. The workflow
+preserves traced packages and checks a relocated artifact before upload. Local
+Node 24 install/lint/build, all eight database-free TLS checks, and ZIP-extracted
+dependency/startup/HTTP smoke checks passed. No Azure/database changes or login
+acceptance were performed; one redeployment and live login verification remain.
+
 - **Branch:** `main`
 - **Phase 2A feature checkpoint:** `7a06f983cc9abe302c1ca32262d738a3f1c6d9b7` (`feat: complete Goods Donation phase 2A`), pushed to `origin/main`.
 - **Phase 2B feature checkpoint:** `e2ed677d31960f47d28afb4d691b8608f330ce26` (`feat: complete Cash Donation phase 2B`), pushed to `origin/main`.

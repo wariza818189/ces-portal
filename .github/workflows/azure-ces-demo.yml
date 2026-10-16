@@ -58,17 +58,12 @@ jobs:
           # Next.js tracing can copy environment files; never ship them.
           find .next/standalone -name '.env*' -exec rm -rf -- {} +
           test -f .next/standalone/.next/BUILD_ID
-          # Only traced runtime dependencies may be present, never build tooling.
+          # Preserve traced runtime packages; lockfile dev flags alone are not a
+          # safe reason to delete files from Next.js's runtime dependency graph.
           node <<'NODE'
           const fs = require('node:fs');
           const path = require('node:path');
           const root = '.next/standalone';
-          const { packages = {} } = require('./package-lock.json');
-          for (const [location, metadata] of Object.entries(packages)) {
-            if (metadata.dev && location.startsWith('node_modules/')) {
-              fs.rmSync(path.join(root, location), { recursive: true, force: true });
-            }
-          }
           const { devDependencies = {} } = require('./package.json');
           for (const dependency of Object.keys(devDependencies)) {
             if (fs.existsSync(path.join(root, 'node_modules', dependency))) {
@@ -81,6 +76,55 @@ jobs:
             }
           }
           NODE
+
+      - name: Verify relocated standalone deployment
+        shell: bash
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: '3306'
+          DB_USER: build_placeholder
+          DB_PASSWORD: build_placeholder
+          DB_NAME: build_placeholder
+          APP_TIME_ZONE: Asia/Manila
+        run: |
+          set -euo pipefail
+          deployment_dir=$(mktemp -d "$RUNNER_TEMP/ces-standalone.XXXXXX")
+          # Match artifact upload's dereferencing of Turbopack package symlinks.
+          cp -aL .next/standalone/. "$deployment_dir/"
+          export EXPECTED_MYSQL2_VERSION
+          EXPECTED_MYSQL2_VERSION=$(node -p "require('./package-lock.json').packages['node_modules/mysql2'].version")
+          cd "$deployment_dir"
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const path = require('node:path');
+          for (const name of ['mysql2/promise', 'argon2']) {
+            const resolved = fs.realpathSync(require.resolve(name));
+            assert(resolved.startsWith(process.cwd() + path.sep), `${name} resolved outside artifact`);
+            require(name);
+          }
+          assert.equal(require('mysql2/package.json').version, process.env.EXPECTED_MYSQL2_VERSION);
+          console.log('Standalone MySQL2 and Argon2 imports passed');
+          NODE
+          HOSTNAME=127.0.0.1 PORT=3100 node server.js > server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if [ "$(curl --silent --max-time 5 --output login.html --write-out '%{http_code}' http://127.0.0.1:3100/login)" = 200 ]; then
+              break
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              cat server.log
+              exit 1
+            fi
+            sleep 1
+          done
+          test "$(curl --fail --silent --max-time 5 --output login.html --write-out '%{http_code}' http://127.0.0.1:3100/login)" = 200
+          grep -q 'Staff Sign In' login.html
+          asset=$(find .next/static -type f -name '*.js' -print -quit)
+          test -n "$asset"
+          test "$(curl --fail --silent --max-time 5 --output /dev/null --write-out '%{http_code}' "http://127.0.0.1:3100/_next/${asset#.next/}")" = 200
+          echo 'Standalone startup, login page and static asset checks passed'
 
       - name: Upload standalone deployment
         uses: actions/upload-artifact@v4
