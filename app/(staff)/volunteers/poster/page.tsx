@@ -27,7 +27,7 @@ export default async function VolunteerPosterPage() {
             : "QR generation is temporarily unavailable. Please use the Volunteer Signup link below."}</p>
         )}
         <h2>Scan to open Volunteer Signup</h2>
-        {qr.state !== "not_configured" && <a className={styles.url} href={qr.url}>{qr.url}</a>}
+        {qr.state !== "not_configured" && <a className={styles.url} href={qr.url} aria-label="Open the Volunteer Signup form">{qr.url}</a>}
         <aside className={styles.warning}>
           <strong>SYNTHETIC / LOCAL DEMO ONLY</strong>
           <p>Real personal-information collection is not approved. Use synthetic test information only.</p>
