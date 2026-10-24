@@ -23,6 +23,9 @@ test("Notice title trims, counts code points, rejects blanks/controls and never 
     assert.equal(noticeTitleSchema.safeParse(value).success, false);
   }
 });
+test("Notice title preserves HTML-looking text literally after trimming", () => {
+  assert.equal(noticeTitleSchema.parse("  <b>Demo</b>  "), "<b>Demo</b>");
+});
 test("Notice message normalizes CRLF/CR, preserves paragraphs/tabs/spaces, rejects other controls", () => {
   assert.equal(noticeMessageSchema.parse(" \r\nFirst  line\r\n\tSecond\rThird \n"), "First  line\n\tSecond\nThird");
   assert.equal(noticeMessageSchema.parse("😀"), "😀");
