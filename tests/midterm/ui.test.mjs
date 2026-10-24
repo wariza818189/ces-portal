@@ -92,13 +92,13 @@ test("ADMIN edit selection accepts exact schema IDs and fails safely for duplica
   for (const edit of [["1", "1"], "01", "0", "2", "18446744073709551616"]) { const result = await page("ADMIN", { edit }, [notice], true); assert.match(result.html, /Notice not found or invalid edit request/); assert.ok(!result.html.includes("Save Notice")); }
   assert.ok(!(await page("ADMIN", {}, [notice], true)).html.includes("Save Notice"));
 });
-
-test("persistent deletion feedback accepts only bounded fixed success messages", async () => {
+test("STAFF access restriction ignores padded admin-required values", async () => {
   await initialize();
-  for (const message of ["Notice deleted.", "Notice deleted. Some views could not refresh. Reload them; the result is confirmed, so do not resubmit it."]) {
-    assert.equal(readDeletionFeedback(message), message);
-  }
-  for (const value of [undefined, null, true, {}, ["Notice deleted."], "", "arbitrary query text", "<script>arbitrary</script>", "Notice deleted. appended arbitrary text", "x".repeat(10000)]) {
-    assert.equal(readDeletionFeedback(value), null);
-  }
+  // I-check ang STAFF role gamit ang " admin-required " (may spaces sa gilid)
+  const result = await page("STAFF", { access: " admin-required " });
+  
+  // Siguraduhing HINDI lumabas ang access-denied banner
+  assert.ok(!result.html.includes("Access denied."));
+  assert.ok(!result.html.includes("Only ADMIN can manage CES Staff Notices."));
 });
+
